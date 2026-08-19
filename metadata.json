@@ -1,0 +1,6 @@
+{
+  "name": "OVERKILL ENTERTAINMENT",
+  "description": "High-octane booking agency and sonic showcase for DJ Wolverine with live mix streams, real-time availability calendar, transparent service packages, and booking protocols.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
