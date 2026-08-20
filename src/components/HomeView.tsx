@@ -56,11 +56,15 @@ export const HomeView: React.FC<HomeViewProps> = ({
           <img
             src={DJ_ASSETS.heroBg}
             alt="DJ Wolverine"
-            className="w-full h-full object-cover object-right-top md:object-right opacity-80"
+            /* 
+              object-[75%_center] focuses the focal point on the DJ (on the right) for phones,
+              while sm:object-right locks it cleanly on tablets and desktop screens.
+            */
+            className="w-full h-full object-cover object-[75%_center] sm:object-right opacity-80"
           />
-          {/* Subtle dark gradient overlay from left for text contrast */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#070b11] via-[#070b11]/80 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#070b11] via-transparent to-transparent" />
+          {/* Responsive gradients: keeps high contrast for readability across screen sizes */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#070b11] via-[#070b11]/85 sm:via-[#070b11]/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#070b11] via-transparent to-transparent sm:hidden" />
         </div>
 
         {/* Hero Content Container */}
