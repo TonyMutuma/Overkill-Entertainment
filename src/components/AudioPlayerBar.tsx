@@ -9,7 +9,8 @@ interface AudioPlayerBarProps {
   onTogglePlay: (track: MixTrack) => void;
   onNextTrack: () => void;
   onPrevTrack: () => void;
-  onClose: () => void;
+  onClose?: () => void;
+  onClosePlayer?: () => void;
 }
 
 export const AudioPlayerBar: React.FC<AudioPlayerBarProps> = ({
@@ -18,11 +19,17 @@ export const AudioPlayerBar: React.FC<AudioPlayerBarProps> = ({
   onTogglePlay,
   onNextTrack,
   onPrevTrack,
-  onClose
+  onClose,
+  onClosePlayer
 }) => {
   const [volume, setVolume] = useState<number>(0.8);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(18);
+
+  const handleClose = () => {
+    if (onClose) onClose();
+    if (onClosePlayer) onClosePlayer();
+  };
 
   useEffect(() => {
     let interval: number;
@@ -190,7 +197,7 @@ export const AudioPlayerBar: React.FC<AudioPlayerBarProps> = ({
           </button>
 
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="text-[#bac9cd]/60 hover:text-white transition-colors p-1 cursor-pointer"
             title="Close Player"
           >

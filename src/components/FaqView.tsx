@@ -3,10 +3,18 @@ import { FAQ_ITEMS } from '../data/mockData';
 import { ChevronDown, HelpCircle, MessageSquare, ShieldCheck, Mail, Send, CheckCircle } from 'lucide-react';
 
 interface FaqViewProps {
-  onNavigateToBooking: () => void;
+  onNavigateToBooking?: () => void;
+  onNavigateToCalendar?: () => void;
+  onNavigateToServices?: () => void;
+  setActiveTab?: (tab: string) => void;
 }
 
-export const FaqView: React.FC<FaqViewProps> = ({ onNavigateToBooking }) => {
+export const FaqView: React.FC<FaqViewProps> = ({
+  onNavigateToBooking,
+  onNavigateToCalendar,
+  onNavigateToServices,
+  setActiveTab
+}) => {
   const [openIds, setOpenIds] = useState<string[]>(['faq-1']);
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -14,6 +22,16 @@ export const FaqView: React.FC<FaqViewProps> = ({ onNavigateToBooking }) => {
   const [customName, setCustomName] = useState<string>('');
   const [customEmail, setCustomEmail] = useState<string>('');
   const [customMsg, setCustomMsg] = useState<string>('');
+
+  const handleBookingNavigation = () => {
+    if (onNavigateToBooking) {
+      onNavigateToBooking();
+    } else if (onNavigateToCalendar) {
+      onNavigateToCalendar();
+    } else if (setActiveTab) {
+      setActiveTab('calendar');
+    }
+  };
 
   const categories = ['All', 'Music & Style', 'Gear & Tech', 'Booking & Policy'];
 
@@ -159,7 +177,7 @@ export const FaqView: React.FC<FaqViewProps> = ({ onNavigateToBooking }) => {
               Every booking includes standby hardware redundancy, $2M commercial general liability insurance, and an expedited 24/7 direct artist contact line.
             </p>
             <button
-              onClick={onNavigateToBooking}
+              onClick={handleBookingNavigation}
               className="w-full py-2.5 bg-[#00daf8]/20 border border-[#00daf8] text-[#00daf8] font-mono-jb text-xs uppercase font-bold rounded hover:bg-[#00daf8] hover:text-[#00363f] transition-colors cursor-pointer"
             >
               Check Date Availability
