@@ -73,11 +73,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
             {/* Main Headline Punchline - Bold, Premium Serif Display Font (Fluid Mobile Sizing) */}
             <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-extrabold leading-[1.1] sm:leading-[1.05] tracking-tight mb-5 sm:mb-6 text-white max-w-2xl drop-shadow-lg">
-              Premium Sounds and Vibes on another level.
+              Stop Gambling With Your Event's Atmosphere
             </h1>
 
             {/* Subtitle - Bold Sans with Premium Contrast */}
-            <p className="font-sans text-slate-100 text-base sm:text-lg md:text-xl max-w-lg mb-8 sm:mb-10 leading-relaxed font-bold tracking-wide">
+            <p className="font-sans text-slate-100 text-base sm:text-lg md:text-xl max-w-lg mb-8 sm:mb-10 leading-relaxed font-normal tracking-wide">
               Professional DJ services, premium sound, and seamless entertainment for events that leave a lasting impression.
             </p>
 
@@ -167,7 +167,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             THE OVERKILL DIFFERENCE
           </span>
           <h2 className="font-serif text-3xl md:text-5xl text-white tracking-tight font-bold">
-            Stop Gambling With Your Event&apos;s Atmosphere
+            why your events odds are at stake.
           </h2>
         </div>
 
