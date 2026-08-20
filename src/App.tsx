@@ -15,6 +15,7 @@ import { useCMS } from './context/CMSContext';
 import { MixTrack } from './types';
 import { soundEngine } from './utils/soundEngine';
 import { Sliders, EyeOff, ArrowRight } from 'lucide-react';
+import { api } from './utils/api';
 
 export function App() {
   const {
@@ -22,34 +23,35 @@ export function App() {
     isAdminOpen,
     openAdmin,
     closeAdmin,
-    pageVisibility,
-    mixTracks
+    pageVisibility
   } = useCMS();
 
   const [activeTab, setActiveTab] = useState<string>('home');
-  const [currentTrack, setCurrentTrack] = useState<MixTrack>(mixTracks[0] || {
-    id: 'default',
-    title: 'Nairobi Underground Tech-House Vol. 1',
-    category: 'club',
-    duration: '48:15',
-    bpm: 126,
-    coverUrl: 'https://images.unsplash.com/photo-1571266028243-3716f02d2d2e?q=80&w=800&auto=format&fit=crop',
-    waveformStyle: 'cyan',
-    audioKey: 'club-tech'
+  const [currentTrack, setCurrentTrack] = useState<MixTrack>({
+    id: 'mix-1', title: 'Neon Nights Vol. 4', category: 'club',
+    categoryLabel: 'Club', duration: '1h 45m', recordedAt: 'Recorded live at The Vanguard',
+    description: 'Peak hour tech-house and heavy bassline hitters with exclusive bootlegs and continuous energy build.',
+    date: 'Oct 12, 2024', plays: '12.4k Plays', bpm: 128,
+    imageUrl: '/DJ_ASSETS/clubLaser', audioKey: 'tech-house',
+    tags: ['Tech House', 'Bassline', 'Peak Hour', '128 BPM'], tracklistSnippet: []
   });
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isAudioPlayerVisible, setIsAudioPlayerVisible] = useState<boolean>(true);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
-  
-  // Booking Modal State
   const [isBookingModalOpen, setIsBookingModalOpen] = useState<boolean>(false);
   const [bookingPackageId, setBookingPackageId] = useState<string>('corporate');
   const [bookingDate, setBookingDate] = useState<string>('');
   const [bookingAddOns, setBookingAddOns] = useState<string[]>([]);
+  const [mixTracks, setMixTracks] = useState<MixTrack[]>([]);
 
-  // Synchronize currentTrack with mixTracks if needed
+  // Fetch mix tracks from API on mount
   useEffect(() => {
-    if (mixTracks && mixTracks.length > 0) {
+    api.getMixTracks().then((tracks) => setMixTracks(tracks));
+  }, []);
+
+  // Synchronize currentTrack if new tracks loaded
+  useEffect(() => {
+    if (mixTracks.length > 0) {
       const exists = mixTracks.some((t) => t.id === currentTrack.id);
       if (!exists) {
         setCurrentTrack(mixTracks[0]);

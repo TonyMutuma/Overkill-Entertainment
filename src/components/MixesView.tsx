@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MixTrack, NavTab } from '../types';
-import { MIX_TRACKS } from '../data/mockData';
 import { Play, Pause, Headphones, Calendar as CalendarIcon, ChevronDown, ChevronUp, Music } from 'lucide-react';
+import { api } from '../utils/api';
 
 interface MixesViewProps {
   setActiveTab?: (tab: NavTab) => void;
@@ -24,6 +24,11 @@ export const MixesView: React.FC<MixesViewProps> = ({
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [expandedTracklistId, setExpandedTracklistId] = useState<string | null>(null);
+  const [mixTracks, setMixTracks] = useState<MixTrack[]>([]);
+
+  useEffect(() => {
+    api.getMixTracks().then((tracks) => setMixTracks(tracks));
+  }, []);
 
   const navigate = (tab: NavTab) => {
     if (tab === 'calendar' && onNavigateToCalendar) {
@@ -41,13 +46,14 @@ export const MixesView: React.FC<MixesViewProps> = ({
     { id: 'corporate', label: 'Corporate' },
     { id: 'wedding', label: 'Wedding' },
     { id: 'club', label: 'Club' },
+    { id: 'festival', label: 'Festival' },
     { id: 'private', label: 'Private Party' }
   ];
 
   const filteredMixes =
     selectedCategory === 'all'
-      ? MIX_TRACKS
-      : MIX_TRACKS.filter((m) => m.category === selectedCategory);
+      ? mixTracks
+      : mixTracks.filter((m) => m.category === selectedCategory);
 
   const toggleTracklist = (id: string) => {
     setExpandedTracklistId(expandedTracklistId === id ? null : id);
