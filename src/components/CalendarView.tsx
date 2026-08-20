@@ -3,13 +3,23 @@ import { DJ_ASSETS } from '../data/mockData';
 import { ChevronLeft, ChevronRight, CheckCircle2, Lock, HelpCircle, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 
 interface CalendarViewProps {
-  onSelectDateForBooking: (dateStr: string) => void;
+  onSelectDateForBooking?: (dateStr: string) => void;
+  onNavigateToBooking?: () => void;
+  onNavigateToServices?: () => void;
+  onNavigateToFaq?: () => void;
+  setActiveTab?: (tab: string) => void;
 }
 
-export const CalendarView: React.FC<CalendarViewProps> = ({ onSelectDateForBooking }) => {
+export const CalendarView: React.FC<CalendarViewProps> = ({
+  onSelectDateForBooking,
+  onNavigateToBooking,
+  onNavigateToServices,
+  onNavigateToFaq,
+  setActiveTab
+}) => {
   // Calendar state
   const [currentMonthIndex, setCurrentMonthIndex] = useState(10); // 10 = Nov
-  const [currentYear, setCurrentYear] = useState(2024);
+  const [currentYear, setCurrentYear] = useState(2026);
   const [selectedDay, setSelectedDay] = useState<number>(15);
   const [openFaqId, setOpenFaqId] = useState<number | null>(1);
 
@@ -68,7 +78,13 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ onSelectDateForBooki
 
   const handleRequestDate = () => {
     const dateFormatted = `${months[currentMonthIndex]} ${selectedDay}, ${currentYear}`;
-    onSelectDateForBooking(dateFormatted);
+    if (onSelectDateForBooking) {
+      onSelectDateForBooking(dateFormatted);
+    } else if (onNavigateToBooking) {
+      onNavigateToBooking();
+    } else if (setActiveTab) {
+      setActiveTab('services');
+    }
   };
 
   return (
@@ -114,7 +130,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ onSelectDateForBooki
                 {months[currentMonthIndex]} {currentYear}
               </h3>
               <p className="font-mono-jb text-xs text-[#00daf8] mt-1 font-semibold">
-                Eastern / Pacific Tour Route
+                Nairobi &amp; Regional Tour Route
               </p>
             </div>
 

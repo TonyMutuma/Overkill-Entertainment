@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Calendar, Clock, MapPin, Users, CheckCircle, Sparkles, Music2, ArrowRight } from 'lucide-react';
-import { SERVICE_PACKAGES, ADD_ON_ITEMS } from '../data/mockData';
+import { useCMS } from '../context/CMSContext';
+import { useCurrency } from '../context/CurrencyContext';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -17,6 +18,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   initialDate,
   initialAddOns = [],
 }) => {
+  const { formatAmount } = useCurrency();
+  const { servicePackages, addOnItems, addBookingInquiry } = useCMS();
   const [selectedPkgId, setSelectedPkgId] = useState<string>(initialPackageId);
   const [selectedDate, setSelectedDate] = useState<string>(
     initialDate || new Date(Date.now() + 86400000 * 14).toISOString().split('T')[0]
@@ -38,9 +41,16 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
   if (!isOpen) return null;
 
-  const currentPkg = SERVICE_PACKAGES.find((p) => p.id === selectedPkgId) || SERVICE_PACKAGES[1];
+  const currentPkg = servicePackages.find((p) => p.id === selectedPkgId) || servicePackages[0] || {
+    id: 'custom',
+    name: 'Custom Session',
+    tier: 'CUSTOM',
+    price: 1500,
+    features: []
+  };
+
   const addOnsTotal = selectedAddOns.reduce((sum, addOnId) => {
-    const item = ADD_ON_ITEMS.find((a) => a.id === addOnId);
+    const item = addOnItems.find((a) => a.id === addOnId);
     return sum + (item ? item.price : 0);
   }, 0);
   const totalCost = currentPkg.price + addOnsTotal;
@@ -55,6 +65,21 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    addBookingInquiry({
+      clientName: name || 'Direct Web Client',
+      clientEmail: email || 'booking@overkill.co',
+      clientPhone: phone || '+254 700 000000',
+      eventType: currentPkg.name,
+      eventDate: selectedDate,
+      venueCity: venue || 'Nairobi',
+      venueName: venue || 'Private Venue',
+      guestCount: parseInt(guestCount, 10) || 150,
+      selectedPackageId: currentPkg.id,
+      selectedAddOns: selectedAddOns,
+      estimatedTotal: totalCost,
+      status: 'new',
+      notes: notes || 'Submitted via public booking interface'
+    });
     setIsSubmitted(true);
   };
 
@@ -111,7 +136,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               </div>
               <div className="flex justify-between text-[#bac9cd]">
                 <span>Estimated Investment:</span>
-                <span className="text-[#00daf8] font-bold">${totalCost.toLocaleString()}</span>
+                <span className="text-[#00daf8] font-bold">{formatAmount(totalCost)}</span>
               </div>
             </div>
 
@@ -145,8 +170,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 <label className="block font-mono-jb text-xs uppercase tracking-wider text-[#bac9cd] mb-2">
                   1. Select Experience Tier
                 </label>
-                <div className="grid grid-cols-3 gap-3">
-                  {SERVICE_PACKAGES.map((pkg) => (
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+                  {servicePackages.map((pkg) => (
                     <button
                       key={pkg.id}
                       type="button"
@@ -158,7 +183,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                       }`}
                     >
                       <div className="font-sora text-sm font-bold text-[#e5e2e1]">{pkg.name}</div>
-                      <div className="font-mono-jb text-xs text-[#00daf8] mt-1">${pkg.price}</div>
+                      <div className="font-mono-jb text-xs text-[#00daf8] mt-1">{formatAmount(pkg.price)}</div>
                     </button>
                   ))}
                 </div>
@@ -188,7 +213,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   <input
                     type="text"
                     required
-                    placeholder="e.g. The Grand Ballroom, LA"
+                    placeholder="e.g. The Alchemist, Westlands, Nairobi"
                     value={venue}
                     onChange={(e) => setVenue(e.target.value)}
                     className="w-full bg-[#201f1f] border border-white/10 rounded-lg px-3 py-2.5 text-sm text-[#e5e2e1] placeholder-[#859397] focus:outline-none focus:border-[#00daf8]"
@@ -203,7 +228,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   2. Optional Add-ons &amp; Production Gear
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {ADD_ON_ITEMS.slice(0, 4).map((addon) => {
+                  {addOnItems.slice(0, 4).map((addon) => {
                     const isSelected = selectedAddOns.includes(addon.id);
                     return (
                       <button
@@ -217,7 +242,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                         }`}
                       >
                         <span className="truncate pr-2">{addon.name}</span>
-                        <span className="font-mono-jb text-[#00daf8] shrink-0">+${addon.price}</span>
+                        <span className="font-mono-jb text-[#00daf8] shrink-0">+{formatAmount(addon.price)}</span>
                       </button>
                     );
                   })}
@@ -289,7 +314,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 <div>
                   <div className="font-mono-jb text-xs text-[#bac9cd]">Calculated Investment:</div>
                   <div className="font-sora text-2xl font-extrabold text-[#00daf8] text-glow">
-                    ${totalCost.toLocaleString()}
+                    {formatAmount(totalCost)}
                   </div>
                 </div>
 

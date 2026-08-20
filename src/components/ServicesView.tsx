@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
 import { SERVICE_PACKAGES, ADD_ON_ITEMS } from '../data/mockData';
 import { CheckCircle2, Plus, Check, ArrowRight, Calculator, Sparkles } from 'lucide-react';
+import { useCurrency } from '../context/CurrencyContext';
+import { CurrencySelector } from './CurrencySelector';
 
 interface ServicesViewProps {
-  onSelectPackageForBooking: (packageId: string, addOns: string[], total: number) => void;
+  onSelectPackageForBooking?: (packageId: string, addOns: string[], total: number) => void;
+  onNavigateToCalendar?: () => void;
+  setActiveTab?: (tab: string) => void;
 }
 
-export const ServicesView: React.FC<ServicesViewProps> = ({ onSelectPackageForBooking }) => {
+export const ServicesView: React.FC<ServicesViewProps> = ({
+  onSelectPackageForBooking,
+  onNavigateToCalendar,
+  setActiveTab
+}) => {
+  const { formatAmount } = useCurrency();
   const [selectedPkgId, setSelectedPkgId] = useState<string>('corporate');
   const [selectedAddOnIds, setSelectedAddOnIds] = useState<string[]>([]);
 
@@ -29,8 +38,12 @@ export const ServicesView: React.FC<ServicesViewProps> = ({ onSelectPackageForBo
   const handleSelectPackage = (pkgId: string) => {
     setSelectedPkgId(pkgId);
     const pkg = SERVICE_PACKAGES.find((p) => p.id === pkgId);
-    if (pkg) {
+    if (pkg && onSelectPackageForBooking) {
       onSelectPackageForBooking(pkg.id, selectedAddOnIds, pkg.price + addOnsTotal);
+    } else if (onNavigateToCalendar) {
+      onNavigateToCalendar();
+    } else if (setActiveTab) {
+      setActiveTab('calendar');
     }
   };
 
@@ -52,6 +65,9 @@ export const ServicesView: React.FC<ServicesViewProps> = ({ onSelectPackageForBo
           No hidden fees. No gear rental surprises. Just raw, unadulterated power. Transparent pricing for premium sonic experiences.
         </p>
       </div>
+
+      {/* Geolocation & Currency Notice Banner */}
+      <CurrencySelector variant="banner" className="mb-12" />
 
       {/* 2. Packages Grid (Matching Mockup 1 exactly) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20 items-stretch">
@@ -93,8 +109,8 @@ export const ServicesView: React.FC<ServicesViewProps> = ({ onSelectPackageForBo
                 </p>
 
                 {/* Price Display */}
-                <div className="font-sora text-4xl lg:text-[44px] font-extrabold text-[#baf2ff] tracking-tight">
-                  ${pkg.price.toLocaleString()}
+                <div className="font-sora text-3xl lg:text-4xl font-extrabold text-[#baf2ff] tracking-tight">
+                  {formatAmount(pkg.price)}
                   <span className="font-hanken text-sm text-[#bac9cd] font-normal ml-1">
                     {pkg.pricePeriod}
                   </span>
@@ -186,7 +202,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({ onSelectPackageForBo
                     </div>
 
                     <div className="font-mono-jb text-sm font-bold text-[#baf2ff] shrink-0">
-                      +${addon.price}
+                      +{formatAmount(addon.price)}
                     </div>
                   </div>
                 );
@@ -204,7 +220,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({ onSelectPackageForBo
             <div className="space-y-3 border-b border-white/10 pb-4 mb-4 text-sm font-hanken">
               <div className="flex justify-between items-center text-[#e5e2e1]">
                 <span>Base ({currentPkg.name})</span>
-                <span className="font-mono-jb font-bold">${currentPkg.price.toLocaleString()}</span>
+                <span className="font-mono-jb font-bold">{formatAmount(currentPkg.price)}</span>
               </div>
 
               {selectedAddOnIds.map((addOnId) => {
@@ -213,7 +229,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({ onSelectPackageForBo
                 return (
                   <div key={addOnId} className="flex justify-between items-center text-xs text-[#bac9cd]">
                     <span className="truncate pr-2">+ {addOn.name}</span>
-                    <span className="font-mono-jb shrink-0">${addOn.price}</span>
+                    <span className="font-mono-jb shrink-0">+{formatAmount(addOn.price)}</span>
                   </div>
                 );
               })}
@@ -222,8 +238,8 @@ export const ServicesView: React.FC<ServicesViewProps> = ({ onSelectPackageForBo
             <div className="flex justify-between items-baseline mb-6">
               <span className="font-sora text-base font-bold text-[#e5e2e1]">Estimated Total</span>
               <div className="text-right">
-                <div className="font-sora text-3xl font-extrabold text-[#00daf8] text-glow">
-                  ${estimatedTotal.toLocaleString()}
+                <div className="font-sora text-2xl lg:text-3xl font-extrabold text-[#00daf8] text-glow">
+                  {formatAmount(estimatedTotal)}
                 </div>
                 <span className="font-mono-jb text-[10px] text-[#bac9cd]/60">
                   Includes full Pioneer CDJ/DJM gear

@@ -1,14 +1,54 @@
 import React from 'react';
-import { NavTab } from '../types';
-import { TRUST_VENUES, COMPARISON_TABLE, DJ_ASSETS } from '../data/mockData';
-import { X, CheckCircle2, Sliders, Zap, ShieldCheck, ArrowRight, Play, Sparkles } from 'lucide-react';
+import { NavTab, MixTrack } from '../types';
+import { TRUST_VENUES, COMPARISON_TABLE, DJ_ASSETS, MIX_TRACKS } from '../data/mockData';
+import { X, CheckCircle2, Sliders, Zap, ShieldCheck, ArrowRight, Play, Sparkles, Pause, Disc3 } from 'lucide-react';
 
 interface HomeViewProps {
-  setActiveTab: (tab: NavTab) => void;
-  onOpenBooking: () => void;
+  setActiveTab?: (tab: NavTab) => void;
+  onNavigateToBooking?: () => void;
+  onNavigateToMixes?: () => void;
+  onNavigateToServices?: () => void;
+  onNavigateToCalendar?: () => void;
+  onPlayFeaturedMix?: (track: MixTrack) => void;
+  currentPlayingId?: string | null;
+  onOpenBooking?: () => void;
 }
 
-export const HomeView: React.FC<HomeViewProps> = ({ setActiveTab, onOpenBooking }) => {
+export const HomeView: React.FC<HomeViewProps> = ({
+  setActiveTab,
+  onNavigateToBooking,
+  onNavigateToMixes,
+  onNavigateToServices,
+  onNavigateToCalendar,
+  onPlayFeaturedMix,
+  currentPlayingId,
+  onOpenBooking
+}) => {
+  const navigate = (tab: NavTab) => {
+    if (tab === 'calendar' && onNavigateToCalendar) {
+      onNavigateToCalendar();
+    } else if (tab === 'mixes' && onNavigateToMixes) {
+      onNavigateToMixes();
+    } else if (tab === 'services' && onNavigateToServices) {
+      onNavigateToServices();
+    } else if (setActiveTab) {
+      setActiveTab(tab);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleBooking = () => {
+    if (onOpenBooking) {
+      onOpenBooking();
+    } else if (onNavigateToBooking) {
+      onNavigateToBooking();
+    } else if (setActiveTab) {
+      setActiveTab('calendar');
+    }
+  };
+
+  const featuredMix = MIX_TRACKS[0];
+  const isFeaturedPlaying = currentPlayingId === featuredMix.id;
   return (
     <div className="w-full">
       {/* 1. Hero Section */}
@@ -54,7 +94,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ setActiveTab, onOpenBooking 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
             <button
-              onClick={() => setActiveTab('calendar')}
+              onClick={() => navigate('calendar')}
               className="w-full sm:w-auto bg-[#00e0ff] text-[#00363f] font-sora text-base font-bold px-8 py-4 rounded-lg hover:shadow-[0_0_30px_rgba(0,224,255,0.6)] hover:scale-105 transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 uppercase tracking-wider"
             >
               Check Available Dates
@@ -62,7 +102,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ setActiveTab, onOpenBooking 
             </button>
 
             <button
-              onClick={() => setActiveTab('mixes')}
+              onClick={() => navigate('mixes')}
               className="w-full sm:w-auto border-2 border-[#00daf8]/50 text-[#baf2ff] font-sora text-base font-bold px-8 py-4 rounded-lg hover:border-[#00daf8] hover:bg-[#00daf8]/10 transition-all duration-300 cursor-pointer flex items-center justify-center gap-2"
             >
               <Play className="w-4 h-4 fill-current" />
@@ -299,7 +339,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ setActiveTab, onOpenBooking 
         {/* Action Button */}
         <div className="mt-14 text-center">
           <button
-            onClick={onOpenBooking}
+            onClick={handleBooking}
             className="bg-[#00e0ff] text-[#00363f] font-sora text-lg font-bold px-10 py-5 rounded-lg hover:scale-105 hover:shadow-[0_0_35px_rgba(0,224,255,0.5)] transition-all duration-300 cursor-pointer uppercase tracking-wider inline-flex items-center gap-3"
           >
             Secure Your Date With DJ Wolverine

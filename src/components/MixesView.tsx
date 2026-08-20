@@ -4,20 +4,37 @@ import { MIX_TRACKS } from '../data/mockData';
 import { Play, Pause, Headphones, Calendar as CalendarIcon, ChevronDown, ChevronUp, Music } from 'lucide-react';
 
 interface MixesViewProps {
-  setActiveTab: (tab: NavTab) => void;
+  setActiveTab?: (tab: NavTab) => void;
+  onNavigateToCalendar?: () => void;
+  onNavigateToServices?: () => void;
   onPlayMix: (track: MixTrack) => void;
-  currentPlayingTrack: MixTrack | null;
-  isPlaying: boolean;
+  currentPlayingTrack?: MixTrack | null;
+  currentPlayingId?: string | null;
+  isPlaying?: boolean;
 }
 
 export const MixesView: React.FC<MixesViewProps> = ({
   setActiveTab,
+  onNavigateToCalendar,
+  onNavigateToServices,
   onPlayMix,
   currentPlayingTrack,
-  isPlaying
+  currentPlayingId,
+  isPlaying = false
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [expandedTracklistId, setExpandedTracklistId] = useState<string | null>(null);
+
+  const navigate = (tab: NavTab) => {
+    if (tab === 'calendar' && onNavigateToCalendar) {
+      onNavigateToCalendar();
+    } else if (tab === 'services' && onNavigateToServices) {
+      onNavigateToServices();
+    } else if (setActiveTab) {
+      setActiveTab(tab);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const categories = [
     { id: 'all', label: 'All Sets' },
@@ -71,13 +88,13 @@ export const MixesView: React.FC<MixesViewProps> = ({
 
           <div className="flex flex-wrap gap-4">
             <button
-              onClick={() => setActiveTab('calendar')}
+              onClick={() => navigate('calendar')}
               className="bg-[#00daf8] text-[#00363f] font-sora font-bold text-sm md:text-base px-8 py-3.5 rounded hover:scale-105 hover:shadow-[0_0_25px_rgba(0,218,248,0.5)] transition-all duration-300 cursor-pointer uppercase tracking-wider"
             >
               Check Availability
             </button>
             <button
-              onClick={() => setActiveTab('services')}
+              onClick={() => navigate('services')}
               className="border-2 border-[#00daf8]/50 text-[#baf2ff] font-sora font-bold text-sm md:text-base px-8 py-3.5 rounded hover:border-[#00daf8] hover:bg-[#00daf8]/10 transition-colors duration-300 cursor-pointer uppercase tracking-wider"
             >
               View Rates & Packages
@@ -125,8 +142,8 @@ export const MixesView: React.FC<MixesViewProps> = ({
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredMixes.map((mix) => {
-            const isCurrent = currentPlayingTrack?.id === mix.id;
-            const isThisPlaying = isCurrent && isPlaying;
+            const isCurrent = currentPlayingTrack?.id === mix.id || currentPlayingId === mix.id;
+            const isThisPlaying = isCurrent && Boolean(isPlaying);
             const isExpanded = expandedTracklistId === mix.id;
 
             return (
