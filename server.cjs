@@ -1,6 +1,7 @@
 const express = require('express');
 const sqlite3 = require('sqlite3');
 const path = require('path');
+require('dotenv').config();
 
 const app = express();
 app.use(express.json());
