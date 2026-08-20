@@ -73,7 +73,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
             {/* Main Headline Punchline - Bold, Premium Serif Display Font (Fluid Mobile Sizing) */}
             <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-extrabold leading-[1.1] sm:leading-[1.05] tracking-tight mb-5 sm:mb-6 text-white max-w-2xl drop-shadow-lg">
-              Stop Gambling With Your Event's Atmosphere
+              We Don't Gamble With Your Event's Atmosphere
             </h1>
 
             {/* Subtitle - Bold Sans with Premium Contrast */}
