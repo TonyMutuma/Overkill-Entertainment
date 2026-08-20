@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { SERVICE_PACKAGES, ADD_ON_ITEMS } from '../data/mockData';
+import React, { useState, useEffect } from 'react';
 import { CheckCircle2, Plus, Check, ArrowRight, Calculator, Sparkles } from 'lucide-react';
 import { useCurrency } from '../context/CurrencyContext';
 import { CurrencySelector } from './CurrencySelector';
+import { api } from '../utils/api';
 
 interface ServicesViewProps {
   onSelectPackageForBooking?: (packageId: string, addOns: string[], total: number) => void;
@@ -18,6 +18,13 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
   const { formatAmount } = useCurrency();
   const [selectedPkgId, setSelectedPkgId] = useState<string>('corporate');
   const [selectedAddOnIds, setSelectedAddOnIds] = useState<string[]>([]);
+  const [servicePackages, setServicePackages] = useState([]);
+  const [addOnItems, setAddOnItems] = useState([]);
+
+  useEffect(() => {
+    api.getServicePackages().then((pkgs) => setServicePackages(pkgs));
+    api.getAddOnItems().then((addons) => setAddOnItems(addons));
+  }, []);
 
   const toggleAddOn = (id: string) => {
     if (selectedAddOnIds.includes(id)) {
@@ -27,19 +34,26 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
     }
   };
 
-  const currentPkg = SERVICE_PACKAGES.find((p) => p.id === selectedPkgId) || SERVICE_PACKAGES[1];
+  const currentPkg = servicePackages.find((p) => p.id === selectedPkgId) || servicePackages[1] || {
+    id: 'corporate', name: 'Corporate', tag: 'MOST POPULAR', tagType: 'popular',
+    price: 2800, pricePeriod: '/event', description: 'Sophisticated sonic branding for elite company events.',
+    idealFor: 'Tech Summits, Product Launches, Galas & Award Banquets',
+    features: ['Up to 6 Hours Coverage', 'Full QSC Premium Audio System (up to 300 guests)', 'Wireless Shure Microphones for Speeches', 'Brand-Aligned Playlist Curation']
+  };
+
   const addOnsTotal = selectedAddOnIds.reduce((sum, addOnId) => {
-    const item = ADD_ON_ITEMS.find((a) => a.id === addOnId);
-    return sum + (item ? item.price : 0);
+    const addOn = addOnItems.find((a) => a.id === addOnId);
+    return sum + (addOn ? addOn.price : 0);
   }, 0);
 
   const estimatedTotal = currentPkg.price + addOnsTotal;
 
   const handleSelectPackage = (pkgId: string) => {
     setSelectedPkgId(pkgId);
-    const pkg = SERVICE_PACKAGES.find((p) => p.id === pkgId);
+    const pkg = servicePackages.find((p) => p.id === pkgId);
     if (pkg && onSelectPackageForBooking) {
-      onSelectPackageForBooking(pkg.id, selectedAddOnIds, pkg.price + addOnsTotal);
+      const addOnsStr = selectedAddOnIds.join(',');
+      onSelectPackageForBooking(pkg.id, addOnsStr, pkg.price + addOnsTotal);
     } else if (onNavigateToCalendar) {
       onNavigateToCalendar();
     } else if (setActiveTab) {
@@ -58,7 +72,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
         </div>
 
         <h1 className="font-sora text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-extrabold text-[#e5e2e1] mb-6 leading-tight text-glow">
-          What&apos;s Actually Included When You Book DJ Wolverine?
+          What's Actually Included When You Book DJ Wolverine?
         </h1>
 
         <p className="font-hanken text-lg text-[#bac9cd] leading-relaxed">
@@ -71,7 +85,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
 
       {/* 2. Packages Grid (Matching Mockup 1 exactly) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20 items-stretch">
-        {SERVICE_PACKAGES.map((pkg) => {
+        {servicePackages.map((pkg) => {
           const isHighlighted = pkg.isPopular;
 
           return (
@@ -169,7 +183,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
             </p>
 
             <div className="space-y-3">
-              {ADD_ON_ITEMS.map((addon) => {
+              {addOnItems.map((addon) => {
                 const isSelected = selectedAddOnIds.includes(addon.id);
                 return (
                   <div
@@ -224,12 +238,12 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
               </div>
 
               {selectedAddOnIds.map((addOnId) => {
-                const addOn = ADD_ON_ITEMS.find((a) => a.id === addOnId);
+                const addOn = addOnItems.find((a) => a.id === addOnId);
                 if (!addOn) return null;
                 return (
                   <div key={addOnId} className="flex justify-between items-center text-xs text-[#bac9cd]">
                     <span className="truncate pr-2">+ {addOn.name}</span>
-                    <span className="font-mono-jb shrink-0">+{formatAmount(addOn.price)}</span>
+                    <span className="font-mono-jb shrink-0">{formatAmount(addOn.price)}</span>
                   </div>
                 );
               })}
