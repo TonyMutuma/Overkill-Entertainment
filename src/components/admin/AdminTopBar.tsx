@@ -15,12 +15,12 @@ export const AdminTopBar: React.FC<AdminTopBarProps> = ({ onOpenDashboard }) => 
   const totalPagesCount = Object.keys(pageVisibility.pages).length;
 
   return (
-    <aside aria-label="Crew management toolbar" className="fixed top-0 inset-x-0 z-[60] bg-[#0a0a0a]/95 border-b border-[#00daf8]/40 shadow-[0_4px_25px_rgba(0,0,0,0.8)] backdrop-blur-md transition-all text-xs font-hanken">
+    <aside aria-label="Crew management toolbar" className="fixed top-0 inset-x-0 z-[60] bg-[#0a0a0a]/95 border-b border-[#ef4444]/40 shadow-[0_4px_25px_rgba(0,0,0,0.8)] backdrop-blur-md transition-all text-xs font-hanken">
       <div className="max-w-[1400px] mx-auto px-3 sm:px-6 h-10 sm:h-11 flex items-center justify-between gap-2 sm:gap-4">
         {/* Left: Crew Status */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-          <div className="flex items-center gap-1.5 bg-[#00daf8]/15 border border-[#00daf8]/40 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[#00daf8] font-mono-jb text-[10px] sm:text-[11px] font-bold shrink-0">
-            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#00daf8] animate-ping" />
+          <div className="flex items-center gap-1.5 bg-[#ef4444]/15 border border-[#ef4444]/40 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[#ef4444] font-mono-jb text-[10px] sm:text-[11px] font-bold shrink-0">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#ef4444] animate-ping" />
             <span>CREW</span>
           </div>
 
@@ -28,20 +28,20 @@ export const AdminTopBar: React.FC<AdminTopBarProps> = ({ onOpenDashboard }) => 
             <img
               src={currentUser.avatar}
               alt={currentUser.name}
-              className="w-5 h-5 sm:w-6 sm:h-6 rounded-full object-cover border border-[#00daf8]/50 shrink-0"
+              className="w-5 h-5 sm:w-6 sm:h-6 rounded-full object-cover border border-[#ef4444]/50 shrink-0"
             />
             <span className="font-sora font-semibold text-xs sm:text-[13px] truncate max-w-[100px] sm:max-w-[160px]">
               {currentUser.name}
             </span>
-            <span className="hidden sm:inline-block font-mono-jb text-[10px] text-[#00daf8] px-1.5 py-0.5 rounded bg-white/5 border border-white/10 uppercase shrink-0">
+            <span className="hidden sm:inline-block font-mono-jb text-[10px] text-[#ef4444] px-1.5 py-0.5 rounded bg-white/5 border border-white/10 uppercase shrink-0">
               {currentUser.role}
             </span>
           </div>
 
           <div className="hidden lg:flex items-center gap-1.5 text-[#bac9cd]/70 pl-2 border-l border-white/10 font-mono-jb text-[11px] shrink-0">
-            <Layers className="w-3.5 h-3.5 text-[#00daf8]" />
+            <Layers className="w-3.5 h-3.5 text-[#ef4444]" />
             <span>
-              Live: <strong className="text-[#baf2ff]">{activePagesCount}/{totalPagesCount}</strong>
+              Live: <strong className="text-[#fecaca]">{activePagesCount}/{totalPagesCount}</strong>
             </span>
           </div>
         </div>
@@ -51,7 +51,7 @@ export const AdminTopBar: React.FC<AdminTopBarProps> = ({ onOpenDashboard }) => 
           {/* Switch Crew Member (Dropdown) */}
           <div className="relative group hidden sm:block">
             <button className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-[#bac9cd] hover:text-white border border-white/10 text-[10px] sm:text-[11px] font-mono-jb transition-colors cursor-pointer">
-              <User className="w-3 h-3 text-[#00daf8]" />
+              <User className="w-3 h-3 text-[#ef4444]" />
               <span className="hidden md:inline">Switch</span>
               <ChevronDown className="w-3 h-3" />
             </button>
@@ -65,7 +65,7 @@ export const AdminTopBar: React.FC<AdminTopBarProps> = ({ onOpenDashboard }) => 
                   onClick={() => switchUser(u.id)}
                   className={`w-full text-left flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs transition-colors cursor-pointer ${
                     currentUser.id === u.id
-                      ? 'bg-[#00daf8]/15 text-[#00daf8] font-bold'
+                      ? 'bg-[#ef4444]/15 text-[#ef4444] font-bold'
                       : 'text-[#e5e2e1] hover:bg-white/5'
                   }`}
                 >
@@ -82,7 +82,7 @@ export const AdminTopBar: React.FC<AdminTopBarProps> = ({ onOpenDashboard }) => 
           {/* Open Main CMS Dashboard */}
           <button
             onClick={onOpenDashboard}
-            className="flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1 rounded-lg bg-[#00daf8] text-[#00363f] hover:bg-[#00e0ff] font-sora font-bold text-[11px] sm:text-xs shadow-[0_0_12px_rgba(0,218,248,0.4)] transition-all cursor-pointer shrink-0"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1 rounded-lg bg-[#ef4444] text-[#7f1d1d] hover:bg-[#dc2626] font-sora font-bold text-[11px] sm:text-xs shadow-[0_0_12px_rgba(239,68,68,0.4)] transition-all cursor-pointer shrink-0"
           >
             <Sliders className="w-3.5 h-3.5 shrink-0" />
             <span>CMS Portal</span>

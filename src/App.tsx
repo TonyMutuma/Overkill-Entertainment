@@ -16,6 +16,7 @@ import { MixTrack } from './types';
 import { soundEngine } from './utils/soundEngine';
 import { Sliders, EyeOff, ArrowRight } from 'lucide-react';
 import { api } from './utils/api';
+import { CookieConsent } from './components/CookieConsent';
 
 export function App() {
   const {
@@ -132,27 +133,24 @@ export function App() {
   const isCurrentPageDisabled = !pageVisibility?.pages?.[activeTab as keyof typeof pageVisibility.pages] && !currentUser;
 
   return (
-    <div className={`min-h-screen bg-[#131313] text-[#e5e2e1] flex flex-col selection:bg-[#00daf8] selection:text-[#00363f] relative overflow-x-hidden ${currentUser ? 'pt-11' : ''}`}>
-      {/* Background Atmosphere Layers */}
+    <div className={`min-h-screen bg-[#070b11] text-white flex flex-col selection:bg-blue-600 selection:text-white relative overflow-x-hidden ${currentUser && !isAdminOpen ? 'pt-11' : ''}`}>
       <div className="fixed inset-0 pointer-events-none z-0">
-        {/* Subtle grid pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:4rem_4rem]" />
-        
-        {/* Ambient Top Glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-[#00daf8]/[0.03] blur-[150px] rounded-full" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff04_1px,transparent_1px),linear-gradient(to_bottom,#ffffff04_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[380px] bg-blue-600/[0.06] blur-[150px] rounded-full" />
+        <div className="absolute bottom-0 right-0 w-[600px] h-[400px] bg-slate-800/[0.04] blur-[120px] rounded-full" />
       </div>
 
-      {/* Admin Crew Top Bar (Sticky when authenticated) */}
-      <AdminTopBar onOpenDashboard={openAdmin} />
+      {!isAdminOpen && <AdminTopBar onOpenDashboard={openAdmin} />}
 
-      {/* Main Navigation */}
-      <Navbar
-        activeTab={activeTab as any}
-        setActiveTab={handleTabChange}
-        onSelectTab={handleTabChange}
-        isPlayingMix={isPlaying}
-        onOpenBooking={() => handleOpenBookingModal('corporate')}
-      />
+      {!isAdminOpen && (
+        <Navbar
+          activeTab={activeTab as any}
+          setActiveTab={handleTabChange}
+          onSelectTab={handleTabChange}
+          isPlayingMix={isPlaying}
+          onOpenBooking={() => handleOpenBookingModal('corporate')}
+        />
+      )}
 
       {/* Primary Route Views */}
       <main className="flex-grow relative z-10">
@@ -256,8 +254,8 @@ export function App() {
         onOpenCrewLogin={() => setIsLoginModalOpen(true)}
       />
 
-      {/* Persistent Audio Player Bar */}
-      {isAudioPlayerVisible && (pageVisibility?.sections?.audioPlayerBar ?? true) && (
+      {/* Persistent Audio Player Bar - hidden on Home */}
+      {isAudioPlayerVisible && activeTab !== 'home' && (pageVisibility?.sections?.audioPlayerBar ?? true) && (
         <AudioPlayerBar
           currentTrack={currentTrack}
           isPlaying={isPlaying}
@@ -291,6 +289,8 @@ export function App() {
 
       {/* Admin Login Modal */}
       <AdminLoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
+
+      <CookieConsent />
     </div>
   );
 }

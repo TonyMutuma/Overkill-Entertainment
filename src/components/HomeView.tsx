@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavTab, MixTrack } from '../types';
 import { TRUST_VENUES, COMPARISON_TABLE, DJ_ASSETS } from '../data/mockData';
-import { X, CheckCircle2, Sliders, Zap, ShieldCheck, ArrowUpRight, Music, Calendar, Users, Volume2 } from 'lucide-react';
+import { X, CheckCircle2, Sliders, Zap, ShieldCheck, ArrowUpRight } from 'lucide-react';
 
 interface HomeViewProps {
   setActiveTab?: (tab: NavTab) => void;
@@ -46,9 +46,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
   };
 
   return (
-    <div className="w-full bg-[#070b11] text-white selection:bg-red-600 selection:text-white overflow-x-hidden">
+    <div className="w-full bg-[#070b11] text-white selection:bg-blue-600 selection:text-white overflow-x-hidden">
       {/* 1. Mobile-First Hero Section */}
-      <section className="relative min-h-[calc(100vh-70px)] flex items-end md:items-center overflow-hidden px-4 sm:px-8 md:px-12 lg:px-16 pt-16 pb-12">
+      <section className="relative min-h-[calc(100vh-70px)] flex items-end md:items-center overflow-hidden pt-28 sm:pt-32 pb-12">
         
         {/* Responsive Background Setup */}
         <div className="absolute inset-0 z-0">
@@ -63,23 +63,18 @@ export const HomeView: React.FC<HomeViewProps> = ({
           <div className="absolute inset-0 bg-gradient-to-r from-[#070b11] via-[#070b11]/85 to-transparent hidden md:block" />
         </div>
 
-        {/* Hero Content Container */}
-        <div className="relative z-10 max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        {/* Hero Content Container - aligned exactly to navbar logo X */}
+        <div className="relative z-10 max-w-[1280px] w-full mx-auto px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
           <div className="lg:col-span-8 xl:col-span-7 flex flex-col items-start text-left">
             
-            {/* Red Eyebrow Label */}
-            <span className="text-red-500 font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.25em] font-extrabold mb-2 sm:mb-3 drop-shadow-[0_0_12px_rgba(239,68,68,0.5)]">
-              OVERKILL ENTERTAINMENT
-            </span>
-
-            {/* Headline - Dynamically scaled down for smaller screens */}
-            <h1 className="font-serif text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.15] sm:leading-[1.1] tracking-tight mb-3 sm:mb-4 text-white max-w-2xl drop-shadow-md">
-              We Don&apos;t Gamble With Your Event&apos;s Atmosphere
+            {/* Headline - locked to 3 lines for premium balance */}
+            <h1 className="font-serif text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.15] sm:leading-[1.05] tracking-tight mb-3 sm:mb-4 text-white max-w-[18ch] sm:max-w-[16ch] drop-shadow-md text-balance">
+              We Don&apos;t Gamble<br /> With Your Event&apos;s<br /> Atmosphere
             </h1>
 
-            {/* Subtitle - Mobile optimized spacing */}
-            <p className="font-sans text-slate-200 text-xs sm:text-base md:text-lg max-w-xl mb-6 sm:mb-8 leading-relaxed font-medium">
-              Professional DJ services, premium sound, and seamless entertainment for events that leave a lasting impression.
+            {/* Subtitle - locked to 3 lines */}
+            <p className="font-sans text-slate-200 text-xs sm:text-base md:text-lg max-w-[28ch] sm:max-w-[34ch] mb-6 sm:mb-8 leading-relaxed font-medium text-balance">
+              Professional DJ services, premium sound,<br /> and seamless entertainment for events<br /> that leave a lasting impression.
             </p>
 
             {/* Hero CTAs - Full width buttons on small mobile */}
@@ -94,69 +89,32 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
               <button
                 onClick={() => navigate('mixes')}
-                className="text-white font-bold text-xs sm:text-sm px-4 py-3 hover:text-red-500 transition-colors duration-200 cursor-pointer uppercase tracking-wider underline underline-offset-8 text-center"
+                className="text-white font-bold text-xs sm:text-sm px-4 py-3 hover:text-blue-500 transition-colors duration-200 cursor-pointer uppercase tracking-wider underline underline-offset-8 text-center"
               >
                 Explore Mixes
               </button>
             </div>
 
-            {/* Stat Counters Grid - Optimized 2x2 for mobile */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-6 border-t border-slate-800/80 w-full max-w-2xl">
-              <div className="flex items-center gap-2.5">
-                <Music className="w-4 h-4 text-red-500 shrink-0" />
-                <div>
-                  <p className="text-base sm:text-lg font-bold font-serif text-white leading-none">100+</p>
-                  <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400 mt-1 font-bold">Mixes Recorded</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2.5">
-                <Calendar className="w-4 h-4 text-red-500 shrink-0" />
-                <div>
-                  <p className="text-base sm:text-lg font-bold font-serif text-white leading-none">200+</p>
-                  <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400 mt-1 font-bold">Events Powered</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2.5">
-                <Users className="w-4 h-4 text-red-500 shrink-0" />
-                <div>
-                  <p className="text-base sm:text-lg font-bold font-serif text-white leading-none">150+</p>
-                  <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400 mt-1 font-bold">Happy Clients</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2.5">
-                <Volume2 className="w-4 h-4 text-red-500 shrink-0" />
-                <div>
-                  <p className="text-base sm:text-lg font-bold font-serif text-white leading-none">PREMIUM</p>
-                  <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400 mt-1 font-bold">Sound & Rig</p>
-                </div>
+            {/* Trusted By - replaces stats, aligned to logo X */}
+            <div className="pt-6 border-t border-slate-800/80 w-full max-w-2xl">
+              <p className="font-mono text-[10px] sm:text-xs text-slate-500 uppercase tracking-[0.25em] mb-3 sm:mb-4 font-bold">
+                TRUSTED BY
+              </p>
+              <div className="flex flex-wrap justify-start items-center gap-6 sm:gap-10 opacity-70">
+                {TRUST_VENUES.map((venue, idx) => (
+                  <div key={idx} className="text-left group">
+                    <span className="font-serif text-sm sm:text-base md:text-lg font-bold tracking-widest text-slate-300 group-hover:text-white transition-colors uppercase">
+                      {venue.name}
+                    </span>
+                    {venue.location && (
+                      <span className="block font-mono text-[9px] sm:text-[10px] text-slate-500 mt-0.5 font-bold">
+                        {venue.location}
+                      </span>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 2. Trust Bar ("TRUSTED BY") */}
-      <section className="bg-[#04060a] py-8 sm:py-10 border-t border-slate-900 relative z-10">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-16 text-center">
-          <p className="font-mono text-[10px] sm:text-xs text-slate-500 uppercase tracking-[0.25em] mb-4 sm:mb-6 font-bold">
-            TRUSTED BY
-          </p>
-          <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-10 md:gap-14 opacity-60">
-            {TRUST_VENUES.map((venue, idx) => (
-              <div key={idx} className="text-center group">
-                <span className="font-serif text-base sm:text-lg md:text-xl font-bold tracking-widest text-slate-300 group-hover:text-white transition-colors uppercase">
-                  {venue.name}
-                </span>
-                {venue.location && (
-                  <span className="block font-mono text-[9px] sm:text-[10px] text-slate-500 mt-0.5 font-bold">
-                    {venue.location}
-                  </span>
-                )}
-              </div>
-            ))}
           </div>
         </div>
       </section>
@@ -164,7 +122,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       {/* 3. Problem / Solution Comparison */}
       <section className="py-12 sm:py-20 px-4 md:px-16 max-w-[1280px] mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-          <span className="font-mono text-[10px] sm:text-xs text-red-500 uppercase tracking-[0.2em] mb-2 block font-bold">
+          <span className="font-mono text-[10px] sm:text-xs text-blue-500 uppercase tracking-[0.2em] mb-2 block font-bold">
             THE OVERKILL DIFFERENCE
           </span>
           <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-white tracking-tight font-bold capitalize">
@@ -174,56 +132,60 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
           {/* Problem Card */}
-          <div className="bg-[#0b0f17] p-6 sm:p-8 border border-slate-800/60 relative">
-            <div className="absolute top-0 left-0 w-1 h-full bg-red-900" />
-            <span className="font-mono text-[10px] sm:text-xs text-red-400 uppercase tracking-wider block mb-2 font-bold">
+          <div className="bg-[#0b0f17] p-6 sm:p-8 border-2 border-slate-700/60 relative overflow-hidden">
+            <img src={DJ_ASSETS.djPerformingCrowd} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.08] pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/90 to-transparent pointer-events-none" />
+            <div className="absolute top-0 left-0 w-1 h-full bg-blue-900 z-10" />
+            <span className="font-mono text-[10px] sm:text-xs text-blue-400 uppercase tracking-wider block mb-2 font-bold relative z-10">
               The Reality
             </span>
-            <h3 className="font-serif text-xl sm:text-2xl font-bold mb-3 text-white">
+            <h3 className="font-serif text-xl sm:text-2xl font-bold mb-3 text-white relative z-10">
               The Problem
             </h3>
-            <p className="font-sans text-slate-400 mb-5 leading-relaxed font-normal text-xs sm:text-sm">
+            <p className="font-sans text-slate-400 mb-5 leading-relaxed font-normal text-xs sm:text-sm relative z-10">
               Most DJs play for themselves, not the crowd. They ignore the vibe, kill the momentum, and leave your guests checking their watches.
             </p>
-            <ul className="space-y-3 font-sans text-xs sm:text-sm text-slate-300 font-medium">
+            <ul className="space-y-3 font-sans text-xs sm:text-sm text-slate-300 font-medium relative z-10">
               <li className="flex items-center gap-3">
-                <X className="w-4 h-4 text-red-500 shrink-0" />
+                <X className="w-4 h-4 text-blue-500 shrink-0" />
                 <span>Awkward, jarring track transitions & trainwrecks</span>
               </li>
               <li className="flex items-center gap-3">
-                <X className="w-4 h-4 text-red-500 shrink-0" />
+                <X className="w-4 h-4 text-blue-500 shrink-0" />
                 <span>Ignoring the room&apos;s shifting demographics & energy</span>
               </li>
               <li className="flex items-center gap-3">
-                <X className="w-4 h-4 text-red-500 shrink-0" />
+                <X className="w-4 h-4 text-blue-500 shrink-0" />
                 <span>Unreliable equipment, bad audio cables & amateur attitudes</span>
               </li>
             </ul>
           </div>
 
           {/* Solution Card */}
-          <div className="bg-[#0b0f17] p-6 sm:p-8 border border-slate-700 relative">
-            <div className="absolute top-0 left-0 w-1 h-full bg-red-600" />
-            <span className="font-mono text-[10px] sm:text-xs text-red-500 uppercase tracking-wider block mb-2 font-bold">
+          <div className="bg-[#0b0f17] p-6 sm:p-8 border-2 border-blue-600/30 relative overflow-hidden">
+            <img src={DJ_ASSETS.heroBg} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.12] pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-950/20 via-[#0b0f17]/80 to-[#0b0f17] pointer-events-none" />
+            <div className="absolute top-0 left-0 w-1 h-full bg-blue-600 z-10" />
+            <span className="font-mono text-[10px] sm:text-xs text-blue-500 uppercase tracking-wider block mb-2 font-bold relative z-10">
               The Standard
             </span>
-            <h3 className="font-serif text-xl sm:text-2xl font-bold mb-3 text-white">
+            <h3 className="font-serif text-xl sm:text-2xl font-bold mb-3 text-white relative z-10">
               The Solution
             </h3>
-            <p className="font-sans text-slate-300 mb-5 leading-relaxed font-normal text-xs sm:text-sm">
+            <p className="font-sans text-slate-300 mb-5 leading-relaxed font-normal text-xs sm:text-sm relative z-10">
               DJ Wolverine engineers the perfect atmosphere. From the first track to the encore, every beat is calculated to keep the floor moving.
             </p>
-            <ul className="space-y-3 font-sans text-xs sm:text-sm text-slate-200 font-medium">
+            <ul className="space-y-3 font-sans text-xs sm:text-sm text-slate-200 font-medium relative z-10">
               <li className="flex items-center gap-3">
-                <CheckCircle2 className="w-4 h-4 text-red-500 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0" />
                 <span>Seamless, high-energy mixing with custom club VIP edits</span>
               </li>
               <li className="flex items-center gap-3">
-                <CheckCircle2 className="w-4 h-4 text-red-500 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0" />
                 <span>Master crowd-reading ability calibrated in top clubs</span>
               </li>
               <li className="flex items-center gap-3">
-                <CheckCircle2 className="w-4 h-4 text-red-500 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0" />
                 <span>Elite-tier professional reliability & concert audio gear</span>
               </li>
             </ul>
@@ -235,7 +197,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       <section className="py-12 sm:py-20 bg-[#04060a] border-y border-slate-900">
         <div className="max-w-[1280px] mx-auto px-4 md:px-16">
           <div className="text-center mb-10 sm:mb-12">
-            <span className="font-mono text-[10px] sm:text-xs text-red-500 uppercase tracking-[0.2em] mb-2 block font-bold">
+            <span className="font-mono text-[10px] sm:text-xs text-blue-500 uppercase tracking-[0.2em] mb-2 block font-bold">
               CORE PRINCIPLES
             </span>
             <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 sm:mb-3">
@@ -247,44 +209,50 @@ export const HomeView: React.FC<HomeViewProps> = ({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-            <div className="md:col-span-2 bg-[#0b0f17] p-6 sm:p-8 border border-slate-800">
-              <Sliders className="w-5 h-5 sm:w-6 sm:h-6 text-red-500 mb-3 sm:mb-4" />
-              <h3 className="font-serif text-lg sm:text-xl font-bold mb-2 text-white">
+            <div className="md:col-span-2 bg-[#0b0f17] p-6 sm:p-8 border-2 border-slate-700/60 relative overflow-hidden">
+              <img src={DJ_ASSETS.clubLaser} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.14] pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/85 to-transparent pointer-events-none" />
+              <Sliders className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500 mb-3 sm:mb-4 relative z-10" />
+              <h3 className="font-serif text-lg sm:text-xl font-bold mb-2 text-white relative z-10">
                 Sonic Precision
               </h3>
-              <p className="font-sans text-slate-400 font-normal text-xs sm:text-sm leading-relaxed">
+              <p className="font-sans text-slate-400 font-normal text-xs sm:text-sm leading-relaxed relative z-10">
                 Every transition is flawless. We utilize industry-standard Pioneer CDJ-3000s & DJM-V10 mixers to ensure absolute audio clarity, harmonic key matching, and immense bass impact on any sound system.
               </p>
             </div>
 
-            <div className="bg-[#0b0f17] p-6 sm:p-8 border border-slate-800">
-              <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-red-500 mb-3 sm:mb-4" />
-              <h3 className="font-serif text-lg sm:text-xl font-bold mb-2 text-white">
+            <div className="bg-[#0b0f17] p-6 sm:p-8 border-2 border-slate-700/60 relative overflow-hidden">
+              <img src={DJ_ASSETS.festivalStage} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.15] pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/85 to-transparent pointer-events-none" />
+              <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500 mb-3 sm:mb-4 relative z-10" />
+              <h3 className="font-serif text-lg sm:text-xl font-bold mb-2 text-white relative z-10">
                 Raw Energy
               </h3>
-              <p className="font-sans text-slate-400 font-normal text-xs sm:text-sm leading-relaxed">
+              <p className="font-sans text-slate-400 font-normal text-xs sm:text-sm leading-relaxed relative z-10">
                 We bring the intense, magnetic vibe of an underground club directly to your private party, wedding, or corporate stage.
               </p>
             </div>
 
-            <div className="bg-[#0b0f17] p-6 sm:p-8 border border-slate-800">
-              <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6 text-red-500 mb-3 sm:mb-4" />
-              <h3 className="font-serif text-lg sm:text-xl font-bold mb-2 text-white">
+            <div className="bg-[#0b0f17] p-6 sm:p-8 border-2 border-slate-700/60 relative overflow-hidden">
+              <img src={DJ_ASSETS.rooftopSunset} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.13] pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/85 to-transparent pointer-events-none" />
+              <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500 mb-3 sm:mb-4 relative z-10" />
+              <h3 className="font-serif text-lg sm:text-xl font-bold mb-2 text-white relative z-10">
                 Ironclad Reliability
               </h3>
-              <p className="font-sans text-slate-400 font-normal text-xs sm:text-sm leading-relaxed">
+              <p className="font-sans text-slate-400 font-normal text-xs sm:text-sm leading-relaxed relative z-10">
                 Punctual, fully insured, and prepared with dual backup hardware. We over-deliver because &apos;good enough&apos; is not in our vocabulary.
               </p>
             </div>
 
-            <div className="md:col-span-2 bg-[#0b0f17] border border-slate-800 relative min-h-[160px] sm:min-h-[180px] flex items-center p-6 sm:p-8 overflow-hidden">
+            <div className="md:col-span-2 bg-[#0b0f17] border-2 border-slate-700/60 relative min-h-[160px] sm:min-h-[180px] flex items-center p-6 sm:p-8 overflow-hidden">
               <img
                 src={DJ_ASSETS.djMixerGear}
                 alt="DJ Wolverine Rig Setup"
                 className="absolute inset-0 w-full h-full object-cover opacity-20"
               />
               <div className="relative z-10 max-w-lg">
-                <span className="text-red-500 font-mono text-[10px] uppercase tracking-widest block mb-1.5 font-bold">
+                <span className="text-blue-500 font-mono text-[10px] uppercase tracking-widest block mb-1.5 font-bold">
                   Hardware & Rig
                 </span>
                 <h3 className="font-serif text-lg sm:text-xl font-bold mb-2 text-white">
@@ -302,7 +270,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       {/* 5. Comparison Table */}
       <section className="py-12 sm:py-20 px-4 md:px-16 max-w-[1280px] mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
-          <span className="font-mono text-[10px] sm:text-xs text-red-500 uppercase tracking-[0.2em] mb-2 block font-bold">
+          <span className="font-mono text-[10px] sm:text-xs text-blue-500 uppercase tracking-[0.2em] mb-2 block font-bold">
             DIRECT COMPARISON
           </span>
           <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 sm:mb-3">
@@ -313,7 +281,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           </p>
         </div>
 
-        <div className="overflow-x-auto border border-slate-800 bg-[#0b0f17]">
+        <div className="overflow-x-auto border-2 border-slate-800 bg-[#0b0f17]">
           <table className="w-full text-left border-collapse min-w-[500px] sm:min-w-[600px]">
             <thead>
               <tr className="border-b border-slate-800">
@@ -321,7 +289,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 <th className="p-4 sm:p-5 font-serif text-xs sm:text-base text-slate-500 w-1/3 text-center font-bold">
                   Playlist Apps / Average DJs
                 </th>
-                <th className="p-4 sm:p-5 font-serif text-xs sm:text-base text-red-500 w-1/3 text-center bg-red-950/20 border-x border-slate-800 font-bold">
+                <th className="p-4 sm:p-5 font-serif text-xs sm:text-base text-blue-500 w-1/3 text-center bg-blue-950/20 border-x border-slate-800 font-bold">
                   Overkill (DJ Wolverine)
                 </th>
               </tr>
@@ -331,7 +299,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 <tr key={i} className="border-b border-slate-800/60 last:border-0 hover:bg-slate-900/30 transition-colors">
                   <td className="p-4 sm:p-5 text-slate-200 font-semibold">{row.feature}</td>
                   <td className="p-4 sm:p-5 text-center text-slate-500 font-medium">{row.standardDjs}</td>
-                  <td className="p-4 sm:p-5 text-center text-white bg-red-950/10 border-x border-slate-800 font-bold">
+                  <td className="p-4 sm:p-5 text-center text-white bg-blue-950/10 border-x border-slate-800 font-bold">
                     {row.overkill}
                   </td>
                 </tr>

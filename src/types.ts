@@ -17,6 +17,8 @@ export interface MixTrack {
   audioKey: string;
   tags: string[];
   tracklistSnippet: string[];
+  youtubeUrl?: string;
+  youtubeId?: string;
 }
 
 export interface CalendarDay {

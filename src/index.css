@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@700;800&display=swap');
 @import "tailwindcss";
 
 @layer base {
@@ -5,114 +6,38 @@
     --font-display: Georgia, 'Times New Roman', serif;
     --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
-    --canvas: #000;
-    --surface-deep: #070707;
-    --surface-card: #0d0d0e;
-    --surface-elevated: #111214;
-    --ink: #fcfdff;
-    --body: #a7abb3;
-    --hairline: rgba(255,255,255,.06);
-    --hairline-strong: rgba(255,255,255,.14);
+    --font-navbar-brand: 'Bebas Neue', 'Anton', sans-serif;
+    --font-navbar: 'Space Grotesk', 'Syne', sans-serif;
+    --canvas: #070b11;
+    --surface-deep: #04060a;
+    --surface-card: #0b0f17;
+    --surface-elevated: #111827;
+    --ink: #f8fafc;
+    --body: #94a3b8;
+    --accent: #2563eb;
+    --accent-soft: rgba(37,99,235,.12);
+    --hairline: rgba(148,163,184,.08);
+    --hairline-strong: rgba(148,163,184,.16);
   }
-  html { background: var(--canvas); }
+  html { background: var(--canvas); scroll-behavior: smooth; }
   body { margin:0; font-family:var(--font-sans); background:var(--canvas); color:var(--ink); -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
-  h1,h2,h3,h4,h5,h6 { font-family:var(--font-display); font-weight:400; letter-spacing:-.035em; }
+  h1,h2,h3,h4,h5,h6 { font-family:var(--font-display); font-weight:700; letter-spacing:-.03em; }
 }
 
 .font-sora { font-family:var(--font-display) !important; }
 .font-hanken { font-family:var(--font-sans) !important; letter-spacing:-.005em; }
 .font-mono-jb { font-family:var(--font-mono) !important; }
+.font-navbar-brand { font-family:var(--font-navbar-brand) !important; letter-spacing:0.04em; }
+.font-navbar { font-family:var(--font-navbar) !important; letter-spacing:0.14em; }
 
-/* Preserve the existing components while moving their visual language to the supplied black/editorial system. */
-[class*="bg-[#131313]"]{background:#000 !important}
-[class*="bg-[#201f1f]"]{background:var(--surface-card) !important}
-[class*="bg-[#1c1b1b]"]{background:var(--surface-elevated) !important}
-[class*="bg-[#0e0e0e]"]{background:var(--surface-deep) !important}
-[class*="text-[#e5e2e1]"]{color:var(--ink) !important}
-[class*="text-[#bac9cd]"]{color:var(--body) !important}
-[class*="text-[#baf2ff]"]{color:var(--ink) !important}
-[class*="border-white/10"],[class*="border-white/5"]{border-color:var(--hairline) !important}
-[class*="bg-[#baf2ff]"],[class*="bg-[#00e0ff]"]{background:var(--ink) !important;color:#000 !important}
-[class*="text-[#00363f]"]{color:#000 !important}
-[class*="bg-[#00daf8]/"],[class*="bg-[#00e0ff]/"]{background:rgba(80,140,255,.06) !important}
-
-.glass-panel,.glass-card{background:rgba(13,13,14,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--hairline);box-shadow:none}
-.glow-hover,.glow-btn{transition:transform .2s ease,border-color .2s ease,background-color .2s ease}
-.glow-hover:hover{box-shadow:none !important;border-color:var(--hairline-strong) !important;transform:translateY(-1px)}
-.glow-btn:hover{box-shadow:none !important;transform:translateY(-1px)}
-.text-glow,.text-glow-lg{text-shadow:none !important}
-button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:1px solid rgba(252,253,255,.8);outline-offset:3px}
-::-webkit-scrollbar{width:7px;height:7px}::-webkit-scrollbar-track{background:#000}::-webkit-scrollbar-thumb{background:#25262a;border-radius:999px}
-
+.glass-panel,.glass-card{background:rgba(11,15,23,.9);border:1px solid var(--hairline)}
+.glow-hover{transition:transform .2s ease,border-color .2s ease,background-color .2s ease}
+.glow-hover:hover{border-color:var(--hairline-strong) !important;transform:translateY(-1px)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:1px solid rgba(37,99,235,.85);outline-offset:2px}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:#04060a}::-webkit-scrollbar-thumb{background:#1e293b;border-radius:999px}
 .overkill-atmosphere{position:relative;isolation:isolate}
-.overkill-atmosphere::before{content:'';position:absolute;inset:-20% 10% auto;height:420px;background:radial-gradient(circle,rgba(55,126,255,.09),transparent 68%);pointer-events:none;z-index:-1}
-
-/* Home hero: use the supplied Overkill portrait as the visual anchor while keeping copy in a safe left column. */
-main > div > section:first-child{
-  min-height:clamp(680px,calc(100vh - 76px),900px) !important;
-  justify-content:flex-start !important;
-  align-items:center !important;
-  padding:8rem 6vw 7rem !important;
-  background:#000 !important;
-}
-main > div > section:first-child > div:first-child{
-  z-index:0 !important;
-}
-main > div > section:first-child > div:first-child img{
-  opacity:1 !important;
-  mix-blend-mode:normal !important;
-  transform:none !important;
-  object-position:center center !important;
-  filter:saturate(.92) contrast(1.04) !important;
-}
-main > div > section:first-child > div:first-child > div:nth-child(2){
-  background:linear-gradient(90deg,rgba(0,0,0,.90) 0%,rgba(0,0,0,.62) 38%,rgba(0,0,0,.08) 72%,rgba(0,0,0,.16) 100%) !important;
-}
-main > div > section:first-child > div:first-child > div:nth-child(3){
-  background:linear-gradient(180deg,rgba(0,0,0,.18) 0%,transparent 42%,rgba(0,0,0,.72) 100%) !important;
-}
-main > div > section:first-child > div:first-child > div:nth-child(4){display:none !important}
-main > div > section:first-child > div:nth-child(2){
-  width:min(680px,58vw) !important;
-  margin-left:0 !important;
-  margin-right:auto !important;
-  align-items:flex-start !important;
-  text-align:left !important;
-}
-main > div > section:first-child > div:nth-child(2) > h1{
-  max-width:680px !important;
-  font-size:clamp(3.2rem,6.3vw,6.5rem) !important;
-  line-height:.94 !important;
-  letter-spacing:-.055em !important;
-  text-wrap:balance !important;
-  text-shadow:0 3px 24px rgba(0,0,0,.58) !important;
-}
-main > div > section:first-child > div:nth-child(2) > p{
-  max-width:560px !important;
-  color:#f1f3f6 !important;
-  text-shadow:0 2px 14px rgba(0,0,0,.7) !important;
-}
-main > div > section:first-child > div:nth-child(2) > div:last-child{
-  justify-content:flex-start !important;
-}
-
-@media(max-width:900px){
-  main > div > section:first-child{padding:7rem 1.5rem 6rem !important;min-height:760px !important}
-  main > div > section:first-child > div:first-child img{object-position:56% center !important}
-  main > div > section:first-child > div:first-child > div:nth-child(2){background:linear-gradient(90deg,rgba(0,0,0,.94) 0%,rgba(0,0,0,.72) 55%,rgba(0,0,0,.22) 100%) !important}
-  main > div > section:first-child > div:nth-child(2){width:100% !important;max-width:680px !important}
-  main > div > section:first-child > div:nth-child(2) > h1{font-size:clamp(3rem,11vw,5rem) !important}
-}
-
-@media(max-width:640px){
-  main > div > section:first-child{min-height:720px !important;padding-top:6.5rem !important}
-  main > div > section:first-child > div:first-child img{object-position:60% center !important}
-  main > div > section:first-child > div:nth-child(2) > h1{font-size:clamp(2.8rem,13vw,4.25rem) !important}
-  main > div > section:first-child > div:nth-child(2) > p{font-size:1.05rem !important}
-}
-
+.overkill-atmosphere::before{content:'';position:absolute;inset:-20% 10% auto;height:420px;background:radial-gradient(circle,rgba(37,99,235,.07),transparent 68%);pointer-events:none;z-index:-1}
 @keyframes wave-bar{0%,100%{height:4px}50%{height:24px}}
 .animate-wave-1{animation:wave-bar .8s ease-in-out infinite}.animate-wave-2{animation:wave-bar .9s ease-in-out infinite .15s}.animate-wave-3{animation:wave-bar .7s ease-in-out infinite .3s}.animate-wave-4{animation:wave-bar 1.1s ease-in-out infinite .45s}.animate-wave-5{animation:wave-bar .85s ease-in-out infinite .2s}
-
-@media(max-width:1023px){.overkill-atmosphere::before{opacity:.7}}
+@media(max-width:900px){.overkill-atmosphere::before{opacity:.7}}
 @media(max-width:767px){.overkill-atmosphere::before{height:280px}}
