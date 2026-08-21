@@ -36,6 +36,7 @@ export const MIX_TRACKS: MixTrack[] = [
     imageUrl: DJ_ASSETS.clubLaser,
     audioKey: 'tech-house',
     tags: ['Tech House', 'Afro Tech', 'Peak Hour', '128 BPM'],
+    youtubeUrl: 'https://www.youtube.com/watch?v=5qap5aO4i9A',
     tracklistSnippet: [
       '01. DJ Wolverine - Overkill Intro Edit',
       '02. Chris Lake & Cloonee - Turn Off The Lights (VIP Cut)',
@@ -80,6 +81,7 @@ export const MIX_TRACKS: MixTrack[] = [
     imageUrl: DJ_ASSETS.festivalStage,
     audioKey: 'festival-energy',
     tags: ['Festival Electro', 'Afro House', 'Mainstage', '130 BPM'],
+    youtubeUrl: 'https://www.youtube.com/watch?v=jfKfPfyJRdk',
     tracklistSnippet: [
       '01. DJ Wolverine - The Awakening (Festival Edit)',
       '02. Fred again.. x Skrillex - Rumble (Wolverine Overkill Mashup)',

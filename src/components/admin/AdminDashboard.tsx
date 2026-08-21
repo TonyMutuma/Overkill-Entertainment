@@ -232,14 +232,14 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-1 sm:p-4 md:p-6 bg-black/90 backdrop-blur-2xl animate-in fade-in duration-200 overflow-hidden">
-      <div className="relative w-full max-w-7xl h-[98vh] sm:h-[92vh] bg-[#121212] border border-[#00daf8]/40 rounded-xl sm:rounded-2xl shadow-[0_0_80px_rgba(0,218,248,0.2)] flex flex-col overflow-hidden">
+      <div className="relative w-full max-w-7xl h-[98vh] sm:h-[92vh] bg-[#121212] border border-[#ef4444]/40 rounded-xl sm:rounded-2xl shadow-[0_0_80px_rgba(239,68,68,0.2)] flex flex-col overflow-hidden">
         {/* Top Glow bar */}
-        <div className="h-1 bg-gradient-to-r from-[#00daf8] via-[#baf2ff] to-[#00daf8] shrink-0" />
+        <div className="h-1 bg-gradient-to-r from-[#ef4444] via-[#fecaca] to-[#ef4444] shrink-0" />
 
         {/* Dashboard Header */}
         <div className="px-3 sm:px-6 py-3 sm:py-4 bg-[#181818] border-b border-white/10 flex items-center justify-between shrink-0 gap-2">
           <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-[#00daf8]/15 border border-[#00daf8]/40 flex items-center justify-center text-[#00daf8] shadow-[0_0_15px_rgba(0,218,248,0.3)] shrink-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-[#ef4444]/15 border border-[#ef4444]/40 flex items-center justify-center text-[#ef4444] shadow-[0_0_15px_rgba(239,68,68,0.3)] shrink-0">
               <Sliders className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div className="min-w-0">
@@ -247,12 +247,12 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                 <h1 className="font-sora text-sm sm:text-base md:text-xl font-extrabold text-[#e5e2e1] tracking-tight truncate">
                   OVERKILL Crew CMS
                 </h1>
-                <span className="bg-[#00daf8]/20 text-[#00daf8] border border-[#00daf8]/40 font-mono-jb text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-full uppercase shrink-0">
+                <span className="bg-[#ef4444]/20 text-[#ef4444] border border-[#ef4444]/40 font-mono-jb text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-full uppercase shrink-0">
                   v2.6
                 </span>
               </div>
               <p className="font-hanken text-[11px] sm:text-xs text-[#bac9cd]/70 truncate">
-                <span className="hidden sm:inline">Logged in as: </span><strong className="text-[#baf2ff]">{currentUser?.name}</strong> <span className="text-[10px] text-[#bac9cd]/50">({currentUser?.roleTitle})</span>
+                <span className="hidden sm:inline">Logged in as: </span><strong className="text-[#fecaca]">{currentUser?.name}</strong> <span className="text-[10px] text-[#bac9cd]/50">({currentUser?.roleTitle})</span>
               </p>
             </div>
           </div>
@@ -260,7 +260,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
           <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             <button
               onClick={onClose}
-              className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-[#00daf8] text-[#00363f] hover:bg-[#00e0ff] font-sora font-bold text-[11px] sm:text-xs shadow-[0_0_15px_rgba(0,218,248,0.4)] transition-all cursor-pointer whitespace-nowrap"
+              className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-[#ef4444] text-[white] hover:bg-[#dc2626] font-sora font-bold text-[11px] sm:text-xs shadow-[0_0_15px_rgba(239,68,68,0.4)] transition-all cursor-pointer whitespace-nowrap"
             >
               <Eye className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">View Live Site</span>
@@ -278,7 +278,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
 
         {/* Toast alert message */}
         {toastMessage && (
-          <div className="absolute top-14 sm:top-16 right-3 sm:right-6 z-50 bg-[#00daf8] text-[#00363f] px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl shadow-2xl font-sora font-bold text-xs flex items-center gap-2 animate-in slide-in-from-top-4 duration-300">
+          <div className="absolute top-14 sm:top-16 right-3 sm:right-6 z-50 bg-[#ef4444] text-[white] px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl shadow-2xl font-sora font-bold text-xs flex items-center gap-2 animate-in slide-in-from-top-4 duration-300">
             <CheckCircle2 className="w-4 h-4" />
             <span>{toastMessage}</span>
           </div>
@@ -300,19 +300,19 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                   onClick={() => setActiveTab(tab.id)}
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left font-hanken text-xs transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-[#00daf8]/15 text-[#00daf8] font-bold border-l-4 border-[#00daf8] shadow-[0_0_15px_rgba(0,218,248,0.15)]'
+                      ? 'bg-[#ef4444]/15 text-[#ef4444] font-bold border-l-4 border-[#ef4444] shadow-[0_0_15px_rgba(239,68,68,0.15)]'
                       : 'text-[#bac9cd] hover:bg-white/5 hover:text-white'
                   }`}
                 >
                   <div className="flex items-center gap-2.5 truncate">
-                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#00daf8]' : 'text-[#bac9cd]/60'}`} />
+                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#ef4444]' : 'text-[#bac9cd]/60'}`} />
                     <span className="truncate">{tab.label}</span>
                   </div>
                   {tab.count !== undefined && (
                     <span
                       className={`text-[10px] font-mono-jb px-1.5 py-0.5 rounded-full ${
                         isActive
-                          ? 'bg-[#00daf8] text-[#00363f] font-bold'
+                          ? 'bg-[#ef4444] text-[white] font-bold'
                           : 'bg-white/5 text-[#bac9cd]/70'
                       }`}
                     >
@@ -325,7 +325,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
 
             <div className="pt-4 mt-4 border-t border-white/10 px-3">
               <div className="p-3 rounded-xl bg-[#1c1b1b] border border-white/5 space-y-2">
-                <div className="font-mono-jb text-[10px] text-[#00daf8] uppercase font-bold flex items-center gap-1">
+                <div className="font-mono-jb text-[10px] text-[#ef4444] uppercase font-bold flex items-center gap-1">
                   <ShieldCheck className="w-3 h-3" /> Live Persistence
                 </div>
                 <p className="text-[11px] text-[#bac9cd]/60 leading-tight">
@@ -347,14 +347,14 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                     onClick={() => setActiveTab(tab.id)}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sora whitespace-nowrap shrink-0 transition-all ${
                       isActive
-                        ? 'bg-[#00daf8] text-[#00363f] font-bold shadow-[0_0_10px_rgba(0,218,248,0.3)]'
+                        ? 'bg-[#ef4444] text-[white] font-bold shadow-[0_0_10px_rgba(239,68,68,0.3)]'
                         : 'bg-[#1f1f1f] text-[#bac9cd] hover:text-white border border-white/5'
                     }`}
                   >
                     <Icon className="w-3.5 h-3.5" />
                     <span>{tab.label.split(' ')[0]}</span>
                     {tab.count !== undefined && tab.count > 0 && (
-                      <span className={`text-[9px] font-mono-jb px-1 py-0.2 rounded-full ${isActive ? 'bg-[#00363f] text-[#00daf8]' : 'bg-white/10 text-[#bac9cd]'}`}>
+                      <span className={`text-[9px] font-mono-jb px-1 py-0.2 rounded-full ${isActive ? 'bg-[white] text-[#ef4444]' : 'bg-white/10 text-[#bac9cd]'}`}>
                         {tab.count}
                       </span>
                     )}
@@ -385,9 +385,9 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                   <div className="p-4 rounded-2xl bg-[#161616] border border-white/10 space-y-2">
                     <div className="flex justify-between items-center text-[#bac9cd] text-xs font-mono-jb">
                       <span>PAGES ONLINE</span>
-                      <Layers className="w-4 h-4 text-[#00daf8]" />
+                      <Layers className="w-4 h-4 text-[#ef4444]" />
                     </div>
-                    <div className="font-sora text-2xl font-extrabold text-[#00daf8]">
+                    <div className="font-sora text-2xl font-extrabold text-[#ef4444]">
                       {Object.values(pageVisibility.pages).filter(Boolean).length} / 5
                     </div>
                     <div className="text-[11px] text-[#bac9cd]/60">
@@ -398,7 +398,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                   <div className="p-4 rounded-2xl bg-[#161616] border border-white/10 space-y-2">
                     <div className="flex justify-between items-center text-[#bac9cd] text-xs font-mono-jb">
                       <span>AUDIO MIXES</span>
-                      <Disc3 className="w-4 h-4 text-[#baf2ff]" />
+                      <Disc3 className="w-4 h-4 text-[#fecaca]" />
                     </div>
                     <div className="font-sora text-2xl font-extrabold text-[#e5e2e1]">
                       {mixTracks.length} Sets
@@ -424,7 +424,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                   <div className="p-4 rounded-2xl bg-[#161616] border border-white/10 space-y-2">
                     <div className="flex justify-between items-center text-[#bac9cd] text-xs font-mono-jb">
                       <span>BASE PACKAGES</span>
-                      <DollarSign className="w-4 h-4 text-[#00daf8]" />
+                      <DollarSign className="w-4 h-4 text-[#ef4444]" />
                     </div>
                     <div className="font-sora text-2xl font-extrabold text-[#e5e2e1]">
                       {servicePackages.length} Tiers
@@ -436,47 +436,47 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                 </div>
 
                 {/* Quick Navigation / Action Jump */}
-                <div className="p-5 rounded-2xl bg-[#161616] border border-[#00daf8]/20 space-y-4">
+                <div className="p-5 rounded-2xl bg-[#161616] border border-[#ef4444]/20 space-y-4">
                   <div className="flex justify-between items-center">
                     <h3 className="font-sora text-sm font-bold text-[#e5e2e1] flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-[#00daf8]" />
+                      <Sparkles className="w-4 h-4 text-[#ef4444]" />
                       Quick CMS Management Shortcuts
                     </h3>
-                    <span className="font-mono-jb text-[10px] text-[#00daf8]">ONE-CLICK ACCESS</span>
+                    <span className="font-mono-jb text-[10px] text-[#ef4444]">ONE-CLICK ACCESS</span>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     <button
                       onClick={() => setActiveTab('visibility')}
-                      className="p-3 rounded-xl bg-[#1f1f1f] hover:bg-[#252525] border border-white/5 hover:border-[#00daf8]/40 text-left transition-all group cursor-pointer"
+                      className="p-3 rounded-xl bg-[#1f1f1f] hover:bg-[#252525] border border-white/5 hover:border-[#ef4444]/40 text-left transition-all group cursor-pointer"
                     >
-                      <Eye className="w-4 h-4 text-[#00daf8] mb-1 group-hover:scale-110 transition-transform" />
+                      <Eye className="w-4 h-4 text-[#ef4444] mb-1 group-hover:scale-110 transition-transform" />
                       <div className="font-sora text-xs font-bold text-[#e5e2e1]">Toggle Pages</div>
                       <div className="text-[10px] text-[#bac9cd]/60">Enable / disable tabs</div>
                     </button>
 
                     <button
                       onClick={() => setActiveTab('mixes')}
-                      className="p-3 rounded-xl bg-[#1f1f1f] hover:bg-[#252525] border border-white/5 hover:border-[#00daf8]/40 text-left transition-all group cursor-pointer"
+                      className="p-3 rounded-xl bg-[#1f1f1f] hover:bg-[#252525] border border-white/5 hover:border-[#ef4444]/40 text-left transition-all group cursor-pointer"
                     >
-                      <Disc3 className="w-4 h-4 text-[#baf2ff] mb-1 group-hover:scale-110 transition-transform" />
+                      <Disc3 className="w-4 h-4 text-[#fecaca] mb-1 group-hover:scale-110 transition-transform" />
                       <div className="font-sora text-xs font-bold text-[#e5e2e1]">Add New Mix</div>
                       <div className="text-[10px] text-[#bac9cd]/60">Upload & tag sets</div>
                     </button>
 
                     <button
                       onClick={() => setActiveTab('packages')}
-                      className="p-3 rounded-xl bg-[#1f1f1f] hover:bg-[#252525] border border-white/5 hover:border-[#00daf8]/40 text-left transition-all group cursor-pointer"
+                      className="p-3 rounded-xl bg-[#1f1f1f] hover:bg-[#252525] border border-white/5 hover:border-[#ef4444]/40 text-left transition-all group cursor-pointer"
                     >
-                      <DollarSign className="w-4 h-4 text-[#00daf8] mb-1 group-hover:scale-110 transition-transform" />
+                      <DollarSign className="w-4 h-4 text-[#ef4444] mb-1 group-hover:scale-110 transition-transform" />
                       <div className="font-sora text-xs font-bold text-[#e5e2e1]">Edit Rates</div>
                       <div className="text-[10px] text-[#bac9cd]/60">Change pricing & tier fees</div>
                     </button>
 
                     <button
                       onClick={() => setActiveTab('media')}
-                      className="p-3 rounded-xl bg-[#1f1f1f] hover:bg-[#252525] border border-white/5 hover:border-[#00daf8]/40 text-left transition-all group cursor-pointer"
+                      className="p-3 rounded-xl bg-[#1f1f1f] hover:bg-[#252525] border border-white/5 hover:border-[#ef4444]/40 text-left transition-all group cursor-pointer"
                     >
-                      <ImageIcon className="w-4 h-4 text-[#00e0ff] mb-1 group-hover:scale-110 transition-transform" />
+                      <ImageIcon className="w-4 h-4 text-[#dc2626] mb-1 group-hover:scale-110 transition-transform" />
                       <div className="font-sora text-xs font-bold text-[#e5e2e1]">Change Photos</div>
                       <div className="text-[10px] text-[#bac9cd]/60">Swap DJ & hero imagery</div>
                     </button>
@@ -495,7 +495,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                     </div>
                     <button
                       onClick={() => setActiveTab('calendar')}
-                      className="text-xs font-sora font-semibold text-[#00daf8] hover:underline"
+                      className="text-xs font-sora font-semibold text-[#ef4444] hover:underline"
                     >
                       View All & Manage →
                     </button>
@@ -518,19 +518,19 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                                   ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
                                   : inq.status === 'reviewed'
                                   ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
-                                  : 'bg-[#00daf8]/20 text-[#00daf8] border border-[#00daf8]/40'
+                                  : 'bg-[#ef4444]/20 text-[#ef4444] border border-[#ef4444]/40'
                               }`}
                             >
                               {inq.status}
                             </span>
                           </div>
                           <div className="text-[11px] text-[#bac9cd]/70 mt-0.5">
-                            {inq.eventType} • Date: <strong className="text-[#baf2ff]">{inq.eventDate}</strong> • {inq.venueCity} ({inq.venueName})
+                            {inq.eventType} • Date: <strong className="text-[#fecaca]">{inq.eventDate}</strong> • {inq.venueCity} ({inq.venueName})
                           </div>
                         </div>
 
                         <div className="flex items-center gap-2 shrink-0">
-                          <span className="font-mono-jb text-xs font-bold text-[#00daf8]">
+                          <span className="font-mono-jb text-xs font-bold text-[#ef4444]">
                             ${inq.estimatedTotal.toLocaleString()} USD
                           </span>
                           <button
@@ -561,7 +561,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
                     <h2 className="font-sora text-xl font-bold text-[#e5e2e1] mb-1 flex items-center gap-2">
-                      <Eye className="w-5 h-5 text-[#00daf8]" />
+                      <Eye className="w-5 h-5 text-[#ef4444]" />
                       Page & Component Visibility Matrix
                     </h2>
                     <p className="font-hanken text-xs text-[#bac9cd]/70">
@@ -610,7 +610,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           key={page.key}
                           className={`p-4 rounded-xl border transition-all flex items-center justify-between ${
                             isOnline
-                              ? 'bg-[#1c1b1b] border-[#00daf8]/40 shadow-[0_0_15px_rgba(0,218,248,0.1)]'
+                              ? 'bg-[#1c1b1b] border-[#ef4444]/40 shadow-[0_0_15px_rgba(239,68,68,0.1)]'
                               : 'bg-[#141414] border-white/5 opacity-60'
                           }`}
                         >
@@ -629,12 +629,12 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                               showToast(`Toggled ${page.label} ${!isOnline ? 'ON' : 'OFF'}`);
                             }}
                             className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${
-                              isOnline ? 'bg-[#00daf8]' : 'bg-zinc-800'
+                              isOnline ? 'bg-[#ef4444]' : 'bg-zinc-800'
                             }`}
                           >
                             <span
                               className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${
-                                isOnline ? 'left-7 bg-[#00363f]' : 'left-1'
+                                isOnline ? 'left-7 bg-[white]' : 'left-1'
                               }`}
                             />
                           </button>
@@ -696,12 +696,12 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                               showToast(`Toggled ${sec.label} ${!isSecActive ? 'ON' : 'OFF'}`);
                             }}
                             className={`w-11 h-5 rounded-full transition-colors relative cursor-pointer shrink-0 ml-2 ${
-                              isSecActive ? 'bg-[#00daf8]' : 'bg-zinc-800'
+                              isSecActive ? 'bg-[#ef4444]' : 'bg-zinc-800'
                             }`}
                           >
                             <span
                               className={`absolute top-0.5 w-4 h-4 rounded-full transition-transform ${
-                                isSecActive ? 'left-6 bg-[#00363f]' : 'left-1 bg-zinc-400'
+                                isSecActive ? 'left-6 bg-[white]' : 'left-1 bg-zinc-400'
                               }`}
                             />
                           </button>
@@ -720,7 +720,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
               <div className="space-y-6">
                 <div>
                   <h2 className="font-sora text-xl font-bold text-[#e5e2e1] mb-1 flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-[#00daf8]" />
+                    <FileText className="w-5 h-5 text-[#ef4444]" />
                     Site Branding, Bio & Headline Texts
                   </h2>
                   <p className="font-hanken text-xs text-[#bac9cd]/70">
@@ -739,7 +739,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                         type="text"
                         value={siteSettings.brandName}
                         onChange={(e) => updateSiteSettings({ brandName: e.target.value })}
-                        className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#e5e2e1] focus:border-[#00daf8] outline-none font-sora font-bold"
+                        className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#e5e2e1] focus:border-[#ef4444] outline-none font-sora font-bold"
                       />
                     </div>
 
@@ -751,7 +751,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                         type="text"
                         value={siteSettings.djName}
                         onChange={(e) => updateSiteSettings({ djName: e.target.value })}
-                        className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#e5e2e1] focus:border-[#00daf8] outline-none font-sora font-bold"
+                        className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#e5e2e1] focus:border-[#ef4444] outline-none font-sora font-bold"
                       />
                     </div>
                   </div>
@@ -766,7 +766,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                         type="text"
                         value={siteSettings.tagline}
                         onChange={(e) => updateSiteSettings({ tagline: e.target.value })}
-                        className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#e5e2e1] focus:border-[#00daf8] outline-none font-hanken"
+                        className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#e5e2e1] focus:border-[#ef4444] outline-none font-hanken"
                       />
                     </div>
 
@@ -778,7 +778,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                         type="text"
                         value={siteSettings.location}
                         onChange={(e) => updateSiteSettings({ location: e.target.value })}
-                        className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#e5e2e1] focus:border-[#00daf8] outline-none font-hanken"
+                        className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#e5e2e1] focus:border-[#ef4444] outline-none font-hanken"
                       />
                     </div>
                   </div>
@@ -792,13 +792,13 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                       rows={3}
                       value={siteSettings.bio}
                       onChange={(e) => updateSiteSettings({ bio: e.target.value })}
-                      className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#e5e2e1] focus:border-[#00daf8] outline-none font-hanken leading-relaxed"
+                      className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#e5e2e1] focus:border-[#ef4444] outline-none font-hanken leading-relaxed"
                     />
                   </div>
 
                   {/* Hero Copy */}
                   <div className="space-y-4 pt-4 border-t border-white/10">
-                    <h3 className="font-sora text-sm font-bold text-[#baf2ff]">
+                    <h3 className="font-sora text-sm font-bold text-[#fecaca]">
                       Hero Section Typography
                     </h3>
                     <div className="grid grid-cols-1 gap-4">
@@ -810,7 +810,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           type="text"
                           value={siteSettings.heroTitle}
                           onChange={(e) => updateSiteSettings({ heroTitle: e.target.value })}
-                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#e5e2e1] focus:border-[#00daf8] outline-none font-sora font-extrabold"
+                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#e5e2e1] focus:border-[#ef4444] outline-none font-sora font-extrabold"
                         />
                       </div>
 
@@ -822,7 +822,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           rows={2}
                           value={siteSettings.heroSubtitle}
                           onChange={(e) => updateSiteSettings({ heroSubtitle: e.target.value })}
-                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#e5e2e1] focus:border-[#00daf8] outline-none font-hanken"
+                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#e5e2e1] focus:border-[#ef4444] outline-none font-hanken"
                         />
                       </div>
                     </div>
@@ -830,7 +830,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
 
                   {/* Contact & Social Links */}
                   <div className="space-y-4 pt-4 border-t border-white/10">
-                    <h3 className="font-sora text-sm font-bold text-[#baf2ff]">
+                    <h3 className="font-sora text-sm font-bold text-[#fecaca]">
                       Agency Contacts & Social Channels
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -842,7 +842,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           type="email"
                           value={siteSettings.contactEmail}
                           onChange={(e) => updateSiteSettings({ contactEmail: e.target.value })}
-                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#00daf8] outline-none font-mono-jb"
+                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#ef4444] outline-none font-mono-jb"
                         />
                       </div>
 
@@ -854,7 +854,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           type="text"
                           value={siteSettings.contactPhone}
                           onChange={(e) => updateSiteSettings({ contactPhone: e.target.value })}
-                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#00daf8] outline-none font-mono-jb"
+                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#ef4444] outline-none font-mono-jb"
                         />
                       </div>
 
@@ -866,7 +866,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           type="text"
                           value={siteSettings.whatsappNumber}
                           onChange={(e) => updateSiteSettings({ whatsappNumber: e.target.value })}
-                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#00daf8] outline-none font-mono-jb"
+                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#ef4444] outline-none font-mono-jb"
                         />
                       </div>
                     </div>
@@ -880,7 +880,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           type="url"
                           value={siteSettings.instagramUrl}
                           onChange={(e) => updateSiteSettings({ instagramUrl: e.target.value })}
-                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#00daf8] outline-none font-mono-jb"
+                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#ef4444] outline-none font-mono-jb"
                         />
                       </div>
 
@@ -892,7 +892,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           type="url"
                           value={siteSettings.soundcloudUrl}
                           onChange={(e) => updateSiteSettings({ soundcloudUrl: e.target.value })}
-                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#00daf8] outline-none font-mono-jb"
+                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#ef4444] outline-none font-mono-jb"
                         />
                       </div>
                     </div>
@@ -900,7 +900,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
 
                   {/* Stats Counter */}
                   <div className="space-y-4 pt-4 border-t border-white/10">
-                    <h3 className="font-sora text-sm font-bold text-[#baf2ff]">
+                    <h3 className="font-sora text-sm font-bold text-[#fecaca]">
                       Public Performance Counters
                     </h3>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -916,7 +916,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                               stats: { ...siteSettings.stats, showsCount: e.target.value }
                             })
                           }
-                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#00daf8] font-bold font-mono-jb"
+                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#ef4444] font-bold font-mono-jb"
                         />
                       </div>
 
@@ -932,7 +932,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                               stats: { ...siteSettings.stats, playsCount: e.target.value }
                             })
                           }
-                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#00daf8] font-bold font-mono-jb"
+                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#ef4444] font-bold font-mono-jb"
                         />
                       </div>
 
@@ -948,7 +948,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                               stats: { ...siteSettings.stats, countriesCount: e.target.value }
                             })
                           }
-                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#00daf8] font-bold font-mono-jb"
+                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#ef4444] font-bold font-mono-jb"
                         />
                       </div>
 
@@ -964,7 +964,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                               stats: { ...siteSettings.stats, satisfactionRate: e.target.value }
                             })
                           }
-                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#00daf8] font-bold font-mono-jb"
+                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#ef4444] font-bold font-mono-jb"
                         />
                       </div>
                     </div>
@@ -981,7 +981,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                 <div className="flex justify-between items-center">
                   <div>
                     <h2 className="font-sora text-xl font-bold text-[#e5e2e1] mb-1 flex items-center gap-2">
-                      <ImageIcon className="w-5 h-5 text-[#00daf8]" />
+                      <ImageIcon className="w-5 h-5 text-[#ef4444]" />
                       Imagery & Visual Assets Manager
                     </h2>
                     <p className="font-hanken text-xs text-[#bac9cd]/70">
@@ -1003,7 +1003,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                 {/* Preset Quick Library */}
                 <div className="p-4 rounded-2xl bg-[#161616] border border-white/10 space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono-jb text-xs text-[#00daf8] font-bold uppercase">
+                    <span className="font-mono-jb text-xs text-[#ef4444] font-bold uppercase">
                       Curated High-Res DJ Preset Library
                     </span>
                     <span className="text-[10px] text-[#bac9cd]/60 font-mono-jb">
@@ -1014,7 +1014,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                     {PRESET_IMAGE_LIBRARY.map((preset, idx) => (
                       <div
                         key={idx}
-                        className="group relative aspect-video rounded-lg overflow-hidden border border-white/10 hover:border-[#00daf8] transition-all cursor-pointer"
+                        className="group relative aspect-video rounded-lg overflow-hidden border border-white/10 hover:border-[#ef4444] transition-all cursor-pointer"
                         onClick={() => {
                           updateImage('heroBg', preset.url);
                           showToast(`Set "${preset.name}" as Hero Background!`);
@@ -1023,7 +1023,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                         <img src={preset.url} alt={preset.name} className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col justify-end p-1.5 transition-opacity text-[10px] text-white">
                           <span className="font-bold truncate">{preset.name}</span>
-                          <span className="text-[#00daf8] text-[9px]">Set as Hero</span>
+                          <span className="text-[#ef4444] text-[9px]">Set as Hero</span>
                         </div>
                       </div>
                     ))}
@@ -1055,7 +1055,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           <span className="font-sora text-xs font-bold text-[#e5e2e1]">
                             {slot.label}
                           </span>
-                          <span className="font-mono-jb text-[10px] text-[#00daf8] uppercase">
+                          <span className="font-mono-jb text-[10px] text-[#ef4444] uppercase">
                             {slot.key}
                           </span>
                         </div>
@@ -1074,12 +1074,12 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                             value={currentImg}
                             onChange={(e) => updateImage(slot.key, e.target.value)}
                             placeholder="Paste image URL here..."
-                            className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-1.5 text-xs text-[#bac9cd] font-mono-jb focus:border-[#00daf8] outline-none truncate"
+                            className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-1.5 text-xs text-[#bac9cd] font-mono-jb focus:border-[#ef4444] outline-none truncate"
                           />
 
                           <div className="flex items-center gap-2">
                             <label className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-sora text-[#bac9cd] hover:text-white cursor-pointer transition-colors">
-                              <Upload className="w-3 h-3 text-[#00daf8]" />
+                              <Upload className="w-3 h-3 text-[#ef4444]" />
                               <span>Upload File</span>
                               <input
                                 type="file"
@@ -1109,7 +1109,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
                     <h2 className="font-sora text-xl font-bold text-[#e5e2e1] mb-1 flex items-center gap-2">
-                      <Disc3 className="w-5 h-5 text-[#00daf8]" />
+                      <Disc3 className="w-5 h-5 text-[#ef4444]" />
                       Mixes Vault & Audio Sets Manager ({mixTracks.length})
                     </h2>
                     <p className="font-hanken text-xs text-[#bac9cd]/70">
@@ -1140,7 +1140,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                         ]
                       });
                     }}
-                    className="flex items-center gap-2 px-4 py-2 bg-[#00daf8] text-[#00363f] font-sora font-bold text-xs rounded-xl hover:bg-[#00e0ff] transition-all cursor-pointer shadow-[0_0_15px_rgba(0,218,248,0.3)]"
+                    className="flex items-center gap-2 px-4 py-2 bg-[#ef4444] text-[white] font-sora font-bold text-xs rounded-xl hover:bg-[#dc2626] transition-all cursor-pointer shadow-[0_0_15px_rgba(239,68,68,0.3)]"
                   >
                     <Plus className="w-4 h-4" />
                     <span>Add New Audio Mix Track</span>
@@ -1149,9 +1149,9 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
 
                 {/* Create / Edit Form Modal/Drawer */}
                 {(isCreatingMix || editingMixId) && (
-                  <div className="p-5 rounded-2xl bg-[#161616] border border-[#00daf8]/50 space-y-4 shadow-2xl animate-in fade-in">
+                  <div className="p-5 rounded-2xl bg-[#161616] border border-[#ef4444]/50 space-y-4 shadow-2xl animate-in fade-in">
                     <div className="flex justify-between items-center border-b border-white/10 pb-3">
-                      <h3 className="font-sora text-sm font-bold text-[#baf2ff]">
+                      <h3 className="font-sora text-sm font-bold text-[#fecaca]">
                         {isCreatingMix ? 'Create New Audio Set' : 'Edit Mix Track Details'}
                       </h3>
                       <button
@@ -1174,7 +1174,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           type="text"
                           value={mixFormData.title || ''}
                           onChange={(e) => setMixFormData({ ...mixFormData, title: e.target.value })}
-                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#00daf8] outline-none"
+                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#ef4444] outline-none"
                         />
                       </div>
 
@@ -1198,7 +1198,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                                 : 'Private Party';
                             setMixFormData({ ...mixFormData, category: cat, categoryLabel: label });
                           }}
-                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#00daf8] outline-none"
+                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#ef4444] outline-none"
                         >
                           <option value="club">Club</option>
                           <option value="corporate">Corporate</option>
@@ -1218,7 +1218,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           onChange={(e) =>
                             setMixFormData({ ...mixFormData, bpm: parseInt(e.target.value) || 128 })
                           }
-                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#00daf8] outline-none font-mono-jb"
+                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#ef4444] outline-none font-mono-jb"
                         />
                       </div>
                     </div>
@@ -1232,7 +1232,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           type="text"
                           value={mixFormData.duration || ''}
                           onChange={(e) => setMixFormData({ ...mixFormData, duration: e.target.value })}
-                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#00daf8] outline-none font-mono-jb"
+                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#ef4444] outline-none font-mono-jb"
                         />
                       </div>
 
@@ -1246,7 +1246,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           onChange={(e) =>
                             setMixFormData({ ...mixFormData, recordedAt: e.target.value })
                           }
-                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#00daf8] outline-none"
+                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#ef4444] outline-none"
                         />
                       </div>
 
@@ -1258,7 +1258,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           type="text"
                           value={mixFormData.plays || ''}
                           onChange={(e) => setMixFormData({ ...mixFormData, plays: e.target.value })}
-                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#00daf8] outline-none font-mono-jb"
+                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#ef4444] outline-none font-mono-jb"
                         />
                       </div>
                     </div>
@@ -1280,7 +1280,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           })
                         }
                         placeholder="01. Song - Artist&#10;02. Song 2 - Artist 2"
-                        className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#00daf8] outline-none font-mono-jb"
+                        className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#ef4444] outline-none font-mono-jb"
                       />
                     </div>
 
@@ -1306,7 +1306,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           setIsCreatingMix(false);
                           setEditingMixId(null);
                         }}
-                        className="px-5 py-2 rounded-xl bg-[#00daf8] text-[#00363f] font-sora font-bold text-xs hover:bg-[#00e0ff]"
+                        className="px-5 py-2 rounded-xl bg-[#ef4444] text-[white] font-sora font-bold text-xs hover:bg-[#dc2626]"
                       >
                         Save Track Changes
                       </button>
@@ -1325,22 +1325,22 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                         <img
                           src={mix.imageUrl}
                           alt={mix.title}
-                          className="w-14 h-14 rounded-xl object-cover border border-[#00daf8]/30 shrink-0"
+                          className="w-14 h-14 rounded-xl object-cover border border-[#ef4444]/30 shrink-0"
                         />
                         <div>
                           <div className="flex items-center gap-2">
                             <h3 className="font-sora text-sm font-bold text-[#e5e2e1]">
                               {mix.title}
                             </h3>
-                            <span className="font-mono-jb text-[10px] text-[#00daf8] px-2 py-0.5 rounded-full bg-[#00daf8]/15 border border-[#00daf8]/30">
+                            <span className="font-mono-jb text-[10px] text-[#ef4444] px-2 py-0.5 rounded-full bg-[#ef4444]/15 border border-[#ef4444]/30">
                               {mix.bpm} BPM
                             </span>
-                            <span className="font-mono-jb text-[10px] text-[#baf2ff] px-2 py-0.5 rounded-full bg-white/5">
+                            <span className="font-mono-jb text-[10px] text-[#fecaca] px-2 py-0.5 rounded-full bg-white/5">
                               {mix.categoryLabel}
                             </span>
                           </div>
                           <div className="text-xs text-[#bac9cd]/70 mt-1">
-                            {mix.recordedAt} • {mix.duration} • <strong className="text-[#00daf8]">{mix.plays}</strong>
+                            {mix.recordedAt} • {mix.duration} • <strong className="text-[#ef4444]">{mix.plays}</strong>
                           </div>
                         </div>
                       </div>
@@ -1352,7 +1352,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                             setMixFormData(mix);
                             setIsCreatingMix(false);
                           }}
-                          className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-[#00daf8]/20 hover:text-[#00daf8] text-xs font-sora text-[#bac9cd] transition-colors"
+                          className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-[#ef4444]/20 hover:text-[#ef4444] text-xs font-sora text-[#bac9cd] transition-colors"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
                           <span>Edit</span>
@@ -1382,7 +1382,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
               <div className="space-y-6">
                 <div>
                   <h2 className="font-sora text-xl font-bold text-[#e5e2e1] mb-1 flex items-center gap-2">
-                    <DollarSign className="w-5 h-5 text-[#00daf8]" />
+                    <DollarSign className="w-5 h-5 text-[#ef4444]" />
                     Service Packages & Add-Ons Rates
                   </h2>
                   <p className="font-hanken text-xs text-[#bac9cd]/70">
@@ -1392,7 +1392,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
 
                 {/* Base Packages */}
                 <div className="space-y-4">
-                  <h3 className="font-sora text-sm font-bold text-[#baf2ff]">
+                  <h3 className="font-sora text-sm font-bold text-[#fecaca]">
                     1. Primary Booking Tiers
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -1400,7 +1400,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                       <div
                         key={pkg.id}
                         className={`p-5 rounded-2xl bg-[#161616] border ${
-                          pkg.isPopular ? 'border-[#00daf8]/60 shadow-[0_0_20px_rgba(0,218,248,0.15)]' : 'border-white/10'
+                          pkg.isPopular ? 'border-[#ef4444]/60 shadow-[0_0_20px_rgba(239,68,68,0.15)]' : 'border-white/10'
                         } flex flex-col justify-between space-y-4`}
                       >
                         <div>
@@ -1408,13 +1408,13 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                             <span className="font-sora text-base font-bold text-[#e5e2e1]">
                               {pkg.name}
                             </span>
-                            <span className="font-mono-jb text-[10px] text-[#00daf8] px-2 py-0.5 rounded-full bg-[#00daf8]/15 font-bold">
+                            <span className="font-mono-jb text-[10px] text-[#ef4444] px-2 py-0.5 rounded-full bg-[#ef4444]/15 font-bold">
                               {pkg.tag}
                             </span>
                           </div>
 
                           <div className="flex items-baseline gap-1 my-3">
-                            <span className="font-sora text-2xl font-extrabold text-[#00daf8]">
+                            <span className="font-sora text-2xl font-extrabold text-[#ef4444]">
                               ${pkg.price}
                             </span>
                             <span className="font-mono-jb text-xs text-[#bac9cd]">
@@ -1429,7 +1429,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           <div className="space-y-1.5 text-xs text-[#bac9cd]">
                             {pkg.features.map((f, i) => (
                               <div key={i} className="flex items-center gap-2">
-                                <Check className="w-3.5 h-3.5 text-[#00daf8] shrink-0" />
+                                <Check className="w-3.5 h-3.5 text-[#ef4444] shrink-0" />
                                 <span>{f}</span>
                               </div>
                             ))}
@@ -1448,7 +1448,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                                 showToast(`Updated ${pkg.name} price to $${newPrice}`);
                               }
                             }}
-                            className="px-3 py-1.5 rounded-lg bg-[#00daf8]/20 hover:bg-[#00daf8] text-[#00daf8] hover:text-[#00363f] font-sora font-bold text-xs transition-colors"
+                            className="px-3 py-1.5 rounded-lg bg-[#ef4444]/20 hover:bg-[#ef4444] text-[#ef4444] hover:text-[white] font-sora font-bold text-xs transition-colors"
                           >
                             Edit Rate ($)
                           </button>
@@ -1471,7 +1471,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                 {/* Add-On Items */}
                 <div className="p-5 rounded-2xl bg-[#161616] border border-white/10 space-y-4">
                   <div className="flex justify-between items-center">
-                    <h3 className="font-sora text-sm font-bold text-[#baf2ff]">
+                    <h3 className="font-sora text-sm font-bold text-[#fecaca]">
                       2. Equipment & Production Add-Ons ({addOnItems.length})
                     </h3>
                   </div>
@@ -1486,7 +1486,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           <div className="font-sora text-xs font-bold text-[#e5e2e1]">
                             {addon.name}
                           </div>
-                          <div className="font-mono-jb text-xs text-[#00daf8] font-bold mt-0.5">
+                          <div className="font-mono-jb text-xs text-[#ef4444] font-bold mt-0.5">
                             +${addon.price} USD
                           </div>
                         </div>
@@ -1502,7 +1502,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                               showToast(`Updated ${addon.name} price`);
                             }
                           }}
-                          className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-mono-jb text-[#bac9cd] hover:text-[#00daf8] shrink-0"
+                          className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-mono-jb text-[#bac9cd] hover:text-[#ef4444] shrink-0"
                         >
                           Change Price
                         </button>
@@ -1520,7 +1520,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
               <div className="space-y-6">
                 <div>
                   <h2 className="font-sora text-xl font-bold text-[#e5e2e1] mb-1 flex items-center gap-2">
-                    <CalendarIcon className="w-5 h-5 text-[#00daf8]" />
+                    <CalendarIcon className="w-5 h-5 text-[#ef4444]" />
                     Tour Dates Schedule & Inquiries Pipeline
                   </h2>
                   <p className="font-hanken text-xs text-[#bac9cd]/70">
@@ -1530,7 +1530,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
 
                 {/* Calendar Overrides Setter */}
                 <div className="p-5 rounded-2xl bg-[#161616] border border-white/10 space-y-4">
-                  <h3 className="font-sora text-sm font-bold text-[#baf2ff]">
+                  <h3 className="font-sora text-sm font-bold text-[#fecaca]">
                     Set 2026 Tour Date Availability Override
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 items-end">
@@ -1542,7 +1542,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                         type="date"
                         value={calDate}
                         onChange={(e) => setCalDate(e.target.value)}
-                        className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] font-mono-jb focus:border-[#00daf8] outline-none"
+                        className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] font-mono-jb focus:border-[#ef4444] outline-none"
                       />
                     </div>
 
@@ -1553,7 +1553,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                       <select
                         value={calStatus}
                         onChange={(e) => setCalStatus(e.target.value as any)}
-                        className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#00daf8] outline-none"
+                        className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#ef4444] outline-none"
                       >
                         <option value="booked">Booked (Red)</option>
                         <option value="restricted">Restricted / Agency Hold (Yellow)</option>
@@ -1570,7 +1570,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                         value={calNotes}
                         onChange={(e) => setCalNotes(e.target.value)}
                         placeholder="e.g. Muze Club Nairobi"
-                        className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#00daf8] outline-none"
+                        className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#ef4444] outline-none"
                       />
                     </div>
 
@@ -1580,7 +1580,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                         showToast(`Set date ${calDate} as ${calStatus}`);
                         setCalNotes('');
                       }}
-                      className="w-full py-2.5 rounded-xl bg-[#00daf8] text-[#00363f] font-sora font-bold text-xs hover:bg-[#00e0ff] transition-all cursor-pointer"
+                      className="w-full py-2.5 rounded-xl bg-[#ef4444] text-[white] font-sora font-bold text-xs hover:bg-[#dc2626] transition-all cursor-pointer"
                     >
                       Save Tour Date
                     </button>
@@ -1606,7 +1606,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                                   ? 'bg-rose-500/20 text-rose-300'
                                   : data?.status === 'restricted'
                                   ? 'bg-amber-500/20 text-amber-300'
-                                  : 'bg-[#00daf8]/20 text-[#00daf8]'
+                                  : 'bg-[#ef4444]/20 text-[#ef4444]'
                               }`}
                             >
                               {data?.status || 'available'}
@@ -1632,7 +1632,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
 
                 {/* Booking Submissions Inquiries */}
                 <div className="p-5 rounded-2xl bg-[#161616] border border-white/10 space-y-4">
-                  <h3 className="font-sora text-sm font-bold text-[#baf2ff]">
+                  <h3 className="font-sora text-sm font-bold text-[#fecaca]">
                     Client Booking Inquiries Pipeline ({bookingInquiries.length})
                   </h3>
 
@@ -1647,12 +1647,12 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                             <span className="font-sora text-sm font-bold text-[#e5e2e1]">
                               {inq.clientName}
                             </span>
-                            <span className="font-mono-jb text-[10px] text-[#00daf8] px-2 py-0.5 rounded bg-[#00daf8]/15 uppercase font-semibold">
+                            <span className="font-mono-jb text-[10px] text-[#ef4444] px-2 py-0.5 rounded bg-[#ef4444]/15 uppercase font-semibold">
                               {inq.eventType}
                             </span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="font-mono-jb text-xs font-bold text-[#00daf8]">
+                            <span className="font-mono-jb text-xs font-bold text-[#ef4444]">
                               ${inq.estimatedTotal.toLocaleString()} USD
                             </span>
                             <select
@@ -1690,16 +1690,16 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                             <strong>Phone:</strong> {inq.phone}
                           </div>
                           <div>
-                            <strong>Event Date:</strong> <span className="text-[#00daf8]">{inq.eventDate}</span>
+                            <strong>Event Date:</strong> <span className="text-[#ef4444]">{inq.eventDate}</span>
                           </div>
                         </div>
 
                         <div className="text-xs text-[#bac9cd]/80">
-                          <strong>Venue:</strong> {inq.venueName}, {inq.venueCity} ({inq.guestCount} Guests) • Package: <strong className="text-[#baf2ff] uppercase">{inq.selectedPackage}</strong>
+                          <strong>Venue:</strong> {inq.venueName}, {inq.venueCity} ({inq.guestCount} Guests) • Package: <strong className="text-[#fecaca] uppercase">{inq.selectedPackage}</strong>
                         </div>
 
                         {inq.specialRequests && (
-                          <div className="p-2 rounded bg-black/40 text-[11px] text-[#bac9cd] italic font-hanken border-l-2 border-[#00daf8]">
+                          <div className="p-2 rounded bg-black/40 text-[11px] text-[#bac9cd] italic font-hanken border-l-2 border-[#ef4444]">
                             "{inq.specialRequests}"
                           </div>
                         )}
@@ -1718,7 +1718,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                 <div className="flex justify-between items-center">
                   <div>
                     <h2 className="font-sora text-xl font-bold text-[#e5e2e1] mb-1 flex items-center gap-2">
-                      <HelpCircle className="w-5 h-5 text-[#00daf8]" />
+                      <HelpCircle className="w-5 h-5 text-[#ef4444]" />
                       Technical Rider & FAQ Protocols ({faqItems.length})
                     </h2>
                     <p className="font-hanken text-xs text-[#bac9cd]/70">
@@ -1736,7 +1736,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                         showToast('Added new FAQ item');
                       }
                     }}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#00daf8] text-[#00363f] font-sora font-bold text-xs"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#ef4444] text-[white] font-sora font-bold text-xs"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     Add FAQ / Rider
@@ -1751,7 +1751,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                     >
                       <div className="flex justify-between items-start">
                         <div>
-                          <span className="font-mono-jb text-[10px] text-[#00daf8] px-2 py-0.5 rounded bg-[#00daf8]/15 uppercase font-semibold">
+                          <span className="font-mono-jb text-[10px] text-[#ef4444] px-2 py-0.5 rounded bg-[#ef4444]/15 uppercase font-semibold">
                             {faq.category}
                           </span>
                           <h3 className="font-sora text-sm font-bold text-[#e5e2e1] mt-1.5">
@@ -1769,7 +1769,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                                 showToast('Updated FAQ');
                               }
                             }}
-                            className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-[#bac9cd] hover:text-[#00daf8]"
+                            className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-[#bac9cd] hover:text-[#ef4444]"
                           >
                             <Edit2 className="w-3.5 h-3.5" />
                           </button>
@@ -1803,7 +1803,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
               <div className="space-y-6">
                 <div>
                   <h2 className="font-sora text-xl font-bold text-[#e5e2e1] mb-1 flex items-center gap-2">
-                    <ShieldCheck className="w-5 h-5 text-[#00daf8]" />
+                    <ShieldCheck className="w-5 h-5 text-[#ef4444]" />
                     Trusted Venues Bar & Competitive Comparison
                   </h2>
                   <p className="font-hanken text-xs text-[#bac9cd]/70">
@@ -1814,7 +1814,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                 {/* Venues */}
                 <div className="p-5 rounded-2xl bg-[#161616] border border-white/10 space-y-4">
                   <div className="flex justify-between items-center">
-                    <h3 className="font-sora text-sm font-bold text-[#baf2ff]">
+                    <h3 className="font-sora text-sm font-bold text-[#fecaca]">
                       1. Trusted Venues & Residencies ({trustVenues.length})
                     </h3>
                     <button
@@ -1826,7 +1826,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           showToast(`Added ${name}`);
                         }
                       }}
-                      className="px-3 py-1 rounded-lg bg-[#00daf8]/20 text-[#00daf8] font-sora text-xs font-bold"
+                      className="px-3 py-1 rounded-lg bg-[#ef4444]/20 text-[#ef4444] font-sora text-xs font-bold"
                     >
                       + Add Venue
                     </button>
@@ -1860,7 +1860,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
 
                 {/* Comparison Matrix */}
                 <div className="p-5 rounded-2xl bg-[#161616] border border-white/10 space-y-4">
-                  <h3 className="font-sora text-sm font-bold text-[#baf2ff]">
+                  <h3 className="font-sora text-sm font-bold text-[#fecaca]">
                     2. Standard DJs vs OVERKILL Comparison Rows
                   </h3>
                   <div className="space-y-3">
@@ -1891,14 +1891,14 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                         </div>
 
                         <div>
-                          <span className="font-mono-jb text-[10px] text-[#00daf8] uppercase">
+                          <span className="font-mono-jb text-[10px] text-[#ef4444] uppercase">
                             OVERKILL (DJ Wolverine)
                           </span>
                           <input
                             type="text"
                             value={row.overkill}
                             onChange={(e) => updateComparisonRow(row.id, { overkill: e.target.value })}
-                            className="w-full bg-[#121212] border border-[#00daf8]/30 rounded-lg px-2.5 py-1 text-xs text-[#baf2ff] font-semibold"
+                            className="w-full bg-[#121212] border border-[#ef4444]/30 rounded-lg px-2.5 py-1 text-xs text-[#fecaca] font-semibold"
                           />
                         </div>
                       </div>
@@ -1915,7 +1915,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
               <div className="space-y-6">
                 <div>
                   <h2 className="font-sora text-xl font-bold text-[#e5e2e1] mb-1 flex items-center gap-2">
-                    <Settings className="w-5 h-5 text-[#00daf8]" />
+                    <Settings className="w-5 h-5 text-[#ef4444]" />
                     Data Backup, JSON Import & Factory Reset
                   </h2>
                   <p className="font-hanken text-xs text-[#bac9cd]/70">
@@ -1927,7 +1927,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                   {/* Export */}
                   <div className="p-6 rounded-2xl bg-[#161616] border border-white/10 space-y-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-[#00daf8]/15 border border-[#00daf8]/40 flex items-center justify-center text-[#00daf8]">
+                      <div className="w-10 h-10 rounded-xl bg-[#ef4444]/15 border border-[#ef4444]/40 flex items-center justify-center text-[#ef4444]">
                         <Download className="w-5 h-5" />
                       </div>
                       <div>
@@ -1946,7 +1946,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
 
                     <button
                       onClick={handleExport}
-                      className="w-full py-3 bg-[#00daf8] text-[#00363f] font-sora font-bold text-xs rounded-xl hover:bg-[#00e0ff] transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(0,218,248,0.3)]"
+                      className="w-full py-3 bg-[#ef4444] text-[white] font-sora font-bold text-xs rounded-xl hover:bg-[#dc2626] transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(239,68,68,0.3)]"
                     >
                       <Download className="w-4 h-4" />
                       Download Complete Configuration JSON
@@ -1994,8 +1994,8 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
 
                 {/* JSON Import Box */}
                 <div className="p-6 rounded-2xl bg-[#161616] border border-white/10 space-y-4">
-                  <h3 className="font-sora text-sm font-bold text-[#baf2ff] flex items-center gap-2">
-                    <Upload className="w-4 h-4 text-[#00daf8]" />
+                  <h3 className="font-sora text-sm font-bold text-[#fecaca] flex items-center gap-2">
+                    <Upload className="w-4 h-4 text-[#ef4444]" />
                     Import Configuration JSON
                   </h3>
                   <textarea
@@ -2003,7 +2003,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                     value={importJsonText}
                     onChange={(e) => setImportJsonText(e.target.value)}
                     placeholder="Paste previously exported JSON data string here..."
-                    className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl p-3 text-xs text-[#e5e2e1] font-mono-jb focus:border-[#00daf8] outline-none"
+                    className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl p-3 text-xs text-[#e5e2e1] font-mono-jb focus:border-[#ef4444] outline-none"
                   />
 
                   {importError && (
@@ -2012,7 +2012,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
 
                   <button
                     onClick={handleImport}
-                    className="px-5 py-2.5 bg-[#00daf8] text-[#00363f] font-sora font-bold text-xs rounded-xl hover:bg-[#00e0ff] transition-all cursor-pointer"
+                    className="px-5 py-2.5 bg-[#ef4444] text-[white] font-sora font-bold text-xs rounded-xl hover:bg-[#dc2626] transition-all cursor-pointer"
                   >
                     Apply & Restore Data
                   </button>

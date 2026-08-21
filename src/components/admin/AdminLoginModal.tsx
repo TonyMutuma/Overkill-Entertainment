@@ -54,9 +54,9 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ isOpen, onClos
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-xl animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg bg-[#131313] border border-[#00daf8]/40 rounded-2xl shadow-[0_0_50px_rgba(0,218,248,0.25)] overflow-hidden">
+      <div className="relative w-full max-w-lg bg-[#131313] border border-[#ef4444]/40 rounded-2xl shadow-[0_0_50px_rgba(239,68,68,0.25)] overflow-hidden">
         {/* Glow Header */}
-        <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-[#00daf8] via-[#baf2ff] to-[#00daf8]" />
+        <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-[#ef4444] via-[#fecaca] to-[#ef4444]" />
 
         {/* Close Button */}
         <button
@@ -69,11 +69,11 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ isOpen, onClos
         <div className="p-8">
           {/* Header Title */}
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-[#00daf8]/15 border border-[#00daf8]/40 flex items-center justify-center text-[#00daf8]">
+            <div className="w-10 h-10 rounded-xl bg-[#ef4444]/15 border border-[#ef4444]/40 flex items-center justify-center text-[#ef4444]">
               <Lock className="w-5 h-5" />
             </div>
             <div>
-              <div className="font-mono-jb text-[11px] uppercase tracking-widest text-[#00daf8] font-bold flex items-center gap-1.5">
+              <div className="font-mono-jb text-[11px] uppercase tracking-widest text-[#ef4444] font-bold flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5" />
                 RESTRICTED CREW PORTAL
               </div>
@@ -95,7 +95,7 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ isOpen, onClos
               }}
               className={`py-2 px-3 rounded-lg font-sora text-xs font-bold transition-all flex items-center justify-center gap-2 ${
                 activeTab === 'quick'
-                  ? 'bg-[#00daf8] text-[#00363f] shadow-[0_0_15px_rgba(0,218,248,0.3)]'
+                  ? 'bg-[#ef4444] text-[white] shadow-[0_0_15px_rgba(239,68,68,0.3)]'
                   : 'text-[#bac9cd] hover:text-white'
               }`}
             >
@@ -109,7 +109,7 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ isOpen, onClos
               }}
               className={`py-2 px-3 rounded-lg font-sora text-xs font-bold transition-all flex items-center justify-center gap-2 ${
                 activeTab === 'credentials'
-                  ? 'bg-[#00daf8] text-[#00363f] shadow-[0_0_15px_rgba(0,218,248,0.3)]'
+                  ? 'bg-[#ef4444] text-[white] shadow-[0_0_15px_rgba(239,68,68,0.3)]'
                   : 'text-[#bac9cd] hover:text-white'
               }`}
             >
@@ -136,16 +136,16 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ isOpen, onClos
                   key={user.id}
                   onClick={() => handleQuickLogin(user.email)}
                   disabled={isLoading}
-                  className="w-full text-left p-3.5 rounded-xl bg-[#1c1b1b] hover:bg-[#252424] border border-white/10 hover:border-[#00daf8]/50 transition-all flex items-center justify-between group cursor-pointer"
+                  className="w-full text-left p-3.5 rounded-xl bg-[#1c1b1b] hover:bg-[#252424] border border-white/10 hover:border-[#ef4444]/50 transition-all flex items-center justify-between group cursor-pointer"
                 >
                   <div className="flex items-center gap-3.5">
                     <img
                       src={user.avatar}
                       alt={user.name}
-                      className="w-11 h-11 rounded-full object-cover border border-[#00daf8]/40 shrink-0"
+                      className="w-11 h-11 rounded-full object-cover border border-[#ef4444]/40 shrink-0"
                     />
                     <div>
-                      <div className="font-sora text-sm font-bold text-[#e5e2e1] group-hover:text-[#baf2ff] transition-colors flex items-center gap-2">
+                      <div className="font-sora text-sm font-bold text-[#e5e2e1] group-hover:text-[#fecaca] transition-colors flex items-center gap-2">
                         {user.name}
                         <span
                           className="font-mono-jb text-[9px] uppercase px-2 py-0.5 rounded-full font-semibold"
@@ -162,7 +162,7 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ isOpen, onClos
                       <div className="font-hanken text-xs text-[#bac9cd]/70">{user.roleTitle}</div>
                     </div>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-[#bac9cd]/40 group-hover:text-[#00daf8] group-hover:translate-x-1 transition-all shrink-0" />
+                  <ArrowRight className="w-4 h-4 text-[#bac9cd]/40 group-hover:text-[#ef4444] group-hover:translate-x-1 transition-all shrink-0" />
                 </button>
               ))}
             </div>
@@ -180,28 +180,28 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ isOpen, onClos
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="e.g. wolverine@overkill.dj"
-                  className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-3 text-sm text-[#e5e2e1] focus:border-[#00daf8] focus:ring-1 focus:ring-[#00daf8] outline-none font-hanken"
+                  className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-3 text-sm text-[#e5e2e1] focus:border-[#ef4444] focus:ring-1 focus:ring-[#ef4444] outline-none font-hanken"
                 />
               </div>
 
               <div>
                 <div className="flex justify-between items-center mb-1.5">
                   <label className="font-mono-jb text-xs text-[#bac9cd]">Password</label>
-                  <span className="font-mono-jb text-[10px] text-[#00daf8]/80">Demo: overkill2026</span>
+                  <span className="font-mono-jb text-[10px] text-[#ef4444]/80">Demo: overkill2026</span>
                 </div>
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-3 text-sm text-[#e5e2e1] focus:border-[#00daf8] focus:ring-1 focus:ring-[#00daf8] outline-none font-hanken"
+                  className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-3 text-sm text-[#e5e2e1] focus:border-[#ef4444] focus:ring-1 focus:ring-[#ef4444] outline-none font-hanken"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-3.5 bg-[#00daf8] text-[#00363f] font-sora font-bold text-sm rounded-xl uppercase tracking-wider hover:bg-[#00e0ff] hover:shadow-[0_0_20px_rgba(0,218,248,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer mt-2"
+                className="w-full py-3.5 bg-[#ef4444] text-[white] font-sora font-bold text-sm rounded-xl uppercase tracking-wider hover:bg-[#dc2626] hover:shadow-[0_0_20px_rgba(239,68,68,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer mt-2"
               >
                 {isLoading ? (
                   <>
