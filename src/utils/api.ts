@@ -1,52 +1,36 @@
-const API_BASE = 'http://localhost:4000/api';
+import { MixTrack } from '../types';
+
+// In production (Cloudflare Pages) fetch hits Functions at /api/* -> D1 binding
+// In local dev, Vite proxies /api to Express server.cjs (localhost:4000) which now ALSO talks to remote D1
+// So both envs read/write the SAME remote table.
+
+const API_BASE = import.meta.env.VITE_API_BASE || '/api';
+
+async function req(path: string, init?: RequestInit) {
+  const res = await fetch(`${API_BASE}${path}`, { headers: { 'Content-Type': 'application/json', ...(init?.headers || {}) }, ...init });
+  if (!res.ok) {
+    const text = await res.text().catch(()=>'');
+    throw new Error(text || `API ${res.status}`);
+  }
+  return res.json();
+}
 
 export const api = {
-  getMixTracks: async () => {
-    const res = await fetch(`${API_BASE}/mix-tracks`);
-    return res.json();
-  },
-  getMixTrackById: async (id:string) => {
-    const res = await fetch(`${API_BASE}/mix-tracks/${id}`);
-    return res.json();
-  },
-  createMixTrack: async (data:any) => {
-    const res = await fetch(`${API_BASE}/mix-tracks`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
-    return res.json();
-  },
-  updateMixTrack: async (id:string, data:any) => {
-    const res = await fetch(`${API_BASE}/mix-tracks/${id}`, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
-    return res.json();
-  },
-  deleteMixTrack: async (id:string) => {
-    const res = await fetch(`${API_BASE}/mix-tracks/${id}`, { method:'DELETE'});
-    return res.json();
-  },
-  getServicePackages: async () => {
-    const res = await fetch(`${API_BASE}/service-packages`);
-    return res.json();
-  },
-  getServicePackageById: async (id:string) => {
-    const res = await fetch(`${API_BASE}/service-packages/${id}`);
-    return res.json();
-  },
-  getAddOnItems: async () => {
-    const res = await fetch(`${API_BASE}/add-ons`);
-    return res.json();
-  },
-  getFaqItems: async () => {
-    const res = await fetch(`${API_BASE}/faqs`);
-    return res.json();
-  },
-  submitBooking: async (bookingData:any) => {
-    const res = await fetch(`${API_BASE}/bookings`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(bookingData),
-    });
-    return res.json();
-  },
-  getCMSData: async () => {
-    const res = await fetch(`${API_BASE}/dashboard/cms`);
-    return res.json();
-  },
+  getMixTracks: () => req('/mix-tracks'),
+  getMixTrackById: (id:string) => req(`/mix-tracks/${id}`),
+  createMixTrack: (data:any) => req('/mix-tracks', { method:'POST', body: JSON.stringify(data)}),
+  updateMixTrack: (id:string, data:any) => req(`/mix-tracks/${id}`, { method:'PUT', body: JSON.stringify(data)}),
+  deleteMixTrack: (id:string) => req(`/mix-tracks/${id}`, { method:'DELETE'}),
+  getServicePackages: () => req('/service-packages'),
+  getServicePackageById: (id:string) => req(`/service-packages/${id}`),
+  getAddOnItems: () => req('/add-ons'),
+  getFaqItems: () => req('/faqs'),
+  getVenues: () => req('/venues'),
+  getComparison: () => req('/comparison'),
+  getCalendarOverrides: () => req('/calendar-overrides'),
+  getSiteSettings: () => req('/site-settings'),
+  getPageVisibility: () => req('/page-visibility'),
+  submitBooking: (bookingData:any) => req('/bookings', { method:'POST', body: JSON.stringify(bookingData)}),
+  getBookings: () => req('/bookings'),
+  getCMSData: () => req('/dashboard/cms'),
 };

@@ -1,0 +1,22 @@
+name = "overkill-entertainment"
+compatibility_date = "2024-09-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "dist"
+
+# --- D1 : single source of truth for BOTH local and prod ---
+# Local `npm run dev` will hit the SAME remote DB via --remote
+# Production Pages Functions will use this binding automatically
+[[d1_databases]]
+binding = "DB"
+database_name = "overkillentertainment"
+database_id = "REPLACE_WITH_ID_FROM wrangler d1 list"
+# To get ID: npx wrangler d1 list  (or Cloudflare Dashboard -> D1 -> overkillentertainment -> ID)
+# Paste it above. If you use `npx wrangler pages dev --d1=DB=overkillentertainment --remote` you can even leave it placeholder locally.
+
+[vars]
+# Tells Express server.cjs to use remote D1 instead of local database.sqlite
+# Set these in Cloudflare Pages -> Settings -> Environment Variables for production
+# and in .env for local (see .env.example)
+# CLOUDFLARE_ACCOUNT_ID = ""
+# CLOUDFLARE_DATABASE_ID = ""
+# CLOUDFLARE_D1_TOKEN = ""
