@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { DJ_ASSETS } from '../data/mockData';
 import { ChevronLeft, ChevronRight, CheckCircle2, Lock, HelpCircle, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
+import { VertexCorners } from './VertexCorners';
 
 interface CalendarViewProps {
   onSelectDateForBooking?: (dateStr: string) => void;
@@ -52,7 +53,8 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
   return (
     <div className="w-full bg-[#070b11] text-white">
       <section className="max-w-[1280px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 pt-28 sm:pt-32 pb-8 sm:pb-12 text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#0b0f17] border-2 border-slate-700/60 mb-6">
+        <div className="vertex-card inline-flex items-center gap-2 px-4 py-1.5 bg-[#0b0f17] border-2 border-slate-700/60 mb-6">
+          <VertexCorners variant="slate" size={10} thickness={1.4} />
           <span className="w-2 h-2 bg-blue-500 animate-pulse" />
           <span className="font-mono text-[10px] sm:text-xs text-white uppercase tracking-widest font-bold">Live Availability</span>
         </div>
@@ -64,16 +66,17 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
 
       <section className="max-w-[1280px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 pb-10 sm:pb-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
-          <div className="lg:col-span-7 bg-[#0b0f17] border-2 border-slate-700/60 p-4 sm:p-6 md:p-8 relative overflow-hidden">
-            <img src={DJ_ASSETS.rooftopSunset} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.06] pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/85 to-transparent pointer-events-none" />
+          <div className="vertex-card lg:col-span-7 bg-[#0b0f17] border-2 border-slate-700/60 p-4 sm:p-6 md:p-8 relative overflow-hidden">
+            <VertexCorners variant="white" size={24} />
+            <img src={DJ_ASSETS.rooftopSunset} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.05] pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/92 to-[#0b0f17]/60 pointer-events-none" />
             <div className="flex justify-between items-center mb-6 sm:mb-8 relative">
-              <button onClick={handlePrevMonth} className="w-10 h-10 flex items-center justify-center bg-[#04060a] border-2 border-slate-700/60 text-slate-400 hover:text-white hover:border-slate-700 transition-colors cursor-pointer"><ChevronLeft className="w-5 h-5" /></button>
+              <button onClick={handlePrevMonth} className="w-10 h-10 flex items-center justify-center bg-[#04060a] border-2 border-slate-700/60 text-slate-400 hover:text-white hover:border-slate-700 transition-colors cursor-pointer rounded-xl"><ChevronLeft className="w-5 h-5" /></button>
               <div className="text-center">
                 <h3 className="font-serif text-xl sm:text-2xl font-bold text-white tracking-tight">{months[currentMonthIndex]} {currentYear}</h3>
                 <p className="font-mono text-[10px] sm:text-xs text-blue-500 mt-1 font-bold uppercase tracking-widest">Nairobi & Regional Tour Route</p>
               </div>
-              <button onClick={handleNextMonth} className="w-10 h-10 flex items-center justify-center bg-[#04060a] border-2 border-slate-700/60 text-slate-400 hover:text-white hover:border-slate-700 transition-colors cursor-pointer"><ChevronRight className="w-5 h-5" /></button>
+              <button onClick={handleNextMonth} className="w-10 h-10 flex items-center justify-center bg-[#04060a] border-2 border-slate-700/60 text-slate-400 hover:text-white hover:border-slate-700 transition-colors cursor-pointer rounded-xl"><ChevronRight className="w-5 h-5" /></button>
             </div>
             <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-3">
               {['SUN','MON','TUE','WED','THU','FRI','SAT'].map((d) => <div key={d} className="text-center text-slate-500 font-mono text-[10px] sm:text-xs font-bold py-1">{d}</div>)}
@@ -102,14 +105,16 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
           </div>
 
           <div className="lg:col-span-5 flex flex-col gap-4 sm:gap-6">
-            <div className="bg-[#0b0f17] border-2 border-slate-700/60 p-6 sm:p-8 relative overflow-hidden">
-              <img src={DJ_ASSETS.luxuryWedding} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.07] pointer-events-none" />
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/85 to-transparent pointer-events-none" />
+            <div className="vertex-card bg-[#0b0f17] border-2 border-slate-700/60 p-6 sm:p-8 relative overflow-hidden">
+              <VertexCorners variant="blue" size={20} />
+              <img src={DJ_ASSETS.luxuryWedding} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.05] pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/92 to-[#0b0f17]/60 pointer-events-none" />
               <div className="absolute -right-10 -top-10 w-32 h-32 bg-blue-500/10 blur-2xl pointer-events-none" />
               <p className="font-mono text-[10px] sm:text-xs text-blue-500 uppercase tracking-widest mb-2 font-bold relative">Selected Date</p>
               <h2 className="font-serif text-2xl sm:text-3xl font-extrabold text-white mb-2">{selectedDateFormatted}</h2>
               {isSelectedDayBooked ? <p className="font-sans text-sm text-blue-400 flex items-center gap-2">This date is currently reserved.</p> : <p className="font-sans text-sm text-slate-400 flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0" />Date is currently open for booking</p>}
-              <div className="bg-[#04060a] border-2 border-slate-700/60 p-4 mt-6 mb-6">
+              <div className="vertex-card bg-[#04060a] border-2 border-slate-700/60 p-4 mt-6 mb-6">
+                <VertexCorners variant="muted" size={12} thickness={1.6} />
                 <div className="flex items-start gap-3">
                   <Lock className="w-5 h-5 text-slate-500 shrink-0 mt-0.5" />
                   <div>
@@ -118,14 +123,15 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                   </div>
                 </div>
               </div>
-              <button onClick={handleRequestDate} disabled={isSelectedDayBooked} className="w-full py-4 bg-white text-black font-bold text-sm hover:bg-slate-200 transition-colors cursor-pointer uppercase tracking-wider flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed">
+              <button onClick={handleRequestDate} disabled={isSelectedDayBooked} className="w-full py-4 bg-white text-black font-bold text-sm hover:bg-slate-200 transition-colors cursor-pointer uppercase tracking-wider flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed rounded-xl shadow-[0_8px_24px_rgba(255,255,255,0.10)]">
                 Request This Date <ArrowRight className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="bg-[#0b0f17] border-2 border-slate-700/60 p-6 relative overflow-hidden">
-              <img src={DJ_ASSETS.corporateLounge} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.07] pointer-events-none" />
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/90 to-transparent pointer-events-none" />
+            <div className="vertex-card bg-[#0b0f17] border-2 border-slate-700/60 p-6 relative overflow-hidden">
+              <VertexCorners variant="white" size={18} />
+              <img src={DJ_ASSETS.corporateLounge} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.05] pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/92 to-[#0b0f17]/60 pointer-events-none" />
               <h3 className="font-serif text-base sm:text-lg font-bold text-white mb-4 flex items-center gap-2 relative"><HelpCircle className="w-5 h-5 text-blue-500" /> Booking Protocols</h3>
               <div className="space-y-3 font-sans">
                 {[
@@ -147,9 +153,11 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
       </section>
 
       <section className="max-w-[1280px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 pb-20 sm:pb-28">
-        <div className="w-full h-56 sm:h-72 overflow-hidden relative border-2 border-slate-700/60">
+        <div className="vertex-card w-full h-56 sm:h-72 overflow-hidden relative border-2 border-slate-700/60">
+          <VertexCorners variant="slate" size={18} />
           <div className="absolute inset-0 bg-gradient-to-t from-[#070b11] via-transparent to-transparent z-10" />
-          <img src={DJ_ASSETS.djMixerGear} alt="DJ Hardware" className="w-full h-full object-cover opacity-40" />
+          <img src={DJ_ASSETS.djMixerGear} alt="DJ Hardware" className="w-full h-full object-cover opacity-[0.10]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0b0f17] via-[#0b0f17]/70 to-transparent pointer-events-none z-10" />
           <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 z-20 max-w-lg pr-4">
             <span className="font-mono text-[10px] text-blue-500 uppercase tracking-widest font-bold block mb-1">Production Quality</span>
             <p className="font-serif text-base sm:text-lg font-bold text-white">Standard Rig: Dual Pioneer CDJ-3000s + DJM-V10 Mixer + High-Definition Active Line Arrays</p>

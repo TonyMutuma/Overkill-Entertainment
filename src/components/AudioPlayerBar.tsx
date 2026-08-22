@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MixTrack } from '../types';
 import { soundEngine } from '../utils/soundEngine';
 import { Play, Pause, Volume2, VolumeX, SkipForward, SkipBack, X, Radio } from 'lucide-react';
+import { VertexCorners } from './VertexCorners';
 
 interface AudioPlayerBarProps {
   currentTrack: MixTrack | null;
@@ -46,7 +47,8 @@ export const AudioPlayerBar: React.FC<AudioPlayerBarProps> = ({
   };
   if (!currentTrack) return null;
   return (
-    <aside aria-label="Audio stream player" className="fixed bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 w-[95%] max-w-[1000px] z-50 bg-[#0b0f17] border-2 border-slate-800 p-3 sm:p-4 shadow-[0_10px_40px_rgba(0,0,0,0.8)]">
+    <aside aria-label="Audio stream player" className="vertex-card fixed bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 w-[95%] max-w-[1000px] z-50 bg-[#0b0f17] border-2 border-slate-800 p-3 sm:p-4 shadow-[0_10px_40px_rgba(0,0,0,0.8)]">
+      <VertexCorners variant="blue" size={16} thickness={2} />
       <div className="flex items-center justify-between gap-2 sm:gap-4">
         <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 sm:flex-initial sm:max-w-xs">
           <div className="relative w-10 h-10 sm:w-12 sm:h-12 overflow-hidden shrink-0 border-2 border-slate-800">
@@ -65,7 +67,7 @@ export const AudioPlayerBar: React.FC<AudioPlayerBarProps> = ({
         <div className="flex-1 max-w-md hidden sm:flex flex-col items-center gap-1.5">
           <div className="flex items-center gap-4">
             <button onClick={onPrevTrack} className="text-slate-400 hover:text-white transition-colors p-1 cursor-pointer"><SkipBack className="w-4 h-4" /></button>
-            <button onClick={() => onTogglePlay(currentTrack)} className="w-10 h-10 bg-white text-black flex items-center justify-center hover:bg-slate-200 transition-colors cursor-pointer">
+            <button onClick={() => onTogglePlay(currentTrack)} className="w-10 h-10 bg-white text-black flex items-center justify-center hover:bg-slate-200 transition-colors cursor-pointer rounded-full shadow-lg">
               {isPlaying ? <Pause className="w-5 h-5 fill-current" /> : <Play className="w-5 h-5 fill-current ml-0.5" />}
             </button>
             <button onClick={onNextTrack} className="text-slate-400 hover:text-white transition-colors p-1 cursor-pointer"><SkipForward className="w-4 h-4" /></button>
@@ -87,7 +89,7 @@ export const AudioPlayerBar: React.FC<AudioPlayerBarProps> = ({
             <button onClick={toggleMute} className="text-slate-400 hover:text-white transition-colors cursor-pointer">{isMuted || volume === 0 ? <VolumeX className="w-4 h-4 text-blue-400" /> : <Volume2 className="w-4 h-4" />}</button>
             <input type="range" min="0" max="1" step="0.05" value={isMuted ? 0 : volume} onChange={handleVolumeChange} className="w-16 h-1 bg-slate-800 appearance-none cursor-pointer accent-blue-500" />
           </div>
-          <button onClick={() => onTogglePlay(currentTrack)} className="sm:hidden w-9 h-9 bg-white text-black flex items-center justify-center cursor-pointer">{isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}</button>
+          <button onClick={() => onTogglePlay(currentTrack)} className="sm:hidden w-9 h-9 bg-white text-black flex items-center justify-center cursor-pointer rounded-full shadow-lg">{isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}</button>
           <button onClick={handleClose} className="text-slate-500 hover:text-white transition-colors p-1 cursor-pointer"><X className="w-4 h-4" /></button>
         </div>
       </div>

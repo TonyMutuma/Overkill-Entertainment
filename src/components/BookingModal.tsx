@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Calendar, MapPin, Users, CheckCircle, Sparkles, Music2, ArrowRight } from 'lucide-react';
 import { useCMS } from '../context/CMSContext';
 import { useCurrency } from '../context/CurrencyContext';
+import { VertexCorners } from './VertexCorners';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -73,7 +74,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 md:p-10">
       <div onClick={onClose} className="absolute inset-0 bg-black/80 backdrop-blur-md" />
-      <div className="relative w-full max-w-2xl max-h-[92vh] sm:max-h-[90vh] overflow-y-auto bg-[#0b0f17] border-2 border-slate-800 p-5 sm:p-8 shadow-2xl text-white">
+      <div className="vertex-card relative w-full max-w-2xl max-h-[92vh] sm:max-h-[90vh] overflow-y-auto bg-[#0b0f17] border-2 border-slate-800 p-5 sm:p-8 shadow-2xl text-white">
+        <VertexCorners variant="white" size={24} thickness={2.6} />
         <button onClick={onClose} className="absolute top-4 right-4 sm:top-5 sm:right-5 p-2 bg-[#04060a] border-2 border-slate-800 text-slate-400 hover:text-white transition-colors cursor-pointer"><X className="w-5 h-5" /></button>
         {isSubmitted ? (
           <div className="text-center py-8 sm:py-10">
@@ -81,12 +83,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             <div className="inline-block px-3 py-1 bg-blue-500/10 font-mono text-xs text-blue-400 uppercase tracking-widest font-bold mb-3 border border-blue-500/20">Request Authenticated</div>
             <h2 className="font-serif text-2xl sm:text-3xl font-extrabold text-white mb-3">Date Hold Initiated</h2>
             <p className="font-sans text-sm text-slate-400 max-w-md mx-auto mb-6 leading-relaxed">Thank you, <span className="text-white font-semibold">{name || 'Client'}</span>. Request for <span className="text-blue-400 font-semibold">{selectedDate}</span> received. Contract & deposit link incoming.</p>
-            <div className="p-4 bg-[#04060a] border-2 border-slate-800 max-w-sm mx-auto mb-8 text-left text-xs font-mono space-y-2">
+            <div className="vertex-card p-4 bg-[#04060a] border-2 border-slate-800 max-w-sm mx-auto mb-8 text-left text-xs font-mono space-y-2">
+              <VertexCorners variant="blue" size={14} />
               <div className="flex justify-between text-slate-400"><span>Package:</span><span className="text-blue-400">{currentPkg.name}</span></div>
               <div className="flex justify-between text-slate-400"><span>Date:</span><span className="text-white">{selectedDate}</span></div>
               <div className="flex justify-between text-slate-400"><span>Investment:</span><span className="text-white font-bold">{formatAmount(totalCost)}</span></div>
             </div>
-            <button onClick={handleResetAndClose} className="px-8 py-3 bg-white text-black font-bold text-sm hover:bg-slate-200 transition-colors cursor-pointer uppercase tracking-wider">Back to Overview</button>
+            <button onClick={handleResetAndClose} className="px-8 py-3 bg-white text-black font-bold text-sm hover:bg-slate-200 transition-colors cursor-pointer uppercase tracking-wider rounded-xl">Back to Overview</button>
           </div>
         ) : (
           <div>
@@ -136,9 +139,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 <div><label className="block font-mono text-[11px] uppercase tracking-wider text-slate-400 mb-1.5 font-bold">Phone Number</label><input type="tel" placeholder="+254 700 000000" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full bg-[#04060a] border-2 border-slate-800 px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-500/50" /></div>
                 <div><label className="block font-mono text-[11px] uppercase tracking-wider text-slate-400 mb-1.5 flex items-center gap-1.5 font-bold"><Users className="w-3.5 h-3.5 text-blue-500" />Guest Count</label><input type="number" placeholder="150" value={guestCount} onChange={(e) => setGuestCount(e.target.value)} className="w-full bg-[#04060a] border-2 border-slate-800 px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-500/50" /></div>
               </div>
-              <div className="p-4 bg-[#04060a] border-2 border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div className="vertex-card p-4 bg-[#04060a] border-2 border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <VertexCorners variant="slate" size={14} />
                 <div><div className="font-mono text-xs text-slate-500 uppercase tracking-wider font-bold">Calculated Investment:</div><div className="font-serif text-2xl font-extrabold text-white">{formatAmount(totalCost)}</div></div>
-                <button type="submit" className="w-full sm:w-auto px-8 py-3.5 bg-white text-black font-bold text-sm hover:bg-slate-200 transition-colors cursor-pointer uppercase tracking-wider flex items-center justify-center gap-2">Confirm & Lock In Date <ArrowRight className="w-4 h-4" /></button>
+                <button type="submit" className="w-full sm:w-auto px-8 py-3.5 bg-white text-black font-bold text-sm hover:bg-slate-200 transition-colors cursor-pointer uppercase tracking-wider flex items-center justify-center gap-2 rounded-xl shadow-[0_8px_24px_rgba(255,255,255,0.10)]">Confirm & Lock In Date <ArrowRight className="w-4 h-4" /></button>
               </div>
             </form>
           </div>
