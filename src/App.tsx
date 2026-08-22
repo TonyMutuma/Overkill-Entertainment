@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
-import { AudioPlayerBar } from './components/AudioPlayerBar';
 import { HomeView } from './components/HomeView';
 import { MixesView } from './components/MixesView';
 import { ServicesView } from './components/ServicesView';
@@ -15,7 +14,7 @@ import { useCMS } from './context/CMSContext';
 import { MixTrack } from './types';
 import { soundEngine } from './utils/soundEngine';
 import { Sliders, EyeOff, ArrowRight } from 'lucide-react';
-import { api } from './utils/api';
+import { MIX_TRACKS } from './data/mockData';
 import { CookieConsent } from './components/CookieConsent';
 
 export function App() {
@@ -37,28 +36,12 @@ export function App() {
     tags: ['Tech House', 'Bassline', 'Peak Hour', '128 BPM'], tracklistSnippet: []
   });
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [isAudioPlayerVisible, setIsAudioPlayerVisible] = useState<boolean>(true);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState<boolean>(false);
   const [bookingPackageId, setBookingPackageId] = useState<string>('corporate');
   const [bookingDate, setBookingDate] = useState<string>('');
   const [bookingAddOns, setBookingAddOns] = useState<string[]>([]);
-  const [mixTracks, setMixTracks] = useState<MixTrack[]>([]);
-
-  // Fetch mix tracks from API on mount
-  useEffect(() => {
-    api.getMixTracks().then((tracks) => setMixTracks(tracks));
-  }, []);
-
-  // Synchronize currentTrack if new tracks loaded
-  useEffect(() => {
-    if (mixTracks.length > 0) {
-      const exists = mixTracks.some((t) => t.id === currentTrack.id);
-      if (!exists) {
-        setCurrentTrack(mixTracks[0]);
-      }
-    }
-  }, [mixTracks]);
+  const mixTracks: MixTrack[] = MIX_TRACKS;
 
   // Scroll to top on tab change
   const handleTabChange = (tabId: string) => {
@@ -253,27 +236,6 @@ export function App() {
         onOpenContact={() => handleTabChange('faq')}
         onOpenCrewLogin={() => setIsLoginModalOpen(true)}
       />
-
-      {/* Persistent Audio Player Bar - hidden on Home */}
-      {isAudioPlayerVisible && activeTab !== 'home' && (pageVisibility?.sections?.audioPlayerBar ?? true) && (
-        <AudioPlayerBar
-          currentTrack={currentTrack}
-          isPlaying={isPlaying}
-          onTogglePlay={handleTogglePlay}
-          onNextTrack={handleNextTrack}
-          onPrevTrack={handlePrevTrack}
-          onClose={() => {
-            soundEngine.pause();
-            setIsPlaying(false);
-            setIsAudioPlayerVisible(false);
-          }}
-          onClosePlayer={() => {
-            soundEngine.pause();
-            setIsPlaying(false);
-            setIsAudioPlayerVisible(false);
-          }}
-        />
-      )}
 
       {/* Booking Modal */}
       <BookingModal

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { MixTrack, NavTab } from '../types';
 import { Play, Pause, Headphones, Calendar as CalendarIcon, ChevronDown, ChevronUp, Music, ArrowUpRight, Youtube, ExternalLink, Volume2, VolumeX } from 'lucide-react';
-import { api } from '../utils/api';
-import { useCMS } from '../context/CMSContext';
+import { MIX_TRACKS } from '../data/mockData';
 import { getYoutubeEmbedUrl, getYoutubeField, extractYoutubeId } from '../utils/youtube';
 import { VertexCorners } from './VertexCorners';
 
@@ -15,7 +14,6 @@ interface MixesViewProps {
   currentPlayingId?: string | null;
   isPlaying?: boolean;
 }
-
 export const MixesView: React.FC<MixesViewProps> = ({
   setActiveTab,
   onNavigateToCalendar,
@@ -25,44 +23,14 @@ export const MixesView: React.FC<MixesViewProps> = ({
   currentPlayingId,
   isPlaying = false
 }) => {
-  const { mixTracks: cmsMixTracks } = useCMS();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [expandedTracklistId, setExpandedTracklistId] = useState<string | null>(null);
-  const [mixTracks, setMixTracks] = useState<MixTrack[]>(cmsMixTracks);
+  // YouTube links stay in code — static MIX_TRACKS from mockData, no DB/API
+  const mixTracks: MixTrack[] = MIX_TRACKS;
   const [activeYoutubeId, setActiveYoutubeId] = useState<string | null>(null);
   const [pinnedYoutubeId, setPinnedYoutubeId] = useState<string | null>(null);
   const [unmutedIds, setUnmutedIds] = useState<Record<string, boolean>>({});
   const iframeRefs = React.useRef<Record<string, HTMLIFrameElement | null>>({});
-
-  useEffect(() => {
-    setMixTracks(cmsMixTracks);
-  }, [cmsMixTracks]);
-
-  useEffect(() => {
-    api.getMixTracks().then((tracks: any[]) => {
-      if (Array.isArray(tracks) && tracks.length > 0) {
-        const mapped: MixTrack[] = tracks.map((r: any) => ({
-          id: r.id,
-          title: r.title,
-          category: r.category,
-          categoryLabel: r.category_label || r.categoryLabel,
-          duration: r.duration,
-          recordedAt: r.recorded_at || r.recordedAt,
-          description: r.description,
-          date: r.date,
-          plays: r.plays,
-          bpm: r.bpm,
-          imageUrl: r.image_url || r.imageUrl,
-          audioKey: r.audio_key || r.audioKey,
-          tags: typeof r.tags === 'string' ? JSON.parse(r.tags) : r.tags || [],
-          tracklistSnippet: typeof r.tracklistSnippet === 'string' ? JSON.parse(r.tracklistSnippet) : r.tracklistSnippet || [],
-          youtubeUrl: r.youtube_url || r.youtubeUrl || r.youtube_id || r.youtubeId || undefined,
-          youtubeId: r.youtube_id || r.youtubeId || undefined,
-        }));
-        if (cmsMixTracks.length === 0) setMixTracks(mapped);
-      }
-    }).catch(()=>{});
-  }, []);
 
   const navigate = (tab: NavTab) => {
     if (tab === 'calendar' && onNavigateToCalendar) onNavigateToCalendar();
@@ -168,7 +136,7 @@ export const MixesView: React.FC<MixesViewProps> = ({
             const isUnmuted = !!unmutedIds[mix.id];
             const isEnlarged = isUnmuted && isYoutubeActive;
             return (
-              <article id={`mix-card-${mix.id}`} key={mix.id} className={`vertex-card bg-[#0b0f17] border flex flex-col overflow-hidden transition-all duration-300 ${isEnlarged ? 'border-blue-500 shadow-[0_12px_40px_rgba(37,99,235,.28)]' : isYoutubeActive ? 'border-slate-700' : isThisPlaying ? 'border-blue-500 shadow-[0_0_30px_rgba(37,99,235,.15)]' : 'border-slate-800'}`}><VertexCorners variant={isEnlarged || isThisPlaying ? 'blue' : 'white'} size={18} thickness={2.2} />
+              <article id={`mix-card-${mix.id}`} key={mix.id} onMouseEnter={() => { if (youtubeId && !isEnlarged) setActiveYoutubeId(mix.id); }} onMouseLeave={() => { if (activeYoutubeId === mix.id && pinnedYoutubeId !== mix.id) setActiveYoutubeId(null); }} className={`vertex-card vertex-card--hover bg-[#0b0f17] border flex flex-col overflow-hidden transition-all duration-500 ease-in-out group ${isEnlarged ? 'sm:col-span-2 lg:col-span-2 border-blue-500 shadow-[0_12px_40px_rgba(37,99,235,.28)] z-20 scale-[1.01]' : isYoutubeActive ? 'border-slate-700' : isThisPlaying ? 'border-blue-500 shadow-[0_0_30px_rgba(37,99,235,.15)]' : 'border-slate-800 hover:border-slate-700'}`}><VertexCorners variant={isEnlarged || isThisPlaying ? 'blue' : 'white'} size={18} thickness={2.2} />
                 <div className={`relative overflow-hidden bg-[#04060a] ${isEnlarged ? 'aspect-[16/10] sm:aspect-video' : 'aspect-video'}`} onClick={() => { if (isYoutubeActive) setPinnedYoutubeId(mix.id); }}>
                   {isYoutubeActive && embedUrl ? (
                     <>
@@ -252,7 +220,7 @@ export const MixesView: React.FC<MixesViewProps> = ({
           <div className="text-center py-16 border-2 border-slate-800 bg-[#0b0f17] mt-8">
             <Youtube className="w-10 h-10 text-slate-600 mx-auto mb-3" />
             <p className="font-serif text-lg font-bold text-white">No mixes in this category yet</p>
-            <p className="font-sans text-sm text-slate-500">Add YouTube embeds via CMS → Mixes Vault Manager</p>
+            <p className="font-sans text-sm text-slate-500">YouTube links are in code — edit src/data/mockData.ts → MIX_TRACKS</p>
           </div>
         )}
       </section>
