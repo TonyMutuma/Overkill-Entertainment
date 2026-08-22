@@ -4,6 +4,7 @@ import { useCurrency } from '../context/CurrencyContext';
 import { CurrencySelector } from './CurrencySelector';
 import { DJ_ASSETS } from '../data/mockData';
 import { api } from '../utils/api';
+import { VertexCorners } from './VertexCorners';
 
 interface ServicesViewProps {
   onSelectPackageForBooking?: (packageId: string, addOns: string[], total: number) => void;
@@ -70,9 +71,10 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
             const isHighlighted = pkg.isPopular;
             const bgImg = pkg.id === 'club' ? DJ_ASSETS.clubLaser : pkg.id === 'wedding' ? DJ_ASSETS.luxuryWedding : DJ_ASSETS.corporateLounge;
             return (
-              <div key={pkg.id} className={`bg-[#0b0f17] border-2 p-6 sm:p-8 flex flex-col relative overflow-hidden ${isHighlighted ? 'border-blue-500 md:-translate-y-2 shadow-[0_0_40px_rgba(37,99,235,.18)]' : 'border-slate-700/60 hover:border-slate-600'}`}>
-                <img src={bgImg} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.12] pointer-events-none" />
-                <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/90 to-[#0b0f17]/70 pointer-events-none" />
+              <div key={pkg.id} className={`vertex-card bg-[#0b0f17] border-2 p-6 sm:p-8 flex flex-col relative overflow-hidden ${isHighlighted ? 'border-blue-500 md:-translate-y-2 shadow-[0_0_40px_rgba(37,99,235,.18)]' : 'border-slate-700/60 hover:border-slate-600'}`}>
+                <VertexCorners variant={isHighlighted ? 'blue' : 'white'} size={22} thickness={2.6} />
+                <img src={bgImg} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.06] pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/92 to-[#0b0f17]/60 pointer-events-none" />
                 {isHighlighted && <div className="absolute top-0 left-0 w-full h-1 bg-blue-500 z-10" />}
                 <div className="relative z-10 flex flex-col flex-grow">
                 <div className="mb-6">
@@ -91,7 +93,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
                     </li>
                   ))}
                 </ul>
-                <button onClick={() => handleSelectPackage(pkg.id)} className={`w-full font-bold text-xs sm:text-sm py-3.5 uppercase tracking-wider transition-colors cursor-pointer ${isHighlighted ? 'bg-white text-black hover:bg-slate-200' : 'bg-transparent border-2 border-white/20 text-white hover:bg-white hover:text-black'}`}>
+                <button onClick={() => handleSelectPackage(pkg.id)} className={`w-full font-bold text-xs sm:text-sm py-3.5 uppercase tracking-wider transition-colors cursor-pointer rounded-xl ${isHighlighted ? 'bg-white text-black hover:bg-slate-200 shadow-[0_8px_24px_rgba(255,255,255,0.10)]' : 'bg-transparent border-2 border-white/20 text-white hover:bg-white hover:text-black'}`}>
                   Select {pkg.name}
                 </button>
                 </div>
@@ -102,7 +104,8 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
       </section>
 
       <section className="max-w-[1280px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 pb-20 sm:pb-28">
-        <div className="bg-[#0b0f17] border-2 border-slate-700/60 p-6 sm:p-8 md:p-10">
+        <div className="vertex-card vertex-card--elevated bg-[#0b0f17] border-2 border-slate-700/60 p-6 sm:p-8 md:p-10">
+            <VertexCorners variant="white" size={24} />
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
             <div className="flex-1 w-full">
               <div className="flex items-center gap-2 mb-2">
@@ -115,7 +118,8 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
                 {addOnItems.map((addon) => {
                   const isSelected = selectedAddOnIds.includes(addon.id);
                   return (
-                    <div key={addon.id} onClick={() => toggleAddOn(addon.id)} className={`p-4 border flex items-center justify-between gap-4 cursor-pointer transition-colors ${isSelected ? 'bg-blue-500/10 border-blue-500/30' : 'bg-[#04060a] border-slate-700/60 hover:border-slate-600'}`}>
+                    <div key={addon.id} onClick={() => toggleAddOn(addon.id)} className={`vertex-card p-4 border flex items-center justify-between gap-4 cursor-pointer transition-colors ${isSelected ? 'bg-blue-500/10 border-blue-500/30' : 'bg-[#04060a] border-slate-700/60 hover:border-slate-600'}`}>
+                      <VertexCorners variant={isSelected ? 'blue' : 'muted'} size={12} thickness={1.6} />
                       <div className="flex items-center gap-3.5 min-w-0">
                         <div className={`w-6 h-6 flex items-center justify-center shrink-0 border transition-colors ${isSelected ? 'bg-blue-500 text-white border-blue-500' : 'border-slate-700 text-transparent'}`}>
                           <Check className="w-4 h-4 stroke-[3]" />
@@ -131,7 +135,8 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
                 })}
               </div>
             </div>
-            <div className="w-full lg:w-[380px] bg-[#04060a] border-2 border-slate-700/60 p-6 shrink-0">
+            <div className="vertex-card w-full lg:w-[380px] bg-[#04060a] border-2 border-slate-700/60 p-6 shrink-0">
+              <VertexCorners variant="blue" size={18} thickness={2.2} />
               <div className="flex items-center gap-2 mb-4 font-mono text-[11px] text-blue-500 uppercase font-bold tracking-wider">
                 <Calculator className="w-4 h-4" /> Live Quote Estimate
               </div>
@@ -158,7 +163,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
                   <span className="font-mono text-[10px] text-slate-500">Includes full Pioneer CDJ/DJM gear</span>
                 </div>
               </div>
-              <button onClick={() => handleSelectPackage(selectedPkgId)} className="w-full py-3.5 bg-white text-black font-bold text-sm hover:bg-slate-200 transition-colors cursor-pointer uppercase tracking-wider flex items-center justify-center gap-2">
+              <button onClick={() => handleSelectPackage(selectedPkgId)} className="w-full py-3.5 bg-white text-black font-bold text-sm hover:bg-slate-200 transition-colors cursor-pointer uppercase tracking-wider flex items-center justify-center gap-2 rounded-xl shadow-[0_8px_24px_rgba(255,255,255,0.10)]">
                 Proceed With Quote <ArrowRight className="w-4 h-4" />
               </button>
             </div>

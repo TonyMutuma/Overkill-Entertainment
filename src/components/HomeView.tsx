@@ -2,6 +2,7 @@ import React from 'react';
 import { NavTab, MixTrack } from '../types';
 import { TRUST_VENUES, COMPARISON_TABLE, DJ_ASSETS } from '../data/mockData';
 import { X, CheckCircle2, Sliders, Zap, ShieldCheck, ArrowUpRight } from 'lucide-react';
+import { VertexCorners } from './VertexCorners';
 
 interface HomeViewProps {
   setActiveTab?: (tab: NavTab) => void;
@@ -67,21 +68,27 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <div className="relative z-10 max-w-[1280px] w-full mx-auto px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
           <div className="lg:col-span-8 xl:col-span-7 flex flex-col items-start text-left">
             
-            {/* Headline - locked to 3 lines for premium balance */}
-            <h1 className="font-serif text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.15] sm:leading-[1.05] tracking-tight mb-3 sm:mb-4 text-white max-w-[18ch] sm:max-w-[16ch] drop-shadow-md text-balance">
+            {/* Headline - FLUID premium: desktop stays 60px, mobile scales smoothly instead of breaking layout */}
+            <h1
+              className="font-serif font-extrabold leading-[0.95] tracking-tight mb-3 sm:mb-4 text-white drop-shadow-md"
+              style={{ fontSize: 'clamp(30px, 7vw, 60px)', maxWidth: '16ch', textWrap: 'balance' as any }}
+            >
               We Don&apos;t Gamble<br /> With Your Event&apos;s<br /> Atmosphere
             </h1>
 
-            {/* Subtitle - locked to 3 lines */}
-            <p className="font-sans text-slate-200 text-xs sm:text-base md:text-lg max-w-[28ch] sm:max-w-[34ch] mb-6 sm:mb-8 leading-relaxed font-medium text-balance">
+            {/* Subtitle - fluid scale */}
+            <p
+              className="font-sans text-slate-200 leading-relaxed font-medium mb-6 sm:mb-8"
+              style={{ fontSize: 'clamp(12px, 2.2vw, 18px)', maxWidth: '34ch', textWrap: 'balance' as any }}
+            >
               Professional DJ services, premium sound,<br /> and seamless entertainment for events<br /> that leave a lasting impression.
             </p>
 
-            {/* Hero CTAs - Full width buttons on small mobile */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mb-8 sm:mb-12 w-full sm:w-auto">
+            {/* Hero CTAs - pinned LEFT like text, never stretched */}
+            <div className="flex flex-col sm:flex-row items-start justify-start self-start gap-3 sm:gap-4 mb-8 sm:mb-12 w-auto">
               <button
                 onClick={handleBooking}
-                className="bg-white text-black font-bold text-xs sm:text-sm px-6 py-3.5 rounded-none hover:bg-slate-200 transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 uppercase tracking-wider shadow-lg"
+                className="bg-white text-black font-bold text-xs sm:text-sm px-6 py-3.5 rounded-xl hover:bg-slate-200 transition-all duration-200 cursor-pointer flex items-center justify-start gap-2 uppercase tracking-wider shadow-[0_8px_24px_rgba(255,255,255,0.12)] self-start"
               >
                 Book Your Date
                 <ArrowUpRight className="w-4 h-4" />
@@ -89,7 +96,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
               <button
                 onClick={() => navigate('mixes')}
-                className="text-white font-bold text-xs sm:text-sm px-4 py-3 hover:text-blue-500 transition-colors duration-200 cursor-pointer uppercase tracking-wider underline underline-offset-8 text-center"
+                className="text-white font-bold text-xs sm:text-sm px-4 py-3 rounded-xl hover:text-blue-500 transition-colors duration-200 cursor-pointer uppercase tracking-wider underline underline-offset-8 text-left border border-white/10 hover:border-white/15 hover:bg-white/[0.04] self-start"
               >
                 Explore Mixes
               </button>
@@ -132,9 +139,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
           {/* Problem Card */}
-          <div className="bg-[#0b0f17] p-6 sm:p-8 border-2 border-slate-700/60 relative overflow-hidden">
-            <img src={DJ_ASSETS.djPerformingCrowd} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.08] pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/90 to-transparent pointer-events-none" />
+          <div className="vertex-card bg-[#0b0f17] p-6 sm:p-8 border-2 border-slate-700/60 relative overflow-hidden">
+            <VertexCorners variant="slate" size={20} />
+            <img src={DJ_ASSETS.djPerformingCrowd} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.06] pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/92 to-[#0b0f17]/55 pointer-events-none" />
+            <div className="absolute inset-0 bg-[#0b0f17]/20 pointer-events-none" />
             <div className="absolute top-0 left-0 w-1 h-full bg-blue-900 z-10" />
             <span className="font-mono text-[10px] sm:text-xs text-blue-400 uppercase tracking-wider block mb-2 font-bold relative z-10">
               The Reality
@@ -162,9 +171,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
           </div>
 
           {/* Solution Card */}
-          <div className="bg-[#0b0f17] p-6 sm:p-8 border-2 border-blue-600/30 relative overflow-hidden">
-            <img src={DJ_ASSETS.heroBg} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.12] pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-950/20 via-[#0b0f17]/80 to-[#0b0f17] pointer-events-none" />
+          <div className="vertex-card bg-[#0b0f17] p-6 sm:p-8 border-2 border-blue-600/30 relative overflow-hidden">
+            <VertexCorners variant="blue" size={22} thickness={2.6} />
+            <img src={DJ_ASSETS.heroBg} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.07] pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-950/30 via-[#0b0f17]/88 to-[#0b0f17]/60 pointer-events-none" />
+            <div className="absolute inset-0 bg-[#070b11]/15 pointer-events-none" />
             <div className="absolute top-0 left-0 w-1 h-full bg-blue-600 z-10" />
             <span className="font-mono text-[10px] sm:text-xs text-blue-500 uppercase tracking-wider block mb-2 font-bold relative z-10">
               The Standard
@@ -209,9 +220,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-            <div className="md:col-span-2 bg-[#0b0f17] p-6 sm:p-8 border-2 border-slate-700/60 relative overflow-hidden">
-              <img src={DJ_ASSETS.clubLaser} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.14] pointer-events-none" />
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/85 to-transparent pointer-events-none" />
+            <div className="vertex-card md:col-span-2 bg-[#0b0f17] p-6 sm:p-8 border-2 border-slate-700/60 relative overflow-hidden">
+              <VertexCorners variant="white" size={20} />
+              <img src={DJ_ASSETS.clubLaser} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.07] pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/90 to-[#0b0f17]/50 pointer-events-none" />
               <Sliders className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500 mb-3 sm:mb-4 relative z-10" />
               <h3 className="font-serif text-lg sm:text-xl font-bold mb-2 text-white relative z-10">
                 Sonic Precision
@@ -221,9 +233,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
               </p>
             </div>
 
-            <div className="bg-[#0b0f17] p-6 sm:p-8 border-2 border-slate-700/60 relative overflow-hidden">
-              <img src={DJ_ASSETS.festivalStage} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.15] pointer-events-none" />
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/85 to-transparent pointer-events-none" />
+            <div className="vertex-card bg-[#0b0f17] p-6 sm:p-8 border-2 border-slate-700/60 relative overflow-hidden">
+              <VertexCorners variant="white" size={18} />
+              <img src={DJ_ASSETS.festivalStage} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.07] pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/90 to-[#0b0f17]/50 pointer-events-none" />
               <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500 mb-3 sm:mb-4 relative z-10" />
               <h3 className="font-serif text-lg sm:text-xl font-bold mb-2 text-white relative z-10">
                 Raw Energy
@@ -233,9 +246,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
               </p>
             </div>
 
-            <div className="bg-[#0b0f17] p-6 sm:p-8 border-2 border-slate-700/60 relative overflow-hidden">
-              <img src={DJ_ASSETS.rooftopSunset} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.13] pointer-events-none" />
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/85 to-transparent pointer-events-none" />
+            <div className="vertex-card bg-[#0b0f17] p-6 sm:p-8 border-2 border-slate-700/60 relative overflow-hidden">
+              <VertexCorners variant="white" size={18} />
+              <img src={DJ_ASSETS.rooftopSunset} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.07] pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/90 to-[#0b0f17]/50 pointer-events-none" />
               <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500 mb-3 sm:mb-4 relative z-10" />
               <h3 className="font-serif text-lg sm:text-xl font-bold mb-2 text-white relative z-10">
                 Ironclad Reliability
@@ -245,12 +259,14 @@ export const HomeView: React.FC<HomeViewProps> = ({
               </p>
             </div>
 
-            <div className="md:col-span-2 bg-[#0b0f17] border-2 border-slate-700/60 relative min-h-[160px] sm:min-h-[180px] flex items-center p-6 sm:p-8 overflow-hidden">
+            <div className="vertex-card md:col-span-2 bg-[#0b0f17] border-2 border-slate-700/60 relative min-h-[160px] sm:min-h-[180px] flex items-center p-6 sm:p-8 overflow-hidden">
+              <VertexCorners variant="muted" size={20} />
               <img
                 src={DJ_ASSETS.djMixerGear}
                 alt="DJ Wolverine Rig Setup"
-                className="absolute inset-0 w-full h-full object-cover opacity-20"
+                className="absolute inset-0 w-full h-full object-cover opacity-[0.08]"
               />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#0b0f17] via-[#0b0f17]/85 to-[#0b0f17]/40 pointer-events-none" />
               <div className="relative z-10 max-w-lg">
                 <span className="text-blue-500 font-mono text-[10px] uppercase tracking-widest block mb-1.5 font-bold">
                   Hardware & Rig
@@ -281,7 +297,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           </p>
         </div>
 
-        <div className="overflow-x-auto border-2 border-slate-800 bg-[#0b0f17]">
+        <div className="vertex-card overflow-x-auto border-2 border-slate-800 bg-[#0b0f17]"><VertexCorners variant="slate" size={18} />
           <table className="w-full text-left border-collapse min-w-[500px] sm:min-w-[600px]">
             <thead>
               <tr className="border-b border-slate-800">
@@ -311,7 +327,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <div className="mt-8 sm:mt-12 text-center">
           <button
             onClick={handleBooking}
-            className="w-full sm:w-auto bg-white text-black font-bold text-xs sm:text-sm px-8 py-4 rounded-none hover:bg-slate-200 transition-all duration-200 cursor-pointer uppercase tracking-wider inline-flex items-center justify-center gap-2 shadow-lg"
+            className="w-full sm:w-auto bg-white text-black font-bold text-xs sm:text-sm px-8 py-4 rounded-xl hover:bg-slate-200 transition-all duration-200 cursor-pointer uppercase tracking-wider inline-flex items-center justify-center gap-2 shadow-[0_8px_24px_rgba(255,255,255,0.12)]"
           >
             Secure Your Date With DJ Wolverine
             <ArrowUpRight className="w-4 h-4" />

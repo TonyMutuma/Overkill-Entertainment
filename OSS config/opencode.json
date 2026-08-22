@@ -1,0 +1,19 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "colab-gpt-oss": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "GPT-OSS 20B - Colab T4",
+      "options": {
+        "baseURL": "https://identification-interventions-tomato-factor.trycloudflare.com/v1",
+        "apiKey": "ollama"
+      },
+      "models": {
+        "gpt-oss:20b": {
+          "name": "GPT-OSS 20B",
+          "tools": true
+        }
+      }
+    }
+  }
+}

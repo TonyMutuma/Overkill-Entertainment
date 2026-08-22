@@ -31,6 +31,67 @@
 .font-navbar { font-family:var(--font-navbar) !important; letter-spacing:0.14em; }
 
 .glass-panel,.glass-card{background:rgba(11,15,23,.9);border:1px solid var(--hairline)}
+
+/* ── PREMIUM BOLD VERTICES SYSTEM ──
+   Bold SMOOTH premium radius + soft L-brackets. Cards feel luxury pillowy, not sharp.
+   18px radius is the bold smooth standard — burger + all cards. */
+.vertex-card{position:relative;border-radius:18px !important;isolation:isolate;overflow:hidden}
+.vertex-card::after{content:'';position:absolute;inset:0;border-radius:18px;border:1px solid rgba(255,255,255,0.06);pointer-events:none;z-index:1}
+.vertex-card--hover{transition:border-color .25s ease, box-shadow .25s ease, transform .25s ease}
+.vertex-card--hover:hover{border-color:rgba(148,163,184,.22) !important; box-shadow:0 12px 36px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.05)}
+/* keep radius token for nested elements */
+.vertex-card, .vertex-card *{ --card-radius:18px }
+/* Subtle inner hairline for depth + smooth shadow */
+.vertex-card--elevated{box-shadow:0 16px 40px rgba(0,0,0,.45), 0 1px 0 rgba(255,255,255,.06) inset}
+.vertex-card--burger{border-radius:20px !important}
+.vertex-card--burger::after{border-radius:20px}
+
+/* ── TEXT READABILITY OVER IMAGE OVERLAYS ── */
+.vertex-card p, .vertex-card li, .vertex-card h3, .vertex-card h4 {
+  position: relative;
+  z-index: 2;
+}
+.vertex-card p[class*="text-slate-400"] { color: #cbd5e1 !important; }
+.vertex-card p { text-shadow: 0 1px 12px rgba(0,0,0,0.45); }
+
+/* ── PREMIUM SMOOTH CORNERS — buttons & elements only (cards stay sharp via .vertex-card) ── */
+@layer components {
+  /* primary & secondary buttons — all CTAs feel pillowy premium */
+  button[class*="bg-white"], button[class*="bg-blue-"], button[class*="bg-[#0b0f17]"], button[class*="bg-[#04060a]"],
+  a[class*="bg-white"], a[class*="bg-blue-"] {
+    border-radius: 12px;
+  }
+  /* keep burger & icon squares softly rounded, not sharp */
+  button[class*="w-11 h-11"], button[class*="w-10 h-10"], button[class*="w-9 h-9"], button[class*="w-12 h-12"] {
+    border-radius: 14px !important;
+  }
+  /* pills / tags / badges — fully smooth */
+  span[class*="bg-blue-500/10"], span[class*="border-blue-500/20"], span[class*="bg-white text-black"][class*="font-mono"],
+  span[class*="rounded-none"], span[class*="bg-[#070b11]/90"], span[class*="px-2.5 py-1"], span[class*="px-2 py-1"] {
+    border-radius: 9999px !important;
+  }
+  /* filter chips & category labels */
+  button[class*="font-mono"][class*="px-4"], button[class*="px-5"],
+  span[class*="font-mono"][class*="border"] {
+    border-radius: 9999px !important;
+  }
+  /* icon squares & checkboxes — softly rounded  */
+  div[class*="w-6 h-6"][class*="flex items-center"] {
+    border-radius: 8px !important;
+  }
+  /* add-on rows keep subtle rounding, not pill */
+  div.vertex-card[class*="p-4 border"] {
+    border-radius: 12px !important;
+  }
+  /* inputs / textareas / selects */
+  input, textarea, select {
+    border-radius: 12px !important;
+  }
+  /* override any brutal rounded-none on buttons */
+  button.rounded-none, a.rounded-none {
+    border-radius: 12px !important;
+  }
+}
 .glow-hover{transition:transform .2s ease,border-color .2s ease,background-color .2s ease}
 .glow-hover:hover{border-color:var(--hairline-strong) !important;transform:translateY(-1px)}
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:1px solid rgba(37,99,235,.85);outline-offset:2px}
