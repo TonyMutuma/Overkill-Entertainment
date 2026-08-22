@@ -1284,6 +1284,19 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                       />
                     </div>
 
+                    <div>
+                      <label className="block font-mono-jb text-[11px] text-[#bac9cd] mb-1">
+                        YouTube URL
+                      </label>
+                      <input
+                        type="text"
+                        value={mixFormData.youtubeUrl || ''}
+                        onChange={(e) => setMixFormData({ ...mixFormData, youtubeUrl: e.target.value })}
+                        placeholder="https://www.youtube.com/watch?v=..."
+                        className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#ef4444] outline-none font-mono-jb"
+                      />
+                    </div>
+
                     <div className="flex justify-end gap-2 pt-2">
                       <button
                         onClick={() => {
