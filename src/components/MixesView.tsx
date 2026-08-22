@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MixTrack, NavTab } from '../types';
 import { Play, Pause, Headphones, Calendar as CalendarIcon, ChevronDown, ChevronUp, Music, ArrowUpRight, Youtube, ExternalLink, Volume2, VolumeX } from 'lucide-react';
-import { MIX_TRACKS } from '../data/mockData';
 import { getYoutubeEmbedUrl, getYoutubeField, extractYoutubeId } from '../utils/youtube';
 import { VertexCorners } from './VertexCorners';
+import { api } from '../utils/api';
 
 interface MixesViewProps {
   setActiveTab?: (tab: NavTab) => void;
@@ -25,8 +25,10 @@ export const MixesView: React.FC<MixesViewProps> = ({
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [expandedTracklistId, setExpandedTracklistId] = useState<string | null>(null);
-  // YouTube links stay in code — static MIX_TRACKS from mockData, no DB/API
-  const mixTracks: MixTrack[] = MIX_TRACKS;
+  const [mixTracks, setMixTracks] = useState<MixTrack[]>([]);
+  useEffect(() => {
+    api.getMixTracks().then((tracks) => setMixTracks(tracks));
+  }, []);
   const [activeYoutubeId, setActiveYoutubeId] = useState<string | null>(null);
   const [pinnedYoutubeId, setPinnedYoutubeId] = useState<string | null>(null);
   const [unmutedIds, setUnmutedIds] = useState<Record<string, boolean>>({});
