@@ -25,32 +25,14 @@ import {
 
 export const CREW_USERS: AdminUser[] = [
   {
-    id: 'user-wolverine',
-    name: 'DJ Wolverine',
-    email: 'wolverine@overkill.dj',
+    id: 'user-admin',
+    name: 'admin',
+    email: 'admin',
     role: 'superadmin',
-    roleTitle: 'Resident Selector & Creative Director',
+    roleTitle: 'Administrator',
     avatar: DJ_ASSETS.djPortraitStudio,
-    badgeColor: '#00daf8'
+    badgeColor: '#ef4444'
   },
-  {
-    id: 'user-tour-manager',
-    name: 'Brian Mwangi',
-    email: 'tour@overkill.dj',
-    role: 'manager',
-    roleTitle: 'Tour & Agency Booking Manager',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop',
-    badgeColor: '#baf2ff'
-  },
-  {
-    id: 'user-sound-tech',
-    name: 'Kevin Omondi',
-    email: 'tech@overkill.dj',
-    role: 'editor',
-    roleTitle: 'Master Sound & Stage Engineer',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop',
-    badgeColor: '#00e0ff'
-  }
 ];
 
 const DEFAULT_PAGE_VISIBILITY: PageVisibilityConfig = {
@@ -417,32 +399,21 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.setItem(STORAGE_KEYS.INQUIRIES, JSON.stringify(bookingInquiries));
   }, [bookingInquiries]);
 
-  // Auth methods
+  // Auth methods - hardcoded admin / admin365, no quick profiles
   const login = async (email: string, pass: string) => {
-    const cleanEmail = email.trim().toLowerCase();
+    const cleanUser = email.trim();
     const cleanPass = pass.trim();
 
-    // Match crew accounts or general master pass
-    const foundUser = CREW_USERS.find(
-      (u) => u.email.toLowerCase() === cleanEmail || u.name.toLowerCase() === cleanEmail
-    );
-
-    if (foundUser) {
-      setCurrentUser(foundUser);
-      setIsAdminOpen(true);
-      return { success: true };
-    }
-
-    if (cleanPass === 'overkill2026' || cleanPass === 'admin' || cleanEmail.includes('dj') || cleanEmail.includes('admin')) {
-      const genericAdmin = CREW_USERS[0];
-      setCurrentUser(genericAdmin);
+    if (cleanUser === 'admin' && cleanPass === 'admin365') {
+      const adminUser = CREW_USERS[0];
+      setCurrentUser(adminUser);
       setIsAdminOpen(true);
       return { success: true };
     }
 
     return {
       success: false,
-      message: 'Invalid credentials. Use one of the pre-configured crew profiles or password "overkill2026".'
+      message: 'Invalid credentials. Use username "admin" and password "admin365".'
     };
   };
 
