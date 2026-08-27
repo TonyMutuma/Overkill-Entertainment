@@ -39,12 +39,8 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
         <div className="flex items-center gap-3 min-w-0">
           <div className="w-10 h-10 bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-500 shrink-0"><MapPin className="w-5 h-5" /></div>
           <div className="min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-blue-500 font-bold flex items-center gap-1.5"><span className="w-1.5 h-1.5 bg-blue-500 inline-block animate-pulse" />IP Geolocation Auto-Detected</span>
-              {locationInfo.ip && <span className="font-mono text-[10px] text-slate-500 bg-[#04060a] px-2 py-0.5 border border-slate-800">IP: {locationInfo.ip}</span>}
-            </div>
             <p className="font-sans text-sm text-white font-medium mt-0.5 truncate">
-              Displaying prices for <span className="text-white font-semibold">{locationInfo.city ? `${locationInfo.city}, ` : ''}{locationInfo.countryName}</span> in <span className="text-blue-400 font-bold">{currencyConfig.name} ({currencyConfig.code})</span>
+              Prices displayed in <span className="text-blue-400 font-bold">{currencyConfig.name} ({currencyConfig.code})</span>
             </p>
           </div>
         </div>
@@ -54,11 +50,10 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
               <div className="flex items-center gap-2"><span className="text-base">{currencyConfig.flag}</span><span className="text-white font-bold">{currencyConfig.code}</span><span className="text-slate-500 text-[11px]">({currencyConfig.symbol.trim()})</span></div>
               <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
             </button>
-            <button type="button" onClick={handleRefresh} title="Re-detect IP location" className="p-2.5 bg-[#04060a] text-slate-400 hover:text-white border border-slate-800 hover:border-slate-700 transition-colors cursor-pointer"><RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin text-blue-500' : ''}`} /></button>
           </div>
           {isOpen && (
             <div className="absolute right-0 mt-2 w-72 bg-[#0b0f17] border border-slate-800 shadow-2xl z-50 p-2 max-h-80 overflow-y-auto">
-              <div className="px-3 py-2 border-b border-slate-800 text-[11px] font-mono text-slate-400 flex justify-between items-center"><span>SELECT CURRENCY</span><button onClick={resetToAutoDetected} className="text-blue-500 hover:underline cursor-pointer text-[10px] font-bold">Reset Auto</button></div>
+              <div className="px-3 py-2 border-b border-slate-800 text-[11px] font-mono text-slate-400 flex justify-between items-center"><span>SELECT CURRENCY</span><button onClick={resetToAutoDetected} className="text-blue-500 hover:underline cursor-pointer text-[10px] font-bold">Reset</button></div>
               <div className="space-y-1 py-1">
                 {availableCurrencies.map((code) => {
                   const cfg = CURRENCY_CONFIGS[code];
@@ -66,7 +61,7 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
                   const isDetected = locationInfo.currency === code;
                   return (
                     <button key={code} type="button" onClick={() => handleSelect(code)} className={`w-full px-3 py-2 text-left text-xs flex items-center justify-between transition-colors cursor-pointer border ${isSelected ? 'bg-white text-black border-white font-bold' : 'text-white hover:bg-white/5 border-transparent'}`}>
-                      <div className="flex items-center gap-2.5"><span className="text-base">{cfg.flag}</span><div><div className="font-mono font-semibold flex items-center gap-1.5">{cfg.code}{isDetected && <span className="text-[9px] bg-blue-500/10 text-blue-400 px-1 py-0.5 border border-blue-500/20">IP</span>}</div><div className="text-[11px] text-slate-500 font-sans">{cfg.name} ({cfg.symbol.trim()})</div></div></div>
+                      <div className="flex items-center gap-2.5"><span className="text-base">{cfg.flag}</span><div><div className="font-mono font-semibold flex items-center gap-1.5">{cfg.code}{isDetected && <span className="text-[9px] bg-blue-500/10 text-blue-400 px-1 py-0.5 border border-blue-500/20">Auto</span>}</div><div className="text-[11px] text-slate-500 font-sans">{cfg.name} ({cfg.symbol.trim()})</div></div></div>
                       {isSelected && <Check className="w-4 h-4" />}
                     </button>
                   );
@@ -90,8 +85,8 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
       {isOpen && (
         <div className="absolute right-0 mt-2 w-64 bg-[#0b0f17] border border-slate-800 shadow-2xl z-50 p-2 max-h-80 overflow-y-auto">
           <div className="px-3 py-2 border-b border-slate-800 text-[10px] font-mono text-slate-400 flex justify-between items-center">
-            <div className="flex items-center gap-1 text-blue-500"><MapPin className="w-3 h-3" /><span className="truncate max-w-[120px]">{locationInfo.city || locationInfo.countryName}</span></div>
-            <button onClick={resetToAutoDetected} className="text-blue-500 hover:underline cursor-pointer text-[10px] font-bold">Reset to IP</button>
+            <div className="flex items-center gap-1 text-blue-500"><MapPin className="w-3 h-3" /><span className="truncate max-w-[120px]">{locationInfo.countryName}</span></div>
+            <button onClick={resetToAutoDetected} className="text-blue-500 hover:underline cursor-pointer text-[10px] font-bold">Reset</button>
           </div>
           <div className="space-y-1 py-1">
             {availableCurrencies.map((code) => {
