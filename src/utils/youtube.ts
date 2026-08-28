@@ -24,3 +24,6 @@ export function getYoutubeEmbedUrl(urlOrId: string): string | null {
 export function getYoutubeField(track: any): string | null {
   return track?.youtubeUrl || track?.youtube_url || track?.youtubeId || track?.youtube_id || null;
 }
+export function getYoutubeChannelEmbedUrl(channelId: string): string {
+  return `https://www.youtube.com/embed?listType=channel&list=${channelId}&rel=0&modestbranding=1&playsinline=1`;
+}

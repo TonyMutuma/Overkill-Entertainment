@@ -2,8 +2,161 @@ import React, { useState, useEffect } from 'react';
 import { MixTrack, NavTab } from '../types';
 import { Play, Pause, Headphones, Calendar as CalendarIcon, ChevronDown, ChevronUp, Music, ArrowUpRight, Youtube, ExternalLink, Volume2, VolumeX } from 'lucide-react';
 import { getYoutubeEmbedUrl, getYoutubeField, extractYoutubeId } from '../utils/youtube';
+import { CHANNEL_VIDEO_IDS } from '../data/channelVideos';
 import { VertexCorners } from './VertexCorners';
 import { api } from '../utils/api';
+
+interface ChannelVideoCardProps {
+  videoId: string;
+  pinnedVideoId: string | null;
+  onRequestPin: (videoId: string) => void;
+  onStop: () => void;
+}
+const ChannelVideoCard: React.FC<ChannelVideoCardProps> = ({ videoId, pinnedVideoId, onRequestPin, onStop }) => {
+  const [active, setActive] = useState(false);
+  const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
+  const isPinned = pinnedVideoId === videoId;
+  const blockedByOtherPin = pinnedVideoId !== null && !isPinned;
+  const enlarged = active && !blockedByOtherPin && !isPinned;
+  const showIframe = active && !blockedByOtherPin && !isPinned;
+
+  const handleEnter = () => {
+    setActive(true);
+    if (blockedByOtherPin) return;
+    setTimeout(() => {
+      const iframe = iframeRef.current;
+      if (iframe?.contentWindow) {
+        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*');
+        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*');
+        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*');
+      }
+    }, 250);
+  };
+  const handleLeave = () => {
+    if (isPinned) return;
+    const iframe = iframeRef.current;
+    if (iframe?.contentWindow && showIframe) {
+      iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), '*');
+    }
+    setActive(false);
+  };
+
+  return (
+    <article
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+      className={`vertex-card vertex-card--hover bg-[#0b0f17] border flex flex-col overflow-hidden transition-all duration-500 ease-in-out group ${enlarged ? 'sm:col-span-2 lg:col-span-2 border-blue-500 shadow-[0_12px_40px_rgba(37,99,235,.28)] z-20 scale-[1.01]' : 'border-slate-800 hover:border-slate-700'}`}
+    >
+      <VertexCorners variant={enlarged ? 'blue' : 'white'} size={18} thickness={2.2} />
+      <div className={`relative overflow-hidden bg-[#04060a] ${enlarged ? 'aspect-[16/10] sm:aspect-video' : 'aspect-video'}`}>
+        {showIframe ? (
+          <>
+            <iframe
+              ref={(el) => { iframeRef.current = el; }}
+        src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1&autoplay=1&enablejsapi=1`}
+              title="DJ Wolverine live mix"
+              className="w-full h-full"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+            <div className="absolute bottom-2 left-2 right-12 flex items-center gap-2">
+              {!isPinned ? (
+                <button onClick={(e) => { e.stopPropagation(); onRequestPin(videoId); }} className="flex items-center gap-1.5 px-2.5 py-1.5 bg-blue-600 text-white font-mono text-[10px] font-bold uppercase tracking-wider hover:bg-blue-700 transition-colors cursor-pointer">
+                  <Play className="w-3.5 h-3.5" /> Continue Playing — front &amp; center
+                </button>
+              ) : (
+                <span className="px-2 py-1 bg-white text-black font-mono text-[9px] font-bold uppercase">Pinned — keeps playing</span>
+              )}
+            </div>
+            {isPinned && (
+              <button onClick={(e) => { e.stopPropagation(); onStop(); }} className="absolute top-2 right-2 w-7 h-7 bg-black/70 text-white flex items-center justify-center hover:bg-black transition-colors cursor-pointer text-xs" aria-label="Stop">✕</button>
+            )}
+          </>
+        ) : isPinned ? (
+          <div className="relative w-full h-full">
+            <img src={`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`} alt="DJ Wolverine live mix" loading="lazy" className="w-full h-full object-cover opacity-60" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0b0f17] via-[#0b0f17]/40 to-black/20" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="px-3 py-1.5 bg-blue-600 text-white font-mono text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-white animate-pulse" /> Now Playing — at the top</span>
+            </div>
+          </div>
+        ) : blockedByOtherPin ? (
+          <div className="relative w-full h-full">
+            <img src={`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`} alt="DJ Wolverine live mix" loading="lazy" className="w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0b0f17] via-transparent to-black/10" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <button type="button" onClick={(e) => { e.stopPropagation(); onRequestPin(videoId); }} className="w-14 h-14 flex items-center justify-center rounded-full bg-blue-600/90 text-white group-hover:scale-110 group-hover:bg-blue-500 transition-all duration-300 shadow-[0_0_25px_rgba(37,99,235,.5)] cursor-pointer" aria-label="Play and pin this mix">
+                <Play className="w-6 h-6 fill-current ml-0.5" />
+              </button>
+            </div>
+            <button onClick={(e) => { e.stopPropagation(); onRequestPin(videoId); }} className="absolute bottom-2 left-2 flex items-center gap-1.5 px-2.5 py-1.5 bg-blue-600 text-white font-mono text-[10px] font-bold uppercase tracking-wider hover:bg-blue-700 transition-colors cursor-pointer">
+              <Play className="w-3.5 h-3.5" /> Continue Playing — front &amp; center
+            </button>
+          </div>
+        ) : (
+          <button type="button" onClick={(e) => { e.stopPropagation(); onRequestPin(videoId); }} className="relative w-full h-full block cursor-pointer text-left" aria-label="Play and pin this mix">
+            <img src={`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`} alt="DJ Wolverine live mix" loading="lazy" className="w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0b0f17] via-transparent to-black/10" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="w-14 h-14 flex items-center justify-center rounded-full bg-blue-600/90 text-white group-hover:scale-110 group-hover:bg-blue-500 transition-all duration-300 shadow-[0_0_25px_rgba(37,99,235,.5)]">
+                <Play className="w-6 h-6 fill-current ml-0.5" />
+              </span>
+            </div>
+            <span className="absolute bottom-3 left-3 px-2.5 py-1 bg-[#070b11]/90 font-mono text-[10px] text-blue-400 uppercase border-2 border-white/10 font-bold flex items-center gap-1"><Youtube className="w-3 h-3" /> DJ Wolverine</span>
+          </button>
+        )}
+      </div>
+    </article>
+  );
+};
+
+interface NowPlayingPlayerProps {
+  videoId: string;
+  onStop: () => void;
+}
+const NowPlayingPlayer: React.FC<NowPlayingPlayerProps> = ({ videoId, onStop }) => {
+  const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
+  useEffect(() => {
+    const onMsg = (e: MessageEvent) => {
+      if (e.origin !== 'https://www.youtube.com' && e.origin !== 'https://www.youtube-nocookie.com') return;
+      let data: any;
+      try { data = JSON.parse(e.data as string); } catch { return; }
+      if (data?.event === 'onReady' || (data?.event === 'infoDelivery' && data?.info && typeof data.info.playerState === 'number')) {
+        const iframe = iframeRef.current;
+        if (iframe?.contentWindow) {
+          iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*');
+          iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*');
+          iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*');
+        }
+      }
+    };
+    window.addEventListener('message', onMsg);
+    return () => window.removeEventListener('message', onMsg);
+  }, [videoId]);
+  return (
+    <div className="relative w-full aspect-video sm:aspect-[2.1/1] bg-black border-2 border-blue-500 overflow-hidden vertex-card shadow-[0_0_60px_rgba(37,99,235,.30)]">
+      <VertexCorners variant="blue" size={20} thickness={2.4} />
+      <iframe
+        ref={(el) => { iframeRef.current = el; }}
+        src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1&autoplay=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`}
+        title="DJ Wolverine live mix"
+        className="w-full h-full"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
+      <div className="absolute top-3 left-3 flex items-center gap-2">
+        <span className="px-3 py-1.5 bg-blue-600 text-white font-mono text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5 shadow-lg">
+          <span className="w-2 h-2 rounded-full bg-white animate-pulse" /> Now Playing
+        </span>
+      </div>
+      <button onClick={onStop} className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5 bg-black/70 text-white font-mono text-[10px] font-bold uppercase tracking-wider border-2 border-white/20 hover:bg-black transition-colors cursor-pointer">
+        ✕ Stop
+      </button>
+    </div>
+  );
+};
 
 interface MixesViewProps {
   setActiveTab?: (tab: NavTab) => void;
@@ -34,6 +187,18 @@ export const MixesView: React.FC<MixesViewProps> = ({
   const [unmutedIds, setUnmutedIds] = useState<Record<string, boolean>>({});
   const iframeRefs = React.useRef<Record<string, HTMLIFrameElement | null>>({});
 
+  const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/@djwolverine_ke';
+  const [pinnedVideoId, setPinnedVideoId] = useState<string | null>(null);
+  const [pendingSwitchId, setPendingSwitchId] = useState<string | null>(null);
+  const requestPinVideo = (videoId: string) => {
+    if (pinnedVideoId && pinnedVideoId !== videoId) setPendingSwitchId(videoId);
+    else setPinnedVideoId(videoId);
+  };
+  const confirmSwitchVideo = () => {
+    if (pendingSwitchId) setPinnedVideoId(pendingSwitchId);
+    setPendingSwitchId(null);
+  };
+  const cancelSwitchVideo = () => setPendingSwitchId(null);
   const navigate = (tab: NavTab) => {
     if (tab === 'calendar' && onNavigateToCalendar) onNavigateToCalendar();
     else if (tab === 'services' && onNavigateToServices) onNavigateToServices();
@@ -103,6 +268,44 @@ export const MixesView: React.FC<MixesViewProps> = ({
             </button>
           </div>
         </div>
+      </section>
+
+      <section className="max-w-[1280px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 py-8 sm:py-12 border-b border-slate-900">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-5 sm:mb-6">
+          <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-white flex items-center gap-3"><span className="w-8 h-[3px] bg-blue-500 block" /> Listen in as much as you like</h2>
+          <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-blue-400 hover:text-white border-2 border-blue-500/30 hover:border-blue-500 bg-blue-500/10 hover:bg-blue-600 px-4 py-2 transition-colors cursor-pointer">
+            <Youtube className="w-3.5 h-3.5" /> Open on YouTube
+          </a>
+        </div>
+        {pinnedVideoId && (
+          <div className="mb-6 sm:mb-8">
+            <NowPlayingPlayer videoId={pinnedVideoId} onStop={() => setPinnedVideoId(null)} />
+          </div>
+        )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {CHANNEL_VIDEO_IDS.map((videoId) => (
+            <ChannelVideoCard key={videoId} videoId={videoId} pinnedVideoId={pinnedVideoId} onRequestPin={requestPinVideo} onStop={() => setPinnedVideoId(null)} />
+          ))}
+        </div>
+        {pendingSwitchId && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4" onClick={cancelSwitchVideo}>
+            <div className="relative w-full max-w-md bg-[#0b0f17] border-2 border-blue-500/40 vertex-card p-6 sm:p-8" onClick={(e) => e.stopPropagation()}>
+              <VertexCorners variant="blue" size={18} thickness={2.2} />
+              <h3 className="font-serif text-lg sm:text-xl font-bold text-white leading-tight">Another mix is already playing</h3>
+              <p className="font-sans text-sm text-slate-400 mt-3 leading-relaxed">
+                Only one set can play sound at a time. Switch to this mix, or cancel to keep the current one playing.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 mt-6">
+                <button onClick={confirmSwitchVideo} className="flex-1 bg-blue-600 text-white font-bold text-xs sm:text-sm px-6 py-3.5 rounded-xl hover:bg-blue-700 transition-colors cursor-pointer uppercase tracking-wider flex items-center justify-center gap-2">
+                  <Play className="w-4 h-4" /> Switch to this mix
+                </button>
+                <button onClick={cancelSwitchVideo} className="flex-1 border-2 border-white/15 text-white font-bold text-xs sm:text-sm px-6 py-3.5 rounded-xl hover:bg-white hover:text-black transition-colors cursor-pointer uppercase tracking-wider">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
 
       <section className="max-w-[1280px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 py-6 sm:py-8 border-b border-slate-900">
