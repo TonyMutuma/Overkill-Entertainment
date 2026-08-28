@@ -154,6 +154,7 @@ export interface VenueItem {
   id: string;
   name: string;
   location: string;
+  logo?: string;
 }
 
 export interface ComparisonRow {

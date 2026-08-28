@@ -49,7 +49,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   return (
     <div className="w-full bg-[#070b11] text-white selection:bg-blue-600 selection:text-white overflow-x-hidden">
       {/* 1. Mobile-First Hero Section */}
-      <section className="relative min-h-[calc(100vh-70px)] flex items-end md:items-center overflow-hidden pt-28 sm:pt-32 pb-12">
+      <section className="relative min-h-[calc(100vh-70px)] flex items-end md:items-center overflow-hidden pt-20 sm:pt-24 pb-12">
         
         {/* Responsive Background Setup */}
         <div className="absolute inset-0 z-0">
@@ -70,57 +70,86 @@ export const HomeView: React.FC<HomeViewProps> = ({
             
             {/* Headline - FLUID premium: desktop stays 60px, mobile scales smoothly instead of breaking layout */}
             <h1
-              className="font-serif font-extrabold leading-[0.95] tracking-tight mb-3 sm:mb-4 text-white drop-shadow-md"
-              style={{ fontSize: 'clamp(30px, 7vw, 60px)', maxWidth: '16ch', textWrap: 'balance' as any }}
+              className="font-serif font-extrabold leading-[0.95] tracking-tight text-white drop-shadow-md"
+              style={{ fontSize: 'clamp(40px, 6vw, 68px)', maxWidth: '50vw', textWrap: 'balance' as any }}
             >
               We Don&apos;t Gamble<br /> With Your Event&apos;s<br /> Atmosphere
             </h1>
 
-            {/* Subtitle - fluid scale */}
-            <p
-              className="font-sans text-slate-200 leading-relaxed font-medium mb-6 sm:mb-8"
-              style={{ fontSize: 'clamp(12px, 2.2vw, 18px)', maxWidth: '34ch', textWrap: 'balance' as any }}
+             {/* Hero CTAs - side by side, spanning the tagline width */}
+            <div
+              className="flex flex-row items-stretch justify-start gap-3 sm:gap-4 my-10 sm:my-14 w-full"
+              style={{ maxWidth: '50vw' }}
             >
-              Professional DJ services, premium sound,<br /> and seamless entertainment for events<br /> that leave a lasting impression.
-            </p>
-
-            {/* Hero CTAs - pinned LEFT like text, never stretched */}
-            <div className="flex flex-col sm:flex-row items-start justify-start self-start gap-3 sm:gap-4 mb-8 sm:mb-12 w-auto">
               <button
                 onClick={handleBooking}
-                className="bg-white text-black font-bold text-xs sm:text-sm px-6 py-3.5 rounded-xl hover:bg-slate-200 transition-all duration-200 cursor-pointer flex items-center justify-start gap-2 uppercase tracking-wider shadow-[0_8px_24px_rgba(255,255,255,0.12)] self-start"
+                className="bg-white text-black font-bold text-[10px] sm:text-xs md:text-sm px-4 sm:px-6 py-3 sm:py-3.5 rounded-xl hover:bg-slate-200 transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 uppercase tracking-wide sm:tracking-wider shadow-[0_8px_24px_rgba(255,255,255,0.12)] whitespace-nowrap"
               >
-                Book Your Date
-                <ArrowUpRight className="w-4 h-4" />
+                <span className="sm:hidden">BOOK EVENT</span>
+                <span className="hidden sm:inline">Book Your Date</span>
+                <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
               </button>
 
               <button
                 onClick={() => navigate('mixes')}
-                className="text-white font-bold text-xs sm:text-sm px-4 py-3 rounded-xl hover:text-blue-500 transition-colors duration-200 cursor-pointer uppercase tracking-wider underline underline-offset-8 text-left border border-white/10 hover:border-white/15 hover:bg-white/[0.04] self-start"
+                className="text-white font-bold text-[10px] sm:text-xs md:text-sm px-4 sm:px-4 py-3 sm:py-3 rounded-xl hover:text-blue-500 transition-colors duration-200 cursor-pointer uppercase tracking-wide sm:tracking-wider underline underline-offset-8 text-center border border-white/10 hover:border-white/15 hover:bg-white/[0.04] whitespace-nowrap"
               >
-                Explore Mixes
+                <span className="sm:hidden">MIXES</span>
+                <span className="hidden sm:inline">Explore Mixes</span>
               </button>
             </div>
 
             {/* Trusted By - replaces stats, aligned to logo X */}
-            <div className="pt-6 border-t border-slate-800/80 w-full max-w-2xl">
-              <p className="font-mono text-[10px] sm:text-xs text-slate-500 uppercase tracking-[0.25em] mb-3 sm:mb-4 font-bold">
+              <div className="w-full max-w-2xl mr-auto lg:-ml-[max(0px,calc((100vw_-_1280px)_/_2))]">
+              <p className="font-mono text-[10px] sm:text-xs text-slate-500 uppercase tracking-[0.25em] mb-3 sm:mb-4 font-bold text-center">
                 TRUSTED BY
               </p>
-              <div className="flex flex-wrap justify-start items-center gap-6 sm:gap-10 opacity-70">
-                {TRUST_VENUES.map((venue, idx) => (
-                  <div key={idx} className="text-left group">
-                    <span className="font-serif text-sm sm:text-base md:text-lg font-bold tracking-widest text-slate-300 group-hover:text-white transition-colors uppercase">
-                      {venue.name}
-                    </span>
-                    {venue.location && (
-                      <span className="block font-mono text-[9px] sm:text-[10px] text-slate-500 mt-0.5 font-bold">
-                        {venue.location}
-                      </span>
-                    )}
-                  </div>
-                ))}
-              </div>
+              {(() => {
+                const renderVenue = (venue, idx) => {
+                  const fileName = venue.logo?.split('/').pop() || '';
+                  const isLarger = ['quiver lounge.png', 'milan lounge.png', 'Farenheit lounge.png'].includes(fileName);
+                  const isXLarge = fileName === 'Farenheit lounge.png';
+                  const isTopRow = ['Milan Lounge', 'Konqa'].includes(venue.name);
+                  return (
+                    <div key={idx} className="group flex items-center">
+                      {venue.logo ? (
+                        <img
+                          src={venue.logo}
+                          alt={venue.name}
+                          className={`w-auto object-contain brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity ${isTopRow ? 'h-16 sm:h-20' : isXLarge ? 'h-20 sm:h-28' : isLarger ? 'h-14 sm:h-16' : 'h-11 sm:h-14'}`}
+                        />
+                      ) : (
+                        <div className="text-left">
+                          <span className="font-serif text-sm sm:text-base md:text-lg font-bold tracking-widest text-slate-300 group-hover:text-white transition-colors uppercase">
+                            {venue.name}
+                          </span>
+                          {venue.location && (
+                            <span className="block font-mono text-[9px] sm:text-[10px] text-slate-500 mt-0.5 font-bold">
+                              {venue.location}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                };
+                const rowOne = ['Milan Lounge', 'Konqa']
+                  .map((n) => TRUST_VENUES.find((v) => v.name === n))
+                  .filter(Boolean);
+                const rowTwo = ['Cavalli Lounge', 'Farenheit Lounge', 'Quiver Lounge']
+                  .map((n) => TRUST_VENUES.find((v) => v.name === n))
+                  .filter(Boolean);
+                return (
+                  <>
+                    <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-10 opacity-70 mb-6 sm:mb-8">
+                      {rowOne.map(renderVenue)}
+                    </div>
+                    <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-10 opacity-70">
+                      {rowTwo.map(renderVenue)}
+                    </div>
+                  </>
+                );
+              })()}
             </div>
           </div>
         </div>

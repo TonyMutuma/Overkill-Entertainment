@@ -13,12 +13,11 @@ export const DJ_ASSETS = {
 };
 
 export const TRUST_VENUES = [
-  { name: 'MUZE CLUB', location: 'Westlands, Nairobi' },
-  { name: 'THE ALCHEMIST', location: 'Westlands, Nairobi' },
-  { name: 'BENEATH THE BAOBABS', location: 'Kilifi Coast' },
-  { name: 'WATERFRONT KAREN', location: 'Karen, Nairobi' },
-  { name: 'CARNIVORE GROUNDS', location: 'Nairobi' },
-  { name: 'DIANI BEACH CLUB', location: 'South Coast' },
+  { name: 'Cavalli Lounge', location: 'Nairobi', logo: '/assets/logos/Cavalli Lounge.png' },
+  { name: 'Farenheit Lounge', location: 'Nairobi', logo: '/assets/logos/Farenheit lounge.png' },
+  { name: 'Konqa', location: 'Nairobi', logo: '/assets/logos/konqa.png' },
+  { name: 'Milan Lounge', location: 'Nairobi', logo: '/assets/logos/milan lounge.png' },
+  { name: 'Quiver Lounge', location: 'Nairobi', logo: '/assets/logos/quiver lounge.png' },
 ];
 
 export const MIX_TRACKS: MixTrack[] = [

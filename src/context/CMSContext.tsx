@@ -84,7 +84,8 @@ const DEFAULT_SITE_SETTINGS: SiteSettings = {
 const INITIAL_VENUES: VenueItem[] = TRUST_VENUES.map((v, i) => ({
   id: `venue-${i + 1}`,
   name: v.name,
-  location: v.location
+  location: v.location,
+  logo: v.logo
 }));
 
 const INITIAL_COMPARISON: ComparisonRow[] = COMPARISON_TABLE.map((row, i) => ({
