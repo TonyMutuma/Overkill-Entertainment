@@ -39,8 +39,6 @@ const DEFAULT_PAGE_VISIBILITY: PageVisibilityConfig = {
   pages: {
     home: true,
     mixes: true,
-    calendar: true,
-    services: true,
     faq: true
   },
   sections: {
@@ -459,8 +457,6 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       pages: {
         home: val,
         mixes: val,
-        calendar: val,
-        services: val,
         faq: val
       }
     }));

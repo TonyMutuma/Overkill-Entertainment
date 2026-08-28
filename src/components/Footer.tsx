@@ -27,8 +27,8 @@ export const Footer: React.FC<FooterProps> = ({
   const handleContactOrBooking = () => {
     if (onOpenBooking) onOpenBooking();
     else if (onOpenContact) onOpenContact();
-    else if (onNavigate) onNavigate('calendar');
-    else if (setActiveTab) setActiveTab('calendar');
+    else if (onNavigate) onNavigate('mixes');
+    else if (setActiveTab) setActiveTab('mixes');
   };
   const handleCrewAccess = () => {
     if (currentUser) openAdmin();
@@ -44,22 +44,19 @@ export const Footer: React.FC<FooterProps> = ({
           <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-md font-sans">
             © 2026 {siteSettings?.brandName || 'Overkill Entertainment'}. All Rights Reserved. Resident Selector: {siteSettings?.djName || 'DJ Wolverine'} ({siteSettings?.location || 'Nairobi, Kenya'}).
           </p>
-          <div className="text-[10px] text-slate-500 font-mono uppercase tracking-wider">Hardware: 2× Pioneer CDJ-3000 + DJM-V10 • Dual Shockproof Backup Stacks</div>
+          <div className="text-[10px] text-slate-500 font-mono uppercase tracking-wider">Hardware: 2× Rane Twelve Motorized Controller Decks • Dual Shockproof Backup Stacks</div>
         </div>
         <div className="md:col-span-3 flex flex-col gap-3">
           <div className="font-mono text-[10px] text-blue-500 uppercase tracking-[0.2em] font-bold">Navigation</div>
           <div className="flex flex-col gap-2 text-sm text-slate-400 font-sans">
-            <button onClick={() => handleNav('services')} className="hover:text-white transition-colors cursor-pointer text-left">Packages & Rates</button>
-            <button onClick={() => handleNav('calendar')} className="hover:text-white transition-colors cursor-pointer text-left">2026 Tour Dates</button>
-            <button onClick={() => handleNav('mixes')} className="hover:text-white transition-colors cursor-pointer text-left">Live Mix Audio</button>
-            <button onClick={() => handleNav('faq')} className="hover:text-white transition-colors cursor-pointer text-left">Tech Rider & FAQ</button>
+            <button onClick={() => handleNav('mixes')} className="hover:text-white transition-colors cursor-pointer text-left">Video Playlist</button>
+            <button onClick={() => handleNav('faq')} className="hover:text-white transition-colors cursor-pointer text-left">FAQ</button>
           </div>
         </div>
         <div className="md:col-span-3 flex flex-col items-start md:items-end gap-4">
           <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-slate-500 font-mono">
             {siteSettings?.instagramUrl && <a href={siteSettings.instagramUrl} target="_blank" rel="noreferrer" className="hover:text-white transition-colors uppercase tracking-wider font-bold">Instagram</a>}
-            {siteSettings?.soundcloudUrl && <a href={siteSettings.soundcloudUrl} target="_blank" rel="noreferrer" className="hover:text-white transition-colors uppercase tracking-wider font-bold">SoundCloud</a>}
-            <button onClick={handleContactOrBooking} className="hover:text-white transition-colors cursor-pointer uppercase tracking-wider font-bold">Rider Clearance</button>
+            <button onClick={handleContactOrBooking} className="hover:text-white transition-colors cursor-pointer uppercase tracking-wider font-bold">Book Now</button>
           </div>
           <button onClick={handleCrewAccess} className="flex items-center gap-2 px-4 py-2 bg-[#0b0f17] border-2 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 text-xs font-mono uppercase tracking-wider transition-colors cursor-pointer">
             {currentUser ? <><span className="w-2 h-2 bg-emerald-400 animate-pulse" /><span className="text-white font-bold">Crew: {currentUser.name}</span><Sliders className="w-3.5 h-3.5" /></> : <><Lock className="w-3.5 h-3.5 text-blue-500" /><span>DJ & Crew Portal</span></>}

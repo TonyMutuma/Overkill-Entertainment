@@ -5,15 +5,11 @@ import { VertexCorners } from './VertexCorners';
 
 interface FaqViewProps {
   onNavigateToBooking?: () => void;
-  onNavigateToCalendar?: () => void;
-  onNavigateToServices?: () => void;
   setActiveTab?: (tab: string) => void;
 }
 
 export const FaqView: React.FC<FaqViewProps> = ({
   onNavigateToBooking,
-  onNavigateToCalendar,
-  onNavigateToServices,
   setActiveTab
 }) => {
   const [openIds, setOpenIds] = useState<string[]>(['faq-1']);
@@ -26,8 +22,7 @@ export const FaqView: React.FC<FaqViewProps> = ({
 
   const handleBookingNavigation = () => {
     if (onNavigateToBooking) onNavigateToBooking();
-    else if (onNavigateToCalendar) onNavigateToCalendar();
-    else if (setActiveTab) setActiveTab('calendar');
+    else if (setActiveTab) setActiveTab('mixes');
   };
 
   const categories = ['All', 'Technical', 'Curation', 'Policies', 'Logistics'];

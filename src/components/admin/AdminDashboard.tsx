@@ -388,7 +388,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                       <Layers className="w-4 h-4 text-[#ef4444]" />
                     </div>
                     <div className="font-sora text-2xl font-extrabold text-[#ef4444]">
-                      {Object.values(pageVisibility.pages).filter(Boolean).length} / 5
+                       {Object.values(pageVisibility.pages).filter(Boolean).length} / 3
                     </div>
                     <div className="text-[11px] text-[#bac9cd]/60">
                       {pageVisibility.pages.home ? 'Home Online' : 'Home Disabled'} • {pageVisibility.pages.mixes ? 'Mixes Active' : 'Mixes Hidden'}
@@ -599,8 +599,6 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                       [
                         { key: 'home', label: 'Home / Hero & Overview', desc: 'Main landing page & showreel' },
                         { key: 'mixes', label: 'Mixes / Audio Vault', desc: 'Audio tracks, tracklists, filter tags' },
-                        { key: 'calendar', label: 'Availability Calendar', desc: '2026 tour route, open dates & booking' },
-                        { key: 'services', label: 'Services & Pricing', desc: 'Package rates, custom add-ons & calculator' },
                         { key: 'faq', label: 'Protocols & Tech Rider', desc: 'Technical specs, curation & policies' }
                       ] as const
                     ).map((page) => {
@@ -880,18 +878,6 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           type="url"
                           value={siteSettings.instagramUrl}
                           onChange={(e) => updateSiteSettings({ instagramUrl: e.target.value })}
-                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#ef4444] outline-none font-mono-jb"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block font-mono-jb text-xs text-[#bac9cd] mb-1.5">
-                          SoundCloud Channel URL
-                        </label>
-                        <input
-                          type="url"
-                          value={siteSettings.soundcloudUrl}
-                          onChange={(e) => updateSiteSettings({ soundcloudUrl: e.target.value })}
                           className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#ef4444] outline-none font-mono-jb"
                         />
                       </div>

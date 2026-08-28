@@ -163,7 +163,7 @@ export const SERVICE_PACKAGES: ServicePackage[] = [
     idealFor: 'Nightclubs, Lounges, Underground Parties & Festival Stages',
     features: [
       '4-Hour Premium DJ Set',
-      'Industry-Standard Pioneer CDJ-3000s & V10 Mixer Included',
+      'Rane Twelve Motorized Controller Decks Included',
       'Custom Club Edits & Remixes',
       'Advance Venue Tech Consultation'
     ]
@@ -246,7 +246,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: 'faq-1',
     category: 'Technical',
     question: 'Technical & Sound System Requirements',
-    answer: 'We demand uncompromising audio fidelity. The venue must provide a high-tier professional sound system (e.g., L-Acoustics, d&b audiotechnik, QSC K-Series, or Funktion-One) capable of sustaining 110dB+ at the mix position without distortion. A detailed technical rider specifying exact mixer (Pioneer DJM-V10 preferred) and CDJ (CDJ-3000s) requirements will be attached to the contract. For corporate and wedding packages, we provide our own self-contained top-tier QSC audio system.'
+    answer: 'We demand uncompromising audio fidelity. The venue must provide a high-tier professional sound system (e.g., L-Acoustics, d&b audiotechnik, QSC K-Series, or Funktion-One) capable of sustaining 110dB+ at the mix position without distortion. DJ Wolverine performs on his own Rane Twelve motorized controller decks and is proficient on most industry-standard decks, so he can adapt to whatever the venue supplies. A detailed technical rider specifying exact mixer requirements will be attached to the contract. For corporate and wedding packages, we provide our own self-contained top-tier QSC audio system.'
   },
   {
     id: 'faq-2',
@@ -295,7 +295,7 @@ export const COMPARISON_TABLE = [
   {
     feature: 'Equipment Quality',
     standardDjs: 'Basic Plastic Controllers & Consumer Speakers',
-    overkill: 'Club-Standard Pioneer CDJ-3000s & V10 Mixer + QSC/L-Acoustics'
+    overkill: 'Rane Twelve Motorized Controller Decks + QSC/L-Acoustics'
   },
   {
     feature: 'Mixing Style',

@@ -1,4 +1,4 @@
-export type NavTab = 'home' | 'mixes' | 'calendar' | 'services' | 'faq';
+export type NavTab = 'home' | 'mixes' | 'faq';
 
 export type EventCategory = 'all' | 'club' | 'corporate' | 'wedding' | 'festival' | 'private';
 
@@ -95,8 +95,6 @@ export interface PageVisibilityConfig {
   pages: {
     home: boolean;
     mixes: boolean;
-    calendar: boolean;
-    services: boolean;
     faq: boolean;
   };
   sections: {
@@ -127,7 +125,6 @@ export interface SiteSettings {
   contactPhone: string;
   whatsappNumber: string;
   instagramUrl: string;
-  soundcloudUrl: string;
   youtubeUrl: string;
   stats: {
     showsCount: string;

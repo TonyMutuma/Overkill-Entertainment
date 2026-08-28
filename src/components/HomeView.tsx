@@ -8,8 +8,6 @@ interface HomeViewProps {
   setActiveTab?: (tab: NavTab) => void;
   onNavigateToBooking?: () => void;
   onNavigateToMixes?: () => void;
-  onNavigateToServices?: () => void;
-  onNavigateToCalendar?: () => void;
   onPlayFeaturedMix?: (track: MixTrack) => void;
   currentPlayingId?: string | null;
   onOpenBooking?: () => void;
@@ -19,17 +17,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
   setActiveTab,
   onNavigateToBooking,
   onNavigateToMixes,
-  onNavigateToServices,
-  onNavigateToCalendar,
   onOpenBooking
 }) => {
   const navigate = (tab: NavTab) => {
-    if (tab === 'calendar' && onNavigateToCalendar) {
-      onNavigateToCalendar();
-    } else if (tab === 'mixes' && onNavigateToMixes) {
+    if (tab === 'mixes' && onNavigateToMixes) {
       onNavigateToMixes();
-    } else if (tab === 'services' && onNavigateToServices) {
-      onNavigateToServices();
     } else if (setActiveTab) {
       setActiveTab(tab);
     }
@@ -42,7 +34,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
     } else if (onNavigateToBooking) {
       onNavigateToBooking();
     } else if (setActiveTab) {
-      setActiveTab('calendar');
+      setActiveTab('home');
     }
   };
 
@@ -258,7 +250,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 Sonic Precision
               </h3>
               <p className="font-sans text-slate-400 font-normal text-xs sm:text-sm leading-relaxed relative z-10">
-                Every transition is flawless. We utilize industry-standard Pioneer CDJ-3000s & DJM-V10 mixers to ensure absolute audio clarity, harmonic key matching, and immense bass impact on any sound system.
+                Every transition is flawless. We run on Rane Twelve motorized controller decks to ensure absolute audio clarity, harmonic key matching, and immense bass impact on any sound system. DJ Wolverine is proficient on most industry-standard decks.
               </p>
             </div>
 

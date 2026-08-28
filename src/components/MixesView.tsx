@@ -151,8 +151,6 @@ const NowPlayingPlayer: React.FC<NowPlayingPlayerProps> = ({ videoId }) => {
 
 interface MixesViewProps {
   setActiveTab?: (tab: NavTab) => void;
-  onNavigateToCalendar?: () => void;
-  onNavigateToServices?: () => void;
   onPlayMix: (track: MixTrack) => void;
   currentPlayingTrack?: MixTrack | null;
   currentPlayingId?: string | null;
@@ -160,8 +158,6 @@ interface MixesViewProps {
 }
 export const MixesView: React.FC<MixesViewProps> = ({
   setActiveTab,
-  onNavigateToCalendar,
-  onNavigateToServices,
   onPlayMix,
   currentPlayingTrack,
   currentPlayingId,
@@ -191,9 +187,7 @@ export const MixesView: React.FC<MixesViewProps> = ({
   };
   const cancelSwitchVideo = () => setPendingSwitchId(null);
   const navigate = (tab: NavTab) => {
-    if (tab === 'calendar' && onNavigateToCalendar) onNavigateToCalendar();
-    else if (tab === 'services' && onNavigateToServices) onNavigateToServices();
-    else if (setActiveTab) setActiveTab(tab);
+    if (setActiveTab) setActiveTab(tab);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -251,11 +245,8 @@ export const MixesView: React.FC<MixesViewProps> = ({
             Real live club & event sets, not sterile studio edits. Experience the raw energy and seamless transitions that define the OVERKILL standard.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8 w-full sm:w-auto">
-            <button onClick={() => navigate('calendar')} className="bg-white text-black font-bold text-xs sm:text-sm px-6 sm:px-8 py-3.5 rounded-xl hover:bg-slate-200 transition-colors cursor-pointer uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_8px_24px_rgba(255,255,255,0.10)]">
-              Check Availability <ArrowUpRight className="w-4 h-4" />
-            </button>
-            <button onClick={() => navigate('services')} className="border-2 border-white/15 text-white font-bold text-xs sm:text-sm px-6 sm:px-8 py-3.5 rounded-xl hover:bg-white hover:text-black transition-colors cursor-pointer uppercase tracking-wider">
-              View Rates & Packages
+            <button onClick={() => navigate('home')} className="bg-white text-black font-bold text-xs sm:text-sm px-6 sm:px-8 py-3.5 rounded-xl hover:bg-slate-200 transition-colors cursor-pointer uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_8px_24px_rgba(255,255,255,0.10)]">
+              Back to Home <ArrowUpRight className="w-4 h-4" />
             </button>
           </div>
         </div>

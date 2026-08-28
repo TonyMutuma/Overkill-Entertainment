@@ -3,8 +3,6 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { HomeView } from './components/HomeView';
 import { MixesView } from './components/MixesView';
-import { ServicesView } from './components/ServicesView';
-import { CalendarView } from './components/CalendarView';
 import { FaqView } from './components/FaqView';
 import { BookingModal } from './components/BookingModal';
 import { AdminTopBar } from './components/admin/AdminTopBar';
@@ -174,8 +172,6 @@ export function App() {
                 setActiveTab={handleTabChange}
                 onNavigateToBooking={() => handleOpenBookingModal('corporate')}
                 onNavigateToMixes={() => handleTabChange('mixes')}
-                onNavigateToServices={() => handleTabChange('services')}
-                onNavigateToCalendar={() => handleTabChange('calendar')}
                 onPlayFeaturedMix={handlePlayMix}
                 currentPlayingId={isPlaying ? currentTrack.id : null}
                 onOpenBooking={() => handleOpenBookingModal('corporate')}
@@ -185,8 +181,6 @@ export function App() {
             {activeTab === 'mixes' && (
               <MixesView
                 setActiveTab={handleTabChange}
-                onNavigateToCalendar={() => handleTabChange('calendar')}
-                onNavigateToServices={() => handleTabChange('services')}
                 currentPlayingId={isPlaying ? currentTrack.id : null}
                 currentPlayingTrack={isPlaying ? currentTrack : null}
                 isPlaying={isPlaying}
@@ -194,34 +188,10 @@ export function App() {
               />
             )}
 
-            {activeTab === 'services' && (
-              <ServicesView
-                setActiveTab={handleTabChange}
-                onNavigateToCalendar={() => handleTabChange('calendar')}
-                onSelectPackageForBooking={(pkgId, addOns, total) =>
-                  handleOpenBookingModal(pkgId, '', addOns)
-                }
-              />
-            )}
-
-            {activeTab === 'calendar' && (
-              <CalendarView
-                setActiveTab={handleTabChange}
-                onNavigateToServices={() => handleTabChange('services')}
-                onNavigateToFaq={() => handleTabChange('faq')}
-                onNavigateToBooking={() => handleOpenBookingModal('corporate')}
-                onSelectDateForBooking={(dateStr) =>
-                  handleOpenBookingModal('corporate', dateStr)
-                }
-              />
-            )}
-
             {activeTab === 'faq' && (
               <FaqView
                 setActiveTab={handleTabChange}
                 onNavigateToBooking={() => handleOpenBookingModal('corporate')}
-                onNavigateToCalendar={() => handleTabChange('calendar')}
-                onNavigateToServices={() => handleTabChange('services')}
               />
             )}
           </>
