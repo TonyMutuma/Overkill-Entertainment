@@ -113,9 +113,8 @@ const ChannelVideoCard: React.FC<ChannelVideoCardProps> = ({ videoId, pinnedVide
 
 interface NowPlayingPlayerProps {
   videoId: string;
-  onStop: () => void;
 }
-const NowPlayingPlayer: React.FC<NowPlayingPlayerProps> = ({ videoId, onStop }) => {
+const NowPlayingPlayer: React.FC<NowPlayingPlayerProps> = ({ videoId }) => {
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
   useEffect(() => {
     const onMsg = (e: MessageEvent) => {
@@ -146,14 +145,6 @@ const NowPlayingPlayer: React.FC<NowPlayingPlayerProps> = ({ videoId, onStop }) 
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
       />
-      <div className="absolute top-3 left-3 flex items-center gap-2">
-        <span className="px-3 py-1.5 bg-blue-600 text-white font-mono text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5 shadow-lg">
-          <span className="w-2 h-2 rounded-full bg-white animate-pulse" /> Now Playing
-        </span>
-      </div>
-      <button onClick={onStop} className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5 bg-black/70 text-white font-mono text-[10px] font-bold uppercase tracking-wider border-2 border-white/20 hover:bg-black transition-colors cursor-pointer">
-        ✕ Stop
-      </button>
     </div>
   );
 };
@@ -273,13 +264,20 @@ export const MixesView: React.FC<MixesViewProps> = ({
       <section className="max-w-[1280px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 py-8 sm:py-12 border-b border-slate-900">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-5 sm:mb-6">
           <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-white flex items-center gap-3"><span className="w-8 h-[3px] bg-blue-500 block" /> Listen in as much as you like</h2>
-          <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-blue-400 hover:text-white border-2 border-blue-500/30 hover:border-blue-500 bg-blue-500/10 hover:bg-blue-600 px-4 py-2 transition-colors cursor-pointer">
-            <Youtube className="w-3.5 h-3.5" /> Open on YouTube
-          </a>
+          <div className="flex items-center gap-2">
+            {pinnedVideoId && (
+              <button onClick={() => setPinnedVideoId(null)} className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-white bg-black/70 border-2 border-white/20 hover:bg-black px-4 py-2 transition-colors cursor-pointer">
+                ✕ Stop
+              </button>
+            )}
+            <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-blue-400 hover:text-white border-2 border-blue-500/30 hover:border-blue-500 bg-blue-500/10 hover:bg-blue-600 px-4 py-2 transition-colors cursor-pointer">
+              <Youtube className="w-3.5 h-3.5" /> Open on YouTube
+            </a>
+          </div>
         </div>
         {pinnedVideoId && (
           <div className="mb-6 sm:mb-8">
-            <NowPlayingPlayer videoId={pinnedVideoId} onStop={() => setPinnedVideoId(null)} />
+            <NowPlayingPlayer videoId={pinnedVideoId} />
           </div>
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">

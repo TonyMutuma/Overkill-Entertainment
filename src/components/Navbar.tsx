@@ -81,7 +81,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="w-8 h-8 bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-500 group-hover:border-blue-400/50 transition-colors">
             {isPlayingMix ? <Disc3 className="w-4 h-4 animate-spin text-blue-500" /> : <Activity className="w-4 h-4" />}
           </div>
-          <span className="uppercase">{siteSettings?.brandName || 'OVERKILL'}</span>
+          <span className="uppercase">OVERKILL ENTERTAINMENT</span>
         </button>
 
         <nav className="hidden md:flex items-center gap-7 lg:gap-8">
