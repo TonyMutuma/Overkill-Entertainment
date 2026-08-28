@@ -62,7 +62,7 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ isOpen, onClos
             </div>
           </div>
           <p className="font-hanken text-sm text-[#bac9cd]/70 mb-6">
-            Authenticate to manage the Overkill website. Credentials are hardcoded and not exposed as quick profiles.
+            Enter your crew credentials to continue.
           </p>
 
           {errorMsg && (
@@ -81,7 +81,7 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ isOpen, onClos
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="admin"
+                placeholder="Crew ID"
                 autoComplete="username"
                 className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-3 text-sm text-[#e5e2e1] focus:border-[#ef4444] focus:ring-1 focus:ring-[#ef4444] outline-none font-hanken"
               />
@@ -118,12 +118,11 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ isOpen, onClos
             </button>
           </form>
 
-          <div className="mt-6 pt-5 border-t border-white/5 flex items-center justify-between text-[11px] font-mono-jb text-[#bac9cd]/50">
+          <div className="mt-6 pt-5 border-t border-white/5 flex items-center text-[11px] font-mono-jb text-[#bac9cd]/50">
             <span className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              AES-256 State Persistence
+              Secure session
             </span>
-            <span>Overkill OS v2.6</span>
           </div>
         </div>
       </div>

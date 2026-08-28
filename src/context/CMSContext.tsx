@@ -65,13 +65,12 @@ const DEFAULT_SITE_SETTINGS: SiteSettings = {
   bio: 'DJ Wolverine is Nairobi’s premier high-energy selector, blending underground tech-house, Afro-tech rhythms, peak-hour club bangers, and stadium-level production discipline across East Africa and international tour stages.',
   location: 'Nairobi, Kenya & Global Tour Stages',
   heroTitle: 'UNCOMPROMISING SONIC CURATION',
-  heroSubtitle: 'Industry-standard Pioneer DJM-V10 & CDJ-3000 performance with zero-downtime hardware redundancy for club nights, festival mainstages, luxury weddings, and high-stakes corporate galas.',
+  heroSubtitle: 'Performance on Rane Twelve motorized controller decks with zero-downtime hardware redundancy for club nights, festival mainstages, luxury weddings, and high-stakes corporate galas. DJ Wolverine is proficient on most industry-standard decks.',
   heroCtaText: 'REQUEST CLEARANCE & BOOKING',
   contactEmail: 'bookings@overkill.dj',
   contactPhone: '+254 700 892 411',
   whatsappNumber: '+254700892411',
-  instagramUrl: 'https://instagram.com/djwolverine.overkill',
-  soundcloudUrl: 'https://soundcloud.com/djwolverine',
+  instagramUrl: 'https://www.instagram.com/wolverine__dj/',
   youtubeUrl: 'https://youtube.com',
   stats: {
     showsCount: '250+',
@@ -414,7 +413,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     return {
       success: false,
-      message: 'Invalid credentials. Use username "admin" and password "admin365".'
+      message: 'Invalid credentials.'
     };
   };
 
