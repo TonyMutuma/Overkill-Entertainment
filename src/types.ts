@@ -104,7 +104,6 @@ export interface PageVisibilityConfig {
     statsTicker: boolean;
     featuredMix: boolean;
     ctaBanner: boolean;
-    comparisonTable: boolean;
     addOnsBuilder: boolean;
     currencyBanner: boolean;
     audioPlayerBar: boolean;
@@ -125,6 +124,7 @@ export interface SiteSettings {
   contactPhone: string;
   whatsappNumber: string;
   instagramUrl: string;
+  twitterUrl: string;
   youtubeUrl: string;
   stats: {
     showsCount: string;
@@ -152,13 +152,6 @@ export interface VenueItem {
   name: string;
   location: string;
   logo?: string;
-}
-
-export interface ComparisonRow {
-  id: string;
-  feature: string;
-  standardDjs: string;
-  overkill: string;
 }
 
 

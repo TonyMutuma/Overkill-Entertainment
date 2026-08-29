@@ -18,6 +18,9 @@ export const TRUST_VENUES = [
   { name: 'Konqa', location: 'Nairobi', logo: '/assets/logos/konqa.png' },
   { name: 'Milan Lounge', location: 'Nairobi', logo: '/assets/logos/milan lounge.png' },
   { name: 'Quiver Lounge', location: 'Nairobi', logo: '/assets/logos/quiver lounge.png' },
+  { name: 'Eleven Eleven Lounge', location: 'Nairobi', logo: '/assets/logos/eleveneleven lounge.png' },
+  { name: 'Alchemist Lounge', location: 'Nairobi', logo: '/assets/logos/Alchemist lounge.png' },
+  { name: 'The Location Lounge', location: 'Nairobi', logo: '/assets/logos/thelocationlounge.png' },
 ];
 
 export const MIX_TRACKS: MixTrack[] = [
@@ -161,12 +164,12 @@ export const SERVICE_PACKAGES: ServicePackage[] = [
     pricePeriod: '/night',
     description: 'High-octane sets designed to destroy dancefloors.',
     idealFor: 'Nightclubs, Lounges, Underground Parties & Festival Stages',
-    features: [
-      '4-Hour Premium DJ Set',
-      'Rane Twelve Motorized Controller Decks Included',
-      'Custom Club Edits & Remixes',
-      'Advance Venue Tech Consultation'
-    ]
+      features: [
+        '4-Hour Premium DJ Set',
+        'Premium DJ Setup Included',
+        'Custom Club Edits & Remixes',
+        'Advance Venue Consultation'
+      ]
   },
   {
     id: 'corporate',
@@ -178,12 +181,12 @@ export const SERVICE_PACKAGES: ServicePackage[] = [
     pricePeriod: '/event',
     description: 'Sophisticated sonic branding for elite company events.',
     idealFor: 'Tech Summits, Product Launches, Galas & Award Banquets',
-    features: [
-      'Up to 6 Hours Coverage',
-      'Full QSC Premium Audio System (up to 300 guests)',
-      'Wireless Shure Microphones for Speeches',
-      'Brand-Aligned Playlist Curation'
-    ]
+        features: [
+          'Up to 6 Hours Coverage',
+          'Full Professional Audio System (up to 300 guests)',
+          'Wireless Microphones for Speeches',
+          'Brand-Aligned Playlist Curation'
+        ]
   },
   {
     id: 'wedding',
@@ -194,12 +197,12 @@ export const SERVICE_PACKAGES: ServicePackage[] = [
     pricePeriod: '/day',
     description: 'Unforgettable soundtracks for uncompromising couples.',
     idealFor: 'Luxury Weddings, Rehearsal Dinners & High-End Private Celebrations',
-    features: [
-      'Ceremony, Cocktail & Reception Coverage',
-      'Multi-Zone Audio Systems (Up to 3 setups)',
-      'Professional MC Duties',
-      'In-Depth Music Planning Sessions'
-    ]
+        features: [
+          'Ceremony, Cocktail & Reception Coverage',
+          'Multi-Zone Sound Coverage (Up to 3 areas)',
+          'Professional MC Duties',
+          'In-Depth Music Planning Sessions'
+        ]
   }
 ];
 
@@ -215,7 +218,7 @@ export const ADD_ON_ITEMS: AddOnItem[] = [
     id: 'lighting-rig',
     name: 'Concert-Grade Moving Head Lighting Rig',
     price: 650,
-    description: 'Synchronized DMX moving heads, uplights & ambient haze atmosphere.',
+    description: 'Synchronized moving-head lighting, uplights & ambient haze atmosphere.',
     iconName: 'highlight'
   },
   {
@@ -246,7 +249,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: 'faq-1',
     category: 'Technical',
     question: 'Technical & Sound System Requirements',
-    answer: 'We demand uncompromising audio fidelity. The venue must provide a high-tier professional sound system (e.g., L-Acoustics, d&b audiotechnik, QSC K-Series, or Funktion-One) capable of sustaining 110dB+ at the mix position without distortion. DJ Wolverine performs on his own Rane Twelve motorized controller decks and is proficient on most industry-standard decks, so he can adapt to whatever the venue supplies. A detailed technical rider specifying exact mixer requirements will be attached to the contract. For corporate and wedding packages, we provide our own self-contained top-tier QSC audio system.'
+      answer: 'We deliver uncompromising, room-filling sound. We arrive fully self-contained with a professional audio system sized to your guest count and venue, and we adapt seamlessly to whatever the space provides. A simple technical rider with the essentials is attached to the contract so setup is effortless. For corporate and wedding packages, the full sound system is included.'
   },
   {
     id: 'faq-2',
@@ -282,34 +285,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: 'faq-7',
     category: 'Redundancy',
     question: 'Backup Gear & Redundancy Protocol',
-    answer: 'We carry dual cloned high-speed SSD drives, emergency hardware controllers, isolated power conditioning, and secondary audio transmitters on-site. Zero downtime is guaranteed under our operational charter.'
+    answer: 'We travel with complete backup of all performance files and emergency backup hardware on-site. Zero downtime is guaranteed under our operational charter.'
   }
 ];
 
-export const COMPARISON_TABLE = [
-  {
-    feature: 'Crowd Reading',
-    standardDjs: 'Non-existent / Reactive',
-    overkill: 'Proactive & Intuitive (Instant energy calibration)'
-  },
-  {
-    feature: 'Equipment Quality',
-    standardDjs: 'Basic Plastic Controllers & Consumer Speakers',
-    overkill: 'Rane Twelve Motorized Controller Decks + QSC/L-Acoustics'
-  },
-  {
-    feature: 'Mixing Style',
-    standardDjs: 'Basic Fade In / Fade Out & Spotify Playlists',
-    overkill: 'Seamless, High-Energy Blends, Key Matching & Custom Club VIPs'
-  },
-  {
-    feature: 'Audio Redundancy',
-    standardDjs: 'Single laptop with potential crash points',
-    overkill: 'Full dual-system hardware redundancy & zero downtime protocol'
-  },
-  {
-    feature: 'Vibe & Atmosphere',
-    standardDjs: 'Background Noise / Generic wedding tunes',
-    overkill: 'Electric, Unforgettable, Stadium-Grade Stage Presence'
-  }
-];

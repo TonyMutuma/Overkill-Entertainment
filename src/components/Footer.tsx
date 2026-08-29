@@ -44,7 +44,7 @@ export const Footer: React.FC<FooterProps> = ({
           <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-md font-sans">
             © 2026 {siteSettings?.brandName || 'Overkill Entertainment'}. All Rights Reserved. Resident Selector: {siteSettings?.djName || 'DJ Wolverine'} ({siteSettings?.location || 'Nairobi, Kenya'}).
           </p>
-          <div className="text-[10px] text-slate-500 font-mono uppercase tracking-wider">Hardware: 2× Rane Twelve Motorized Controller Decks • Dual Shockproof Backup Stacks</div>
+          <div className="text-[10px] text-slate-500 font-mono uppercase tracking-wider">{siteSettings?.location || 'Nairobi, Kenya'}</div>
         </div>
         <div className="md:col-span-3 flex flex-col gap-3">
           <div className="font-mono text-[10px] text-blue-500 uppercase tracking-[0.2em] font-bold">Navigation</div>
@@ -56,6 +56,7 @@ export const Footer: React.FC<FooterProps> = ({
         <div className="md:col-span-3 flex flex-col items-start md:items-end gap-4">
           <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-slate-500 font-mono">
             {siteSettings?.instagramUrl && <a href={siteSettings.instagramUrl} target="_blank" rel="noreferrer" className="hover:text-white transition-colors uppercase tracking-wider font-bold">Instagram</a>}
+            {siteSettings?.twitterUrl && <a href={siteSettings.twitterUrl} target="_blank" rel="noreferrer" className="hover:text-white transition-colors uppercase tracking-wider font-bold">X / Twitter</a>}
             <button onClick={handleContactOrBooking} className="hover:text-white transition-colors cursor-pointer uppercase tracking-wider font-bold">Book Now</button>
           </div>
           <button onClick={handleCrewAccess} className="flex items-center gap-2 px-4 py-2 bg-[#0b0f17] border-2 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 text-xs font-mono uppercase tracking-wider transition-colors cursor-pointer">

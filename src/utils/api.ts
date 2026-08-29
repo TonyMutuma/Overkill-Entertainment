@@ -26,7 +26,6 @@ export const api = {
   getAddOnItems: () => req('/add-ons'),
   getFaqItems: () => req('/faqs'),
   getVenues: () => req('/venues'),
-  getComparison: () => req('/comparison'),
   getCalendarOverrides: () => req('/calendar-overrides'),
   getSiteSettings: () => req('/site-settings'),
   getPageVisibility: () => req('/page-visibility'),

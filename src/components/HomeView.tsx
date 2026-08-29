@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavTab, MixTrack } from '../types';
-import { TRUST_VENUES, COMPARISON_TABLE, DJ_ASSETS } from '../data/mockData';
+import { TRUST_VENUES, DJ_ASSETS } from '../data/mockData';
+import { useCMS } from '../context/CMSContext';
 import { X, CheckCircle2, Sliders, Zap, ShieldCheck, ArrowUpRight } from 'lucide-react';
 import { VertexCorners } from './VertexCorners';
 
@@ -19,6 +20,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onNavigateToMixes,
   onOpenBooking
 }) => {
+  const { siteSettings } = useCMS();
   const navigate = (tab: NavTab) => {
     if (tab === 'mixes' && onNavigateToMixes) {
       onNavigateToMixes();
@@ -98,45 +100,39 @@ export const HomeView: React.FC<HomeViewProps> = ({
               </p>
               {(() => {
                 const renderVenue = (venue, idx) => {
-                  const fileName = venue.logo?.split('/').pop() || '';
-                  const isLarger = ['quiver lounge.png', 'milan lounge.png', 'Farenheit lounge.png'].includes(fileName);
-                  const isXLarge = fileName === 'Farenheit lounge.png';
-                  const isTopRow = ['Milan Lounge', 'Konqa'].includes(venue.name);
+                  const isAlchemist = venue.name === 'Alchemist Lounge';
                   return (
-                    <div key={idx} className="group flex items-center">
-                      {venue.logo ? (
-                        <img
-                          src={venue.logo}
-                          alt={venue.name}
-                          className={`w-auto object-contain brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity ${isTopRow ? 'h-16 sm:h-20' : isXLarge ? 'h-20 sm:h-28' : isLarger ? 'h-14 sm:h-16' : 'h-11 sm:h-14'}`}
-                        />
-                      ) : (
-                        <div className="text-left">
-                          <span className="font-serif text-sm sm:text-base md:text-lg font-bold tracking-widest text-slate-300 group-hover:text-white transition-colors uppercase">
-                            {venue.name}
+                  <div key={idx} className="group flex items-center">
+                    {venue.logo ? (
+                      <img
+                        src={venue.logo}
+                        alt={venue.name}
+                        className={`w-auto object-contain brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity ${isAlchemist ? 'h-16 sm:h-20' : 'h-12 sm:h-16'}`}
+                      />
+                    ) : (
+                      <div className="text-left">
+                        <span className="font-serif text-sm sm:text-base md:text-lg font-bold tracking-widest text-slate-300 group-hover:text-white transition-colors uppercase">
+                          {venue.name}
+                        </span>
+                        {venue.location && (
+                          <span className="block font-mono text-[9px] sm:text-[10px] text-slate-500 mt-0.5 font-bold">
+                            {venue.location}
                           </span>
-                          {venue.location && (
-                            <span className="block font-mono text-[9px] sm:text-[10px] text-slate-500 mt-0.5 font-bold">
-                              {venue.location}
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  );
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
                 };
-                const rowOne = ['Milan Lounge', 'Konqa']
-                  .map((n) => TRUST_VENUES.find((v) => v.name === n))
-                  .filter(Boolean);
-                const rowTwo = ['Cavalli Lounge', 'Farenheit Lounge', 'Quiver Lounge']
-                  .map((n) => TRUST_VENUES.find((v) => v.name === n))
-                  .filter(Boolean);
+                const half = Math.ceil(TRUST_VENUES.length / 2);
+                const rowOne = TRUST_VENUES.slice(0, half);
+                const rowTwo = TRUST_VENUES.slice(half);
                 return (
                   <>
-                    <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-10 opacity-70 mb-6 sm:mb-8">
+                    <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-6 sm:gap-x-12 sm:gap-y-8 opacity-70 mb-6 sm:mb-8">
                       {rowOne.map(renderVenue)}
                     </div>
-                    <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-10 opacity-70">
+                    <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-6 sm:gap-x-12 sm:gap-y-8 opacity-70">
                       {rowTwo.map(renderVenue)}
                     </div>
                   </>
@@ -147,14 +143,76 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-      {/* 3. Problem / Solution Comparison */}
+      {/* 2. DJ Profile */}
+      <section className="py-12 sm:py-20 px-4 md:px-16 max-w-[1280px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
+          {/* Portrait */}
+          <div className="relative vertex-card border-2 border-slate-700/60 overflow-hidden">
+            <VertexCorners variant="blue" size={22} thickness={2.6} />
+            <img
+              src="/assets/DjWolverine.png"
+              alt="DJ Wolverine"
+              className="w-full h-[320px] sm:h-[440px] object-cover object-[50%_20%]"
+            />
+          </div>
+
+          {/* Bio */}
+          <div>
+            <span className="font-mono text-[10px] sm:text-xs text-blue-500 uppercase tracking-[0.2em] mb-2 block font-bold">
+              THE RESIDENT SELECTOR
+            </span>
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4">
+              Meet {siteSettings?.djName || 'DJ Wolverine'}
+            </h2>
+            <p className="font-sans text-slate-400 font-normal text-sm sm:text-base leading-relaxed mb-6">
+              With over a decade behind the decks, {siteSettings?.djName || 'DJ Wolverine'} has become one of East Africa&apos;s most in-demand selectors — crafting unforgettable atmospheres for club nights, festival mainstages, luxury weddings, and high-stakes corporate galas. He doesn&apos;t just play music; he reads the room and becomes part of the energy.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-8">
+              {[
+                '10+ Years Behind The Decks',
+                'Master Crowd Reader',
+                'Versatile Across Genres',
+                'Elite, Insured Professionalism'
+              ].map((s) => (
+                <div key={s} className="flex items-center gap-3 bg-[#0b0f17] border border-slate-700/60 px-4 py-3">
+                  <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0" />
+                  <span className="font-sans text-xs sm:text-sm text-slate-200 font-medium">{s}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              {siteSettings?.instagramUrl && (
+                <a href={siteSettings.instagramUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 bg-white text-black font-bold text-xs uppercase tracking-wider px-5 py-3 rounded-xl hover:bg-slate-200 transition-colors cursor-pointer">
+                  Instagram
+                </a>
+              )}
+              {siteSettings?.twitterUrl && (
+                <a href={siteSettings.twitterUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 bg-[#0b0f17] border border-slate-700 text-white font-bold text-xs uppercase tracking-wider px-5 py-3 rounded-xl hover:border-white/40 transition-colors cursor-pointer">
+                  X / Twitter
+                </a>
+              )}
+              <button
+                onClick={handleBooking}
+                className="inline-flex items-center gap-2 bg-blue-600 text-white font-bold text-xs uppercase tracking-wider px-5 py-3 rounded-xl hover:bg-blue-700 transition-colors cursor-pointer"
+              >
+                Book {siteSettings?.djName?.split(' ').pop() || 'DJ Wolverine'}
+                <ArrowUpRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. Problem / Solution */}
       <section className="py-12 sm:py-20 px-4 md:px-16 max-w-[1280px] mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
           <span className="font-mono text-[10px] sm:text-xs text-blue-500 uppercase tracking-[0.2em] mb-2 block font-bold">
             THE OVERKILL DIFFERENCE
           </span>
           <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-white tracking-tight font-bold capitalize">
-            why your event&apos;s odds are at stake.
+            what makes the night unforgettable.
           </h2>
         </div>
 
@@ -173,20 +231,20 @@ export const HomeView: React.FC<HomeViewProps> = ({
               The Problem
             </h3>
             <p className="font-sans text-slate-400 mb-5 leading-relaxed font-normal text-xs sm:text-sm relative z-10">
-              Most DJs play for themselves, not the crowd. They ignore the vibe, kill the momentum, and leave your guests checking their watches.
+              A flat set kills the mood. When the music misses the moment, the energy dips, the dancefloor empties, and the night never quite lands.
             </p>
             <ul className="space-y-3 font-sans text-xs sm:text-sm text-slate-300 font-medium relative z-10">
               <li className="flex items-center gap-3">
                 <X className="w-4 h-4 text-blue-500 shrink-0" />
-                <span>Awkward, jarring track transitions & trainwrecks</span>
+                <span>Music that clashes with the room&apos;s shifting energy</span>
               </li>
               <li className="flex items-center gap-3">
                 <X className="w-4 h-4 text-blue-500 shrink-0" />
-                <span>Ignoring the room&apos;s shifting demographics & energy</span>
+                <span>Gaps in momentum that kill the vibe</span>
               </li>
               <li className="flex items-center gap-3">
                 <X className="w-4 h-4 text-blue-500 shrink-0" />
-                <span>Unreliable equipment, bad audio cables & amateur attitudes</span>
+                <span>A soundtrack that feels generic instead of unforgettable</span>
               </li>
             </ul>
           </div>
@@ -218,7 +276,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               </li>
               <li className="flex items-center gap-3">
                 <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0" />
-                <span>Elite-tier professional reliability & concert audio gear</span>
+                <span>Elite-tier professional reliability & magnetic showmanship</span>
               </li>
             </ul>
           </div>
@@ -249,9 +307,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
               <h3 className="font-serif text-lg sm:text-xl font-bold mb-2 text-white relative z-10">
                 Sonic Precision
               </h3>
-              <p className="font-sans text-slate-400 font-normal text-xs sm:text-sm leading-relaxed relative z-10">
-                Every transition is flawless. We run on Rane Twelve motorized controller decks to ensure absolute audio clarity, harmonic key matching, and immense bass impact on any sound system. DJ Wolverine is proficient on most industry-standard decks.
-              </p>
+                <p className="font-sans text-slate-400 font-normal text-xs sm:text-sm leading-relaxed relative z-10">
+                  Every transition is flawless. DJ Wolverine reads the room and blends the perfect harmonic mix to keep the floor locked in — whether it&apos;s deep house, Amapiano, Afro-tech, or timeless 90s RnB.
+                </p>
             </div>
 
             <div className="vertex-card bg-[#0b0f17] p-6 sm:p-8 border-2 border-slate-700/60 relative overflow-hidden">
@@ -275,84 +333,32 @@ export const HomeView: React.FC<HomeViewProps> = ({
               <h3 className="font-serif text-lg sm:text-xl font-bold mb-2 text-white relative z-10">
                 Ironclad Reliability
               </h3>
-              <p className="font-sans text-slate-400 font-normal text-xs sm:text-sm leading-relaxed relative z-10">
-                Punctual, fully insured, and prepared with dual backup hardware. We over-deliver because &apos;good enough&apos; is not in our vocabulary.
-              </p>
+                <p className="font-sans text-slate-400 font-normal text-xs sm:text-sm leading-relaxed relative z-10">
+                  Punctual, fully insured, and always fully prepared with backup plans. We over-deliver because &apos;good enough&apos; is not in our vocabulary.
+                </p>
             </div>
 
             <div className="vertex-card md:col-span-2 bg-[#0b0f17] border-2 border-slate-700/60 relative min-h-[160px] sm:min-h-[180px] flex items-center p-6 sm:p-8 overflow-hidden">
               <VertexCorners variant="muted" size={20} />
               <img
-                src={DJ_ASSETS.djMixerGear}
-                alt="DJ Wolverine Rig Setup"
+                src={DJ_ASSETS.djPerformingCrowd}
+                alt="DJ Wolverine performing for the crowd"
                 className="absolute inset-0 w-full h-full object-cover opacity-[0.08]"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-[#0b0f17] via-[#0b0f17]/85 to-[#0b0f17]/40 pointer-events-none" />
               <div className="relative z-10 max-w-lg">
                 <span className="text-blue-500 font-mono text-[10px] uppercase tracking-widest block mb-1.5 font-bold">
-                  Hardware & Rig
+                  The Connection
                 </span>
                 <h3 className="font-serif text-lg sm:text-xl font-bold mb-2 text-white">
-                  Concert-Tier Setup
+                  He Doesn&apos;t Just Play — He Reads The Room
                 </h3>
                 <p className="font-sans text-slate-400 font-normal text-xs sm:text-sm leading-relaxed">
-                  State-of-the-art QSC active audio line arrays, Shure dual digital wireless microphones, and dynamic DMX-controlled lighting designed to elevate the venue.
+                  A decade of reading crowds across clubs, festivals, and private stages means DJ Wolverine becomes part of the energy — lifting the room exactly when it needs it.
                 </p>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* 5. Comparison Table */}
-      <section className="py-12 sm:py-20 px-4 md:px-16 max-w-[1280px] mx-auto">
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
-          <span className="font-mono text-[10px] sm:text-xs text-blue-500 uppercase tracking-[0.2em] mb-2 block font-bold">
-            DIRECT COMPARISON
-          </span>
-          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 sm:mb-3">
-            The Overkill Standard
-          </h2>
-          <p className="font-sans text-slate-400 font-normal text-xs sm:text-sm">
-            See how DJ Wolverine compares against average options and standard playlist operators.
-          </p>
-        </div>
-
-        <div className="vertex-card overflow-x-auto border-2 border-slate-800 bg-[#0b0f17]"><VertexCorners variant="slate" size={18} />
-          <table className="w-full text-left border-collapse min-w-[500px] sm:min-w-[600px]">
-            <thead>
-              <tr className="border-b border-slate-800">
-                <th className="p-4 sm:p-5 font-serif text-xs sm:text-base text-slate-300 w-1/3 font-bold">Feature</th>
-                <th className="p-4 sm:p-5 font-serif text-xs sm:text-base text-slate-500 w-1/3 text-center font-bold">
-                  Playlist Apps / Average DJs
-                </th>
-                <th className="p-4 sm:p-5 font-serif text-xs sm:text-base text-blue-500 w-1/3 text-center bg-blue-950/20 border-x border-slate-800 font-bold">
-                  Overkill (DJ Wolverine)
-                </th>
-              </tr>
-            </thead>
-            <tbody className="font-sans text-[11px] sm:text-sm">
-              {COMPARISON_TABLE.map((row, i) => (
-                <tr key={i} className="border-b border-slate-800/60 last:border-0 hover:bg-slate-900/30 transition-colors">
-                  <td className="p-4 sm:p-5 text-slate-200 font-semibold">{row.feature}</td>
-                  <td className="p-4 sm:p-5 text-center text-slate-500 font-medium">{row.standardDjs}</td>
-                  <td className="p-4 sm:p-5 text-center text-white bg-blue-950/10 border-x border-slate-800 font-bold">
-                    {row.overkill}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="mt-8 sm:mt-12 text-center">
-          <button
-            onClick={handleBooking}
-            className="w-full sm:w-auto bg-white text-black font-bold text-xs sm:text-sm px-8 py-4 rounded-xl hover:bg-slate-200 transition-all duration-200 cursor-pointer uppercase tracking-wider inline-flex items-center justify-center gap-2 shadow-[0_8px_24px_rgba(255,255,255,0.12)]"
-          >
-            Secure Your Date With DJ Wolverine
-            <ArrowUpRight className="w-4 h-4" />
-          </button>
         </div>
       </section>
     </div>

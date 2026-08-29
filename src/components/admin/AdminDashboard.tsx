@@ -37,7 +37,7 @@ import {
   CheckCircle2,
   RefreshCw
 } from 'lucide-react';
-import { MixTrack, ServicePackage, AddOnItem, FaqItem, VenueItem, ComparisonRow, StoredBookingInquiry } from '../../types';
+import { MixTrack, ServicePackage, AddOnItem, FaqItem, VenueItem, StoredBookingInquiry } from '../../types';
 
 type AdminTab =
   | 'overview'
@@ -134,8 +134,6 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
     addVenue,
     updateVenue,
     deleteVenue,
-    comparisonTable,
-    updateComparisonRow,
     bookingInquiries,
     updateInquiryStatus,
     deleteInquiry,
@@ -226,7 +224,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
     { id: 'packages', label: 'Pricing & Add-Ons', icon: DollarSign, count: servicePackages.length },
     { id: 'calendar', label: 'Tour Dates & Inquiries', icon: CalendarIcon, count: bookingInquiries.filter(i => i.status === 'new').length },
     { id: 'faqs', label: 'FAQ & Tech Riders', icon: HelpCircle, count: faqItems.length },
-    { id: 'venues', label: 'Venues & Comparison', icon: ShieldCheck },
+    { id: 'venues', label: 'Venues', icon: ShieldCheck },
     { id: 'backup', label: 'Backup, Import & Reset', icon: Settings }
   ];
 
@@ -664,7 +662,6 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                         { key: 'statsTicker', label: 'Key Statistics Strip', desc: '250+ shows, 80K+ plays counter' },
                         { key: 'featuredMix', label: 'Featured Mix Spotlight', desc: 'Neon Nights Vol. 4 highlight' },
                         { key: 'ctaBanner', label: 'Bottom Booking Banner', desc: 'High-octane clearance CTA card' },
-                        { key: 'comparisonTable', label: 'DJs Comparison Table', desc: 'Standard DJs vs OVERKILL specs' },
                         { key: 'addOnsBuilder', label: 'Custom Add-Ons Picker', desc: 'Lighting, Sax, CO2 add-on list' },
                         { key: 'currencyBanner', label: 'Currency & Geo Bar', desc: 'KES/USD dynamic localized rate' },
                         { key: 'audioPlayerBar', label: 'Bottom Audio Bar', desc: 'Persistent player bar with waveforms' },
@@ -878,6 +875,17 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           type="url"
                           value={siteSettings.instagramUrl}
                           onChange={(e) => updateSiteSettings({ instagramUrl: e.target.value })}
+                          className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#ef4444] outline-none font-mono-jb"
+                        />
+                      </div>
+                      <div>
+                        <label className="block font-mono-jb text-xs text-[#bac9cd] mb-1.5">
+                          X / Twitter Profile URL
+                        </label>
+                        <input
+                          type="url"
+                          value={siteSettings.twitterUrl}
+                          onChange={(e) => updateSiteSettings({ twitterUrl: e.target.value })}
                           className="w-full bg-[#1c1b1b] border border-white/10 rounded-xl px-3 py-2 text-xs text-[#e5e2e1] focus:border-[#ef4444] outline-none font-mono-jb"
                         />
                       </div>
@@ -1803,10 +1811,10 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                 <div>
                   <h2 className="font-sora text-xl font-bold text-[#e5e2e1] mb-1 flex items-center gap-2">
                     <ShieldCheck className="w-5 h-5 text-[#ef4444]" />
-                    Trusted Venues Bar & Competitive Comparison
+                    Trusted Venues & Residencies
                   </h2>
                   <p className="font-hanken text-xs text-[#bac9cd]/70">
-                    Edit residency venues displayed in the trust strip and customize the differentiation matrix.
+                    Edit residency venues displayed in the trust strip.
                   </p>
                 </div>
 
@@ -1852,54 +1860,6 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Comparison Matrix */}
-                <div className="p-5 rounded-2xl bg-[#161616] border border-white/10 space-y-4">
-                  <h3 className="font-sora text-sm font-bold text-[#fecaca]">
-                    2. Standard DJs vs OVERKILL Comparison Rows
-                  </h3>
-                  <div className="space-y-3">
-                    {comparisonTable.map((row) => (
-                      <div
-                        key={row.id}
-                        className="p-4 rounded-xl bg-[#1c1b1b] border border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-3 items-center"
-                      >
-                        <div>
-                          <span className="font-mono-jb text-[10px] text-[#bac9cd]/60 uppercase">
-                            Feature / Aspect
-                          </span>
-                          <div className="font-sora text-xs font-bold text-[#e5e2e1]">
-                            {row.feature}
-                          </div>
-                        </div>
-
-                        <div>
-                          <span className="font-mono-jb text-[10px] text-rose-400/80 uppercase">
-                            Standard DJs
-                          </span>
-                          <input
-                            type="text"
-                            value={row.standardDjs}
-                            onChange={(e) => updateComparisonRow(row.id, { standardDjs: e.target.value })}
-                            className="w-full bg-[#121212] border border-white/10 rounded-lg px-2.5 py-1 text-xs text-[#bac9cd]"
-                          />
-                        </div>
-
-                        <div>
-                          <span className="font-mono-jb text-[10px] text-[#ef4444] uppercase">
-                            OVERKILL (DJ Wolverine)
-                          </span>
-                          <input
-                            type="text"
-                            value={row.overkill}
-                            onChange={(e) => updateComparisonRow(row.id, { overkill: e.target.value })}
-                            className="w-full bg-[#121212] border border-[#ef4444]/30 rounded-lg px-2.5 py-1 text-xs text-[#fecaca] font-semibold"
-                          />
-                        </div>
                       </div>
                     ))}
                   </div>

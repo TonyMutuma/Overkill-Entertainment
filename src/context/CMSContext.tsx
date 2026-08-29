@@ -9,7 +9,6 @@ import {
   AddOnItem,
   FaqItem,
   VenueItem,
-  ComparisonRow,
   StoredBookingInquiry,
   BookingSubmission
 } from '../types';
@@ -19,8 +18,7 @@ import {
   SERVICE_PACKAGES,
   ADD_ON_ITEMS,
   FAQ_ITEMS,
-  TRUST_VENUES,
-  COMPARISON_TABLE
+  TRUST_VENUES
 } from '../data/mockData';
 
 export const CREW_USERS: AdminUser[] = [
@@ -48,7 +46,6 @@ const DEFAULT_PAGE_VISIBILITY: PageVisibilityConfig = {
     statsTicker: true,
     featuredMix: true,
     ctaBanner: true,
-    comparisonTable: true,
     addOnsBuilder: true,
     currencyBanner: true,
     audioPlayerBar: true,
@@ -63,12 +60,13 @@ const DEFAULT_SITE_SETTINGS: SiteSettings = {
   bio: 'DJ Wolverine is Nairobi’s premier high-energy selector, blending underground tech-house, Afro-tech rhythms, peak-hour club bangers, and stadium-level production discipline across East Africa and international tour stages.',
   location: 'Nairobi, Kenya & Global Tour Stages',
   heroTitle: 'UNCOMPROMISING SONIC CURATION',
-  heroSubtitle: 'Performance on Rane Twelve motorized controller decks with zero-downtime hardware redundancy for club nights, festival mainstages, luxury weddings, and high-stakes corporate galas. DJ Wolverine is proficient on most industry-standard decks.',
+  heroSubtitle: 'A decade behind the decks crafting unforgettable atmospheres for club nights, festival mainstages, luxury weddings, and high-stakes corporate galas — reading the room and delivering the perfect vibe every single time.',
   heroCtaText: 'REQUEST CLEARANCE & BOOKING',
   contactEmail: 'bookings@overkill.dj',
   contactPhone: '+254 700 892 411',
   whatsappNumber: '+254700892411',
   instagramUrl: 'https://www.instagram.com/wolverine__dj/',
+  twitterUrl: 'https://x.com/djwolverine_ke',
   youtubeUrl: 'https://youtube.com',
   stats: {
     showsCount: '250+',
@@ -83,13 +81,6 @@ const INITIAL_VENUES: VenueItem[] = TRUST_VENUES.map((v, i) => ({
   name: v.name,
   location: v.location,
   logo: v.logo
-}));
-
-const INITIAL_COMPARISON: ComparisonRow[] = COMPARISON_TABLE.map((row, i) => ({
-  id: `comp-${i + 1}`,
-  feature: row.feature,
-  standardDjs: row.standardDjs,
-  overkill: row.overkill
 }));
 
 const INITIAL_INQUIRIES: StoredBookingInquiry[] = [
@@ -192,10 +183,6 @@ interface CMSContextType {
   updateVenue: (id: string, venue: Partial<VenueItem>) => void;
   deleteVenue: (id: string) => void;
 
-  // Comparison
-  comparisonTable: ComparisonRow[];
-  updateComparisonRow: (id: string, row: Partial<ComparisonRow>) => void;
-
   // Booking Inquiries
   bookingInquiries: StoredBookingInquiry[];
   addBookingInquiry: (submission: BookingSubmission) => void;
@@ -220,7 +207,6 @@ const STORAGE_KEYS = {
   ADDONS: 'overkill_addons_v2',
   FAQS: 'overkill_faqs_v2',
   VENUES: 'overkill_venues_v2',
-  COMPARISON: 'overkill_comparison_v2',
   CALENDAR: 'overkill_calendar_overrides_v2',
   INQUIRIES: 'overkill_inquiries_v2',
 };
@@ -311,15 +297,6 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return INITIAL_VENUES;
   });
 
-  // Comparison
-  const [comparisonTable, setComparisonTable] = useState<ComparisonRow[]>(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEYS.COMPARISON);
-      if (saved) return JSON.parse(saved);
-    } catch (e) {}
-    return INITIAL_COMPARISON;
-  });
-
   // Calendar overrides
   const [calendarOverrides, setCalendarOverrides] = useState<Record<string, { status: 'available' | 'booked' | 'restricted'; notes?: string }>>(() => {
     try {
@@ -384,10 +361,6 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.VENUES, JSON.stringify(trustVenues));
   }, [trustVenues]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.COMPARISON, JSON.stringify(comparisonTable));
-  }, [comparisonTable]);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.CALENDAR, JSON.stringify(calendarOverrides));
@@ -601,13 +574,6 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setTrustVenues((prev) => prev.filter((v) => v.id !== id));
   };
 
-  // Comparison
-  const updateComparisonRow = (id: string, updated: Partial<ComparisonRow>) => {
-    setComparisonTable((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, ...updated } : c))
-    );
-  };
-
   // Inquiries
   const addBookingInquiry = (submission: BookingSubmission) => {
     const newInquiry: StoredBookingInquiry = {
@@ -639,7 +605,6 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setAddOnItems(ADD_ON_ITEMS);
     setFaqItems(FAQ_ITEMS);
     setTrustVenues(INITIAL_VENUES);
-    setComparisonTable(INITIAL_COMPARISON);
     setCalendarOverrides({});
   };
 
@@ -653,7 +618,6 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       addOnItems,
       faqItems,
       trustVenues,
-      comparisonTable,
       calendarOverrides,
       bookingInquiries,
       exportedAt: new Date().toISOString()
@@ -672,7 +636,6 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (data.addOnItems) setAddOnItems(data.addOnItems);
       if (data.faqItems) setFaqItems(data.faqItems);
       if (data.trustVenues) setTrustVenues(data.trustVenues);
-      if (data.comparisonTable) setComparisonTable(data.comparisonTable);
       if (data.calendarOverrides) setCalendarOverrides(data.calendarOverrides);
       if (data.bookingInquiries) setBookingInquiries(data.bookingInquiries);
       return { success: true };
@@ -733,9 +696,6 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         addVenue,
         updateVenue,
         deleteVenue,
-
-        comparisonTable,
-        updateComparisonRow,
 
         bookingInquiries,
         addBookingInquiry,
