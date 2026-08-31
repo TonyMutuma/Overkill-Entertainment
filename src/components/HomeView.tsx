@@ -41,7 +41,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   };
 
   return (
-    <div className="w-full bg-[#070b11] text-white selection:bg-blue-600 selection:text-white overflow-x-hidden">
+    <div className="w-full bg-[#18181B] text-[#A1A1A6] selection:bg-[#2563eb]/30 selection:text-white overflow-x-hidden">
       {/* 1. Mobile-First Hero Section */}
       <section className="relative min-h-[calc(100vh-70px)] flex items-end md:items-center overflow-hidden pt-20 sm:pt-24 pb-12">
         
@@ -86,7 +86,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
               <button
                 onClick={() => navigate('mixes')}
-                className="text-white font-bold text-[10px] sm:text-xs md:text-sm px-4 sm:px-4 py-3 sm:py-3 rounded-xl hover:text-blue-500 transition-colors duration-200 cursor-pointer uppercase tracking-wide sm:tracking-wider underline underline-offset-8 text-center border border-white/10 hover:border-white/15 hover:bg-white/[0.04] whitespace-nowrap"
+                className="text-white font-bold text-[10px] sm:text-xs md:text-sm px-4 sm:px-4 py-3 sm:py-3 rounded-xl hover:text-[#A1A1A6] transition-colors duration-200 cursor-pointer uppercase tracking-wide sm:tracking-wider underline underline-offset-8 text-center border border-white/10 hover:border-white/15 hover:bg-white/[0.04] whitespace-nowrap"
               >
                 <span className="sm:hidden">MIXES</span>
                 <span className="hidden sm:inline">Explore Mixes</span>
@@ -175,7 +175,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
           {/* Bio */}
           <div>
-            <span className="font-mono text-[10px] sm:text-xs text-blue-500 uppercase tracking-[0.2em] mb-2 block font-bold">
+            <span className="font-mono text-[10px] sm:text-xs text-[#A1A1A6] uppercase tracking-[0.2em] mb-2 block font-bold">
               THE RESIDENT SELECTOR
             </span>
             <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4">
@@ -193,7 +193,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 'Elite, Insured Professionalism'
               ].map((s) => (
                 <div key={s} className="flex items-center gap-3 bg-[#0b0f17] border border-slate-700/60 px-4 py-3">
-                  <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-[#A1A1A6] shrink-0" />
                   <span className="font-sans text-xs sm:text-sm text-slate-200 font-medium">{s}</span>
                 </div>
               ))}
@@ -222,10 +222,103 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-      {/* 3. Problem / Solution */}
+      {/* 3. Apple Podcasts Playlist */}
+      <section className="py-12 sm:py-20 bg-[#0f0f13] border-y border-slate-900">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-16">
+          <div className="text-center mb-10 sm:mb-14">
+            <span className="font-mono text-[10px] sm:text-xs text-slate-500 uppercase tracking-[0.2em] mb-2 block font-bold">
+              CURATED PLAYLISTS
+            </span>
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight">
+              DJ Wolverine Mixes
+            </h2>
+            <p className="font-sans text-slate-400 max-w-xl mx-auto text-xs sm:text-sm font-normal">
+              Listen to handcrafted mixes across club nights, festivals, and special events.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            <div className="vertex-card bg-[#0b0f17] border-2 border-slate-700/60 rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+              <VertexCorners variant="muted" size={20} />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/90 to-[#0b0f17]/50 pointer-events-none" />
+              <iframe
+                src="https://podcasts.apple.com/ke/podcast/dj-wolverine-mixes/id1707262780"
+                style={{ border: 0, width: '100%', height: '400px' }}
+                allowFullScreen
+                allow="autoplay"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-[#0b0f17]/80 backdrop-blur-sm border-t border-slate-700/50 p-4 sm:p-6">
+                <h3 className="font-serif text-xl font-bold text-white mb-1">
+                  Dj Wolverine Mixes
+                </h3>
+                <p className="font-sans text-slate-400 text-sm leading-relaxed">
+                  Available on Apple Podcasts — handcrafted mixes for every occasion.
+                </p>
+                <a
+                  href="https://podcasts.apple.com/ke/podcast/dj-wolverine-mixes/id1707262780"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 text-[#2563eb] text-sm font-medium underline underline-offset-2 hover:italic transition-colors"
+                >
+                  Listen on Apple Podcasts
+                  <svg
+                    className="w-3.5 h-3.5"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d="M7.41 8.59L12 12.59l4.59-3.98a.75.75 0 0 1 1.06 0l5.25 4.5a.75.75 0 0 1 0 1.06l-5 4.16a.75.75 0 0 1-1.06-.65L16.27 19 12 15.71 7.41 12.31a.75.75 0 0 1-.65-1.06l5.25-4.16a.75.75 0 0 1 0-1.06l-5.25-4.51z" />
+                    <path d="M2.31 4.75A.75.75 0 0 1 3 4.5h10.1l-.63-.16a.75.75 0 0 1-.67-.65H3a.75.75 0 0 1-.75-.75z" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <div className="vertex-card bg-[#0b0f17] border-2 border-slate-700/60 rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+              <VertexCorners variant="muted" size={20} />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/90 to-[#0b0f17]/50 pointer-events-none" />
+              <iframe
+                src="httpspodcasts.apple.com/ke/podcast/dj-wolverine-mixes/id1707262780"
+                style={{ border: 0, width: '100%', height: '350px' }}
+                allowFullScreen
+                allow="autoplay"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-[#0b0f17]/80 backdrop-blur-sm border-t border-slate-700/50 p-4 sm:p-6">
+                <h3 className="font-serif text-xl font-bold text-white mb-1">
+                  Featured Mix 01
+                </h3>
+                <p className="font-sans text-slate-400 text-sm leading-relaxed">
+                  A journey through deep house and Afro-tech rhythms.
+                </p>
+              </div>
+            </div>
+
+            <div className="vertex-card bg-[#0b0f17] border-2 border-slate-700/60 rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+              <VertexCorners variant="muted" size={20} />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/90 to-[#0b0f17]/50 pointer-events-none" />
+              <iframe
+                src="httpspodcasts.apple.com/ke/podcast/dj-wolverine-mixes/id1707262780"
+                style={{ border: 0, width: '100%', height: '350px' }}
+                allowFullScreen
+                allow="autoplay"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-[#0b0f17]/80 backdrop-blur-sm border-t border-slate-700/50 p-4 sm:p-6">
+                <h3 className="font-serif text-xl font-bold text-white mb-1">
+                  Featured Mix 02
+                </h3>
+                <p className="font-sans text-slate-400 text-sm leading-relaxed">
+                  Festival mainstage edits and crowd anthems.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Problem / Solution */}
       <section className="py-12 sm:py-20 px-4 md:px-16 max-w-[1280px] mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-          <span className="font-mono text-[10px] sm:text-xs text-blue-500 uppercase tracking-[0.2em] mb-2 block font-bold">
+          <span className="font-mono text-[10px] sm:text-xs text-[#A1A1A6] uppercase tracking-[0.2em] mb-2 block font-bold">
             THE OVERKILL DIFFERENCE
           </span>
           <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-white tracking-tight font-bold capitalize">
@@ -240,7 +333,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <img src={DJ_ASSETS.djPerformingCrowd} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.06] pointer-events-none" />
             <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/92 to-[#0b0f17]/55 pointer-events-none" />
             <div className="absolute inset-0 bg-[#0b0f17]/20 pointer-events-none" />
-            <div className="absolute top-0 left-0 w-1 h-full bg-blue-900 z-10" />
+            <div className="absolute top-0 left-0 w-1 h-full bg-white/15 z-10" />
             <span className="font-mono text-[10px] sm:text-xs text-blue-400 uppercase tracking-wider block mb-2 font-bold relative z-10">
               The Reality
             </span>
@@ -252,15 +345,15 @@ export const HomeView: React.FC<HomeViewProps> = ({
             </p>
             <ul className="space-y-3 font-sans text-xs sm:text-sm text-slate-300 font-medium relative z-10">
               <li className="flex items-center gap-3">
-                <X className="w-4 h-4 text-blue-500 shrink-0" />
+                <X className="w-4 h-4 text-[#A1A1A6] shrink-0" />
                 <span>Music that clashes with the room&apos;s shifting energy</span>
               </li>
               <li className="flex items-center gap-3">
-                <X className="w-4 h-4 text-blue-500 shrink-0" />
+                <X className="w-4 h-4 text-[#A1A1A6] shrink-0" />
                 <span>Gaps in momentum that kill the vibe</span>
               </li>
               <li className="flex items-center gap-3">
-                <X className="w-4 h-4 text-blue-500 shrink-0" />
+                <X className="w-4 h-4 text-[#A1A1A6] shrink-0" />
                 <span>A soundtrack that feels generic instead of unforgettable</span>
               </li>
             </ul>
@@ -272,8 +365,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <img src={DJ_ASSETS.heroBg} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.07] pointer-events-none" />
             <div className="absolute inset-0 bg-gradient-to-br from-blue-950/30 via-[#0b0f17]/88 to-[#0b0f17]/60 pointer-events-none" />
             <div className="absolute inset-0 bg-[#070b11]/15 pointer-events-none" />
-            <div className="absolute top-0 left-0 w-1 h-full bg-blue-600 z-10" />
-            <span className="font-mono text-[10px] sm:text-xs text-blue-500 uppercase tracking-wider block mb-2 font-bold relative z-10">
+            <div className="absolute top-0 left-0 w-1 h-full bg-white/15 z-10" />
+            <span className="font-mono text-[10px] sm:text-xs text-[#A1A1A6] uppercase tracking-wider block mb-2 font-bold relative z-10">
               The Standard
             </span>
             <h3 className="font-serif text-xl sm:text-2xl font-bold mb-3 text-white relative z-10">
@@ -284,15 +377,15 @@ export const HomeView: React.FC<HomeViewProps> = ({
             </p>
             <ul className="space-y-3 font-sans text-xs sm:text-sm text-slate-200 font-medium relative z-10">
               <li className="flex items-center gap-3">
-                <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#A1A1A6] shrink-0" />
                 <span>Seamless, high-energy mixing with custom club VIP edits</span>
               </li>
               <li className="flex items-center gap-3">
-                <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#A1A1A6] shrink-0" />
                 <span>Master crowd-reading ability calibrated in top clubs</span>
               </li>
               <li className="flex items-center gap-3">
-                <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#A1A1A6] shrink-0" />
                 <span>Elite-tier professional reliability & magnetic showmanship</span>
               </li>
             </ul>
@@ -304,7 +397,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       <section className="py-12 sm:py-20 bg-[#04060a] border-y border-slate-900">
         <div className="max-w-[1280px] mx-auto px-4 md:px-16">
           <div className="text-center mb-10 sm:mb-12">
-            <span className="font-mono text-[10px] sm:text-xs text-blue-500 uppercase tracking-[0.2em] mb-2 block font-bold">
+            <span className="font-mono text-[10px] sm:text-xs text-[#A1A1A6] uppercase tracking-[0.2em] mb-2 block font-bold">
               CORE PRINCIPLES
             </span>
             <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 sm:mb-3">
@@ -320,7 +413,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               <VertexCorners variant="white" size={20} />
               <img src={DJ_ASSETS.clubLaser} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.07] pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/90 to-[#0b0f17]/50 pointer-events-none" />
-              <Sliders className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500 mb-3 sm:mb-4 relative z-10" />
+              <Sliders className="w-5 h-5 sm:w-6 sm:h-6 text-[#A1A1A6] mb-3 sm:mb-4 relative z-10" />
               <h3 className="font-serif text-lg sm:text-xl font-bold mb-2 text-white relative z-10">
                 Sonic Precision
               </h3>
@@ -333,7 +426,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               <VertexCorners variant="white" size={18} />
               <img src={DJ_ASSETS.festivalStage} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.07] pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/90 to-[#0b0f17]/50 pointer-events-none" />
-              <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500 mb-3 sm:mb-4 relative z-10" />
+              <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-[#A1A1A6] mb-3 sm:mb-4 relative z-10" />
               <h3 className="font-serif text-lg sm:text-xl font-bold mb-2 text-white relative z-10">
                 Raw Energy
               </h3>
@@ -346,7 +439,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               <VertexCorners variant="white" size={18} />
               <img src={DJ_ASSETS.rooftopSunset} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.07] pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/90 to-[#0b0f17]/50 pointer-events-none" />
-              <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500 mb-3 sm:mb-4 relative z-10" />
+              <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6 text-[#A1A1A6] mb-3 sm:mb-4 relative z-10" />
               <h3 className="font-serif text-lg sm:text-xl font-bold mb-2 text-white relative z-10">
                 Ironclad Reliability
               </h3>
@@ -364,7 +457,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               />
               <div className="absolute inset-0 bg-gradient-to-r from-[#0b0f17] via-[#0b0f17]/85 to-[#0b0f17]/40 pointer-events-none" />
               <div className="relative z-10 max-w-lg">
-                <span className="text-blue-500 font-mono text-[10px] uppercase tracking-widest block mb-1.5 font-bold">
+                <span className="text-[#A1A1A6] font-mono text-[10px] uppercase tracking-widest block mb-1.5 font-bold">
                   The Connection
                 </span>
                 <h3 className="font-serif text-lg sm:text-xl font-bold mb-2 text-white">
