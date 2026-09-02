@@ -93,8 +93,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
               </button>
             </div>
 
-            {/* Trusted By - replaces stats, aligned to tagline/CTAs width (50vw) */}
-                        <div className="w-full mr-auto" style={{ maxWidth: '50vw' }}>
+            {/* Trusted By - full width on mobile/half screens, 50vw on desktop */}
+                        <div className="w-full mr-auto max-w-full lg:max-w-[50vw]">
                           <p className="font-mono text-[10px] sm:text-xs text-slate-500 uppercase tracking-[0.25em] mb-3 sm:mb-4 font-bold text-left">
                             TRUSTED BY
                           </p>
