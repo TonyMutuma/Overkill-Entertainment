@@ -93,11 +93,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
               </button>
             </div>
 
-            {/* Trusted By - replaces stats, aligned to logo X */}
-              <div className="w-full max-w-2xl mr-auto lg:-ml-[max(0px,calc((100vw_-_1280px)_/_2))]">
-              <p className="font-mono text-[10px] sm:text-xs text-slate-500 uppercase tracking-[0.25em] mb-3 sm:mb-4 font-bold text-center">
-                TRUSTED BY
-              </p>
+            {/* Trusted By - replaces stats, aligned to tagline/CTAs width (50vw) */}
+                        <div className="w-full mr-auto" style={{ maxWidth: '50vw' }}>
+                          <p className="font-mono text-[10px] sm:text-xs text-slate-500 uppercase tracking-[0.25em] mb-3 sm:mb-4 font-bold text-left">
+                            TRUSTED BY
+                          </p>
               {(() => {
                 const renderVenue = (venue, idx) => {
                   const isAlchemist = venue.name === 'Alchemist Lounge';
