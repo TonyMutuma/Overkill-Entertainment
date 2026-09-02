@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavTab } from '../types';
-import { Activity, Disc3, Sliders, X } from 'lucide-react';
+import { Disc3, Sliders, X } from 'lucide-react';
 import { useCMS } from '../context/CMSContext';
 import { VertexCorners } from './VertexCorners';
 
@@ -74,12 +74,10 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="flex justify-between items-center h-[70px] px-4 sm:px-8 md:px-12 lg:px-16 max-w-[1280px] mx-auto">
         <button
           onClick={() => handleNavClick('home')}
-          className="font-navbar-brand text-2xl sm:text-[28px] font-normal tracking-[0.06em] text-white flex items-center gap-2.5 group text-left cursor-pointer"
+          className="flex items-center gap-2.5 group text-left cursor-pointer"
         >
-          <div className="w-8 h-8 bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-500 group-hover:border-blue-400/50 transition-colors">
-            {isPlayingMix ? <Disc3 className="w-4 h-4 animate-spin text-blue-500" /> : <Activity className="w-4 h-4" />}
-          </div>
-          <span className="uppercase">OVERKILL ENTERTAINMENT</span>
+          <img src="/assets/overkill-logo.png" alt={siteSettings?.brandName || 'OVERKILL ENTERTAINMENT'} className="h-8 sm:h-9 w-auto object-contain" />
+          {isPlayingMix && <Disc3 className="w-4 h-4 animate-spin text-blue-500" />}
         </button>
 
         <nav className="hidden md:flex items-center gap-7 lg:gap-8">

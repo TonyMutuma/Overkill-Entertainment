@@ -45,8 +45,8 @@ export const Footer: React.FC<FooterProps> = ({
     <footer className="w-full py-10 sm:py-14 border-t border-slate-800 bg-[#04060a] relative z-10">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-6 items-start">
         <div className="md:col-span-6 flex flex-col gap-3">
-          <button onClick={() => handleNav('home')} className="font-serif text-2xl font-bold tracking-tighter text-white cursor-pointer hover:text-blue-500 transition-colors text-left uppercase">
-            {siteSettings?.brandName || 'OVERKILL'}
+          <button onClick={() => handleNav('home')} className="cursor-pointer hover:opacity-90 transition-opacity text-left">
+            <img src="/assets/overkill-logo.png" alt={siteSettings?.brandName || 'OVERKILL'} className="h-10 sm:h-12 w-auto object-contain" />
           </button>
           <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-md font-sans">
             © 2026 {siteSettings?.brandName || 'Overkill Entertainment'}. All Rights Reserved. Resident Selector: {siteSettings?.djName || 'DJ Wolverine'} ({siteSettings?.location || 'Nairobi, Kenya'}).
