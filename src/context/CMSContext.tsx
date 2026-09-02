@@ -9,6 +9,7 @@ import {
   AddOnItem,
   FaqItem,
   VenueItem,
+  InstagramPreviewItem,
   StoredBookingInquiry,
   BookingSubmission
 } from '../types';
@@ -82,6 +83,10 @@ const INITIAL_VENUES: VenueItem[] = TRUST_VENUES.map((v, i) => ({
   location: v.location,
   logo: v.logo
 }));
+
+const INITIAL_INSTAGRAM_PREVIEWS: InstagramPreviewItem[] = [
+  { id: 'ig-1', url: 'https://www.instagram.com/p/DbIywH0izjv/' }
+];
 
 const INITIAL_INQUIRIES: StoredBookingInquiry[] = [
   {
@@ -183,6 +188,12 @@ interface CMSContextType {
   updateVenue: (id: string, venue: Partial<VenueItem>) => void;
   deleteVenue: (id: string) => void;
 
+  // Instagram Previews
+  instagramPreviews: InstagramPreviewItem[];
+  addInstagramPreview: (url: string) => void;
+  updateInstagramPreview: (id: string, url: string) => void;
+  deleteInstagramPreview: (id: string) => void;
+
   // Booking Inquiries
   bookingInquiries: StoredBookingInquiry[];
   addBookingInquiry: (submission: BookingSubmission) => void;
@@ -207,6 +218,7 @@ const STORAGE_KEYS = {
   ADDONS: 'overkill_addons_v2',
   FAQS: 'overkill_faqs_v2',
   VENUES: 'overkill_venues_v2',
+  INSTAGRAM: 'overkill_instagram_v2',
   CALENDAR: 'overkill_calendar_overrides_v2',
   INQUIRIES: 'overkill_inquiries_v2',
 };
@@ -297,6 +309,15 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return INITIAL_VENUES;
   });
 
+  // Instagram previews
+  const [instagramPreviews, setInstagramPreviews] = useState<InstagramPreviewItem[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.INSTAGRAM);
+      if (saved) return JSON.parse(saved);
+    } catch (e) {}
+    return INITIAL_INSTAGRAM_PREVIEWS;
+  });
+
   // Calendar overrides
   const [calendarOverrides, setCalendarOverrides] = useState<Record<string, { status: 'available' | 'booked' | 'restricted'; notes?: string }>>(() => {
     try {
@@ -361,6 +382,10 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.VENUES, JSON.stringify(trustVenues));
   }, [trustVenues]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.INSTAGRAM, JSON.stringify(instagramPreviews));
+  }, [instagramPreviews]);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.CALENDAR, JSON.stringify(calendarOverrides));
@@ -574,6 +599,20 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setTrustVenues((prev) => prev.filter((v) => v.id !== id));
   };
 
+  // Instagram previews
+  const addInstagramPreview = (url: string) => {
+    const clean = url.trim();
+    if (!clean) return;
+    const newItem: InstagramPreviewItem = { id: `ig-${Date.now()}`, url: clean };
+    setInstagramPreviews((prev) => [...prev, newItem]);
+  };
+  const updateInstagramPreview = (id: string, url: string) => {
+    setInstagramPreviews((prev) => prev.map((p) => (p.id === id ? { ...p, url } : p)));
+  };
+  const deleteInstagramPreview = (id: string) => {
+    setInstagramPreviews((prev) => prev.filter((p) => p.id !== id));
+  };
+
   // Inquiries
   const addBookingInquiry = (submission: BookingSubmission) => {
     const newInquiry: StoredBookingInquiry = {
@@ -605,6 +644,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setAddOnItems(ADD_ON_ITEMS);
     setFaqItems(FAQ_ITEMS);
     setTrustVenues(INITIAL_VENUES);
+    setInstagramPreviews(INITIAL_INSTAGRAM_PREVIEWS);
     setCalendarOverrides({});
   };
 
@@ -618,6 +658,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       addOnItems,
       faqItems,
       trustVenues,
+      instagramPreviews,
       calendarOverrides,
       bookingInquiries,
       exportedAt: new Date().toISOString()
@@ -636,6 +677,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (data.addOnItems) setAddOnItems(data.addOnItems);
       if (data.faqItems) setFaqItems(data.faqItems);
       if (data.trustVenues) setTrustVenues(data.trustVenues);
+      if (data.instagramPreviews) setInstagramPreviews(data.instagramPreviews);
       if (data.calendarOverrides) setCalendarOverrides(data.calendarOverrides);
       if (data.bookingInquiries) setBookingInquiries(data.bookingInquiries);
       return { success: true };
@@ -696,6 +738,11 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         addVenue,
         updateVenue,
         deleteVenue,
+
+        instagramPreviews,
+        addInstagramPreview,
+        updateInstagramPreview,
+        deleteInstagramPreview,
 
         bookingInquiries,
         addBookingInquiry,

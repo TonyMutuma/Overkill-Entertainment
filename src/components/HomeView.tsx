@@ -4,6 +4,7 @@ import { TRUST_VENUES, DJ_ASSETS } from '../data/mockData';
 import { useCMS } from '../context/CMSContext';
 import { X, CheckCircle2, Sliders, Zap, ShieldCheck, ArrowUpRight } from 'lucide-react';
 import { VertexCorners } from './VertexCorners';
+import { InstagramPreviews } from './InstagramPreviews';
 import instagram from 'thesvg/instagram';
 import x from 'thesvg/x-formerly-twitter';
 import youtube from 'thesvg/youtube';
@@ -263,6 +264,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
           </a>
         </div>
       </section>
+
+      <InstagramPreviews />
 
       {/* 4. Problem / Solution */}
       <section className="py-12 sm:py-20 px-4 md:px-16 max-w-[1280px] mx-auto">

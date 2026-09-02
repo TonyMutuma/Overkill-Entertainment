@@ -154,4 +154,9 @@ export interface VenueItem {
   logo?: string;
 }
 
+export interface InstagramPreviewItem {
+  id: string;
+  url: string;
+}
+
 

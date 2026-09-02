@@ -37,7 +37,7 @@ import {
   CheckCircle2,
   RefreshCw
 } from 'lucide-react';
-import { MixTrack, ServicePackage, AddOnItem, FaqItem, VenueItem, StoredBookingInquiry } from '../../types';
+import { MixTrack, ServicePackage, AddOnItem, FaqItem, VenueItem, InstagramPreviewItem, StoredBookingInquiry } from '../../types';
 
 type AdminTab =
   | 'overview'
@@ -49,6 +49,7 @@ type AdminTab =
   | 'calendar'
   | 'faqs'
   | 'venues'
+  | 'instagram'
   | 'backup';
 
 const PRESET_IMAGE_LIBRARY: { name: string; url: string; category: string }[] = [
@@ -134,6 +135,10 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
     addVenue,
     updateVenue,
     deleteVenue,
+    instagramPreviews,
+    addInstagramPreview,
+    updateInstagramPreview,
+    deleteInstagramPreview,
     bookingInquiries,
     updateInquiryStatus,
     deleteInquiry,
@@ -159,6 +164,10 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
   const [editingFaqId, setEditingFaqId] = useState<string | null>(null);
   const [faqFormData, setFaqFormData] = useState<Partial<FaqItem>>({});
   const [isCreatingFaq, setIsCreatingFaq] = useState(false);
+
+  const [igUrl, setIgUrl] = useState('');
+  const [editingIgId, setEditingIgId] = useState<string | null>(null);
+  const [editingIgUrl, setEditingIgUrl] = useState('');
 
   const [importJsonText, setImportJsonText] = useState('');
   const [importError, setImportError] = useState<string | null>(null);
@@ -225,6 +234,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
     { id: 'calendar', label: 'Tour Dates & Inquiries', icon: CalendarIcon, count: bookingInquiries.filter(i => i.status === 'new').length },
     { id: 'faqs', label: 'FAQ & Tech Riders', icon: HelpCircle, count: faqItems.length },
     { id: 'venues', label: 'Venues', icon: ShieldCheck },
+    { id: 'instagram', label: 'Instagram Previews', icon: ImageIcon, count: instagramPreviews.length },
     { id: 'backup', label: 'Backup, Import & Reset', icon: Settings }
   ];
 
@@ -1860,6 +1870,78 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ========================================================================= */}
+            {/* TAB: INSTAGRAM PREVIEWS */}
+            {/* ========================================================================= */}
+            {activeTab === 'instagram' && (
+              <div className="space-y-6">
+                <div>
+                  <h2 className="font-sora text-xl font-bold text-[#e5e2e1] mb-1 flex items-center gap-2">
+                    <ImageIcon className="w-5 h-5 text-[#ef4444]" />
+                    Instagram Previews
+                  </h2>
+                  <p className="font-hanken text-xs text-[#bac9cd]/70">
+                    Paste Instagram post links — cards auto-generate on the home page via Instagram embeds.
+                  </p>
+                </div>
+                <div className="p-5 rounded-2xl bg-[#161616] border border-white/10 space-y-4">
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <input
+                      type="url"
+                      value={igUrl}
+                      onChange={(e) => setIgUrl(e.target.value)}
+                      placeholder="https://www.instagram.com/p/DbIywH0izjv/"
+                      className="flex-1 bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#e5e2e1] focus:border-[#ef4444] outline-none font-mono-jb"
+                    />
+                    <button
+                      onClick={() => {
+                        if (!igUrl.trim()) return;
+                        try {
+                          const u = new URL(igUrl.trim());
+                          if (!u.hostname.includes('instagram.com')) throw new Error();
+                        } catch { showToast('Please enter a valid Instagram URL'); return; }
+                        addInstagramPreview(igUrl.trim());
+                        setIgUrl('');
+                        showToast('Instagram preview added');
+                      }}
+                      className="px-5 py-2.5 bg-[#ef4444] text-white font-bold text-xs rounded-xl hover:bg-[#dc2626] transition-colors flex items-center gap-2"
+                    >
+                      <Plus className="w-4 h-4" /> Add Link
+                    </button>
+                  </div>
+                  <p className="text-[11px] text-[#bac9cd]/50">Supports /p/, /reel/, /tv/ links. Example: https://www.instagram.com/p/DbIywH0izjv/</p>
+                  <div className="space-y-3">
+                    {instagramPreviews.length === 0 && <p className="text-xs text-[#bac9cd]/60">No previews yet — add your first link above.</p>}
+                    {instagramPreviews.map((p) => (
+                      <div key={p.id} className="p-3 rounded-xl bg-[#1c1b1b] border border-white/10 flex items-center gap-3">
+                        {editingIgId === p.id ? (
+                          <>
+                            <input
+                              type="url"
+                              value={editingIgUrl}
+                              onChange={(e) => setEditingIgUrl(e.target.value)}
+                              className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white outline-none"
+                            />
+                            <button onClick={() => { updateInstagramPreview(p.id, editingIgUrl); setEditingIgId(null); showToast('Updated'); }} className="px-3 py-1.5 bg-emerald-600 text-white text-xs rounded-lg">Save</button>
+                            <button onClick={() => setEditingIgId(null)} className="px-3 py-1.5 bg-white/10 text-white text-xs rounded-lg">Cancel</button>
+                          </>
+                        ) : (
+                          <>
+                            <div className="flex-1 min-w-0">
+                              <div className="font-mono-jb text-xs text-[#e5e2e1] truncate">{p.url}</div>
+                              <a href={p.url} target="_blank" rel="noreferrer" className="text-[11px] text-[#ef4444] hover:underline flex items-center gap-1">Open <ExternalLink className="w-3 h-3" /></a>
+                            </div>
+                            <button onClick={() => { setEditingIgId(p.id); setEditingIgUrl(p.url); }} className="p-1.5 text-[#bac9cd] hover:text-white"><Edit2 className="w-4 h-4" /></button>
+                            <button onClick={() => { if (confirm('Remove this preview?')) { deleteInstagramPreview(p.id); showToast('Removed'); } }} className="p-1.5 text-[#bac9cd] hover:text-rose-400"><Trash2 className="w-4 h-4" /></button>
+                          </>
+                        )}
                       </div>
                     ))}
                   </div>
