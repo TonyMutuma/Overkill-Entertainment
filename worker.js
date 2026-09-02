@@ -1,6 +1,9 @@
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if (url.pathname === '/api/health') {
+      return new Response(JSON.stringify({ ok: true, db: !!env.DB }), { headers: { 'Content-Type': 'application/json' } });
+    }
     if (url.pathname.startsWith('/api/instagram-previews')) {
       const db = env.DB;
       if (!db) return new Response(JSON.stringify({ error: 'DB binding missing' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
