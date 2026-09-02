@@ -73,8 +73,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
             
             {/* Headline - FLUID premium: desktop stays 60px, mobile scales smoothly instead of breaking layout */}
             <h1
-              className="font-serif font-extrabold leading-[0.95] tracking-tight text-white drop-shadow-md"
-              style={{ fontSize: 'clamp(40px, 6vw, 68px)', maxWidth: '50vw', textWrap: 'balance' as any }}
+              className="font-extrabold leading-[0.95] tracking-tight text-white drop-shadow-md"
+              style={{ fontFamily: "'Krona One', sans-serif", fontSize: 'clamp(40px, 6vw, 68px)', maxWidth: '50vw', textWrap: 'balance' as any }}
             >
               We Don&apos;t Gamble<br /> With Your Event&apos;s<br /> Atmosphere
             </h1>
