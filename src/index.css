@@ -135,8 +135,8 @@
     --font-display: 'SF Pro Display', Georgia, 'Times New Roman', serif;
     --font-sans: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
-    --font-navbar-brand: 'Bebas Neue', 'Anton', sans-serif;
-    --font-navbar: 'Space Grotesk', 'Syne', sans-serif;
+    --font-navbar-brand: 'SF Pro Display', sans-serif;
+    --font-navbar: 'SF Pro Display', sans-serif;
 
     /* ── APPLE PODCASTS DARK PALETTE ── */
     --canvas: #18181B;              /* rich charcoal base */
@@ -155,31 +155,34 @@
     --card-radius: 16px;
   }
   html { background: var(--canvas); scroll-behavior: smooth; }
-  body { margin:0; font-family:var(--font-sans); background:var(--canvas); color:var(--body); -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
-  /* Headers — pure white exclusive */
-  h1,h2,h3,h4,h5,h6 { font-family:var(--font-display); font-weight:700; letter-spacing:-.03em; color:var(--ink); }
+  body { margin:0; font-family:var(--font-sans); font-weight:400; background:var(--canvas); color:var(--body); -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+  h1:not(.tagline) { font-family:var(--font-display); font-weight:800; letter-spacing:-.03em; color:var(--ink); }
+  h2 { font-family:var(--font-display); font-weight:700; letter-spacing:-.02em; color:var(--ink); }
+  h3 { font-family:var(--font-display); font-weight:600; letter-spacing:-.02em; color:var(--ink); }
+  h4,h5,h6 { font-family:var(--font-display); font-weight:500; letter-spacing:-.01em; color:var(--ink); }
+  .tagline { font-family:'Krona One', sans-serif !important; }
 }
 
 .font-sora { font-family:var(--font-display) !important; }
 .font-hanken { font-family:var(--font-sans) !important; letter-spacing:-.005em; }
 .font-mono-jb { font-family:var(--font-mono) !important; }
-.font-navbar-brand { font-family:var(--font-navbar-brand) !important; letter-spacing:0.04em; }
-.font-navbar { font-family:var(--font-navbar) !important; letter-spacing:0.14em; }
+.font-navbar-brand { font-family:var(--font-navbar-brand) !important; letter-spacing:0.04em; font-weight:900; }
+.font-navbar { font-family:var(--font-navbar) !important; letter-spacing:0.14em; font-weight:600; }
 
 /* ── MICRO-CAP SUB-HEADER LABELS ──
    Clean semi-bold sans-serif small-caps for section eyebrows / tags. */
 .micro-cap{
   font-size:11px;
-  font-weight:600;
-  letter-spacing:.05em;
+  font-weight:300;
+  letter-spacing:.08em;
   text-transform:uppercase;
   color:var(--body);
   font-family:var(--font-sans);
 }
 .sub-label{
   font-size:12px;
-  font-weight:600;
-  letter-spacing:.05em;
+  font-weight:500;
+  letter-spacing:.06em;
   text-transform:uppercase;
   color:var(--body-soft);
   font-family:var(--font-sans);
