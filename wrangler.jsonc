@@ -1,7 +1,20 @@
 {
   "name": "overkill-entertainment",
-  "compatibility_date": "2026-08-20",
+  "main": "worker.js",
+  "compatibility_date": "2024-09-01",
+  "compatibility_flags": ["nodejs_compat"],
   "assets": {
-    "directory": "./dist"
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "overkillentertainment",
+      "database_id": "94600039-56c9-4578-b82d-799019d03a33"
+    }
+  ],
+  "vars": {
+    "SUPABASE_URL": "https://rxswzexcmfrtsmsykgmk.supabase.co"
   }
 }
