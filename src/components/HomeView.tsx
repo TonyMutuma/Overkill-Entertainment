@@ -224,93 +224,43 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-      {/* 3. Apple Podcasts Playlist */}
+      {/* 3. Apple Podcasts Playlist - Preview */}
       <section className="py-12 sm:py-20 bg-[#0f0f13] border-y border-slate-900">
         <div className="max-w-[1280px] mx-auto px-4 md:px-16">
           <div className="text-center mb-10 sm:mb-14">
-            <span className="font-mono text-[10px] sm:text-xs text-slate-500 uppercase tracking-[0.2em] mb-2 block font-bold">
-              CURATED PLAYLISTS
+            <span className="inline-flex items-center justify-center gap-2 font-mono text-[10px] sm:text-xs text-slate-500 uppercase tracking-[0.2em] mb-3 font-bold">
+              <span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current text-[#A1A1A6]" dangerouslySetInnerHTML={{ __html: applePodcasts.variants.mono }} />
+              Apple Podcasts
             </span>
             <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight">
               DJ Wolverine Mixes
             </h2>
-            <p className="font-sans text-slate-400 max-w-xl mx-auto text-xs sm:text-sm font-normal">
-              Listen to handcrafted mixes across club nights, festivals, and special events.
+            <p className="font-sans text-slate-400 max-w-xl mx-auto text-xs sm:text-sm font-normal mt-2">
+              Listen in to audio mixes — handcrafted sets across club nights, festivals, and special events.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            <div className="vertex-card bg-[#0b0f17] border-2 border-slate-700/60 rounded-2xl p-6 sm:p-8 relative overflow-hidden">
-              <VertexCorners variant="muted" size={20} />
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/90 to-[#0b0f17]/50 pointer-events-none" />
-              <iframe
-                src="https://podcasts.apple.com/ke/podcast/dj-wolverine-mixes/id1707262780"
-                style={{ border: 0, width: '100%', height: '400px' }}
-                allowFullScreen
-                allow="autoplay"
-              />
-              <div className="absolute bottom-0 left-0 right-0 bg-[#0b0f17]/80 backdrop-blur-sm border-t border-slate-700/50 p-4 sm:p-6">
-                <h3 className="font-serif text-xl font-bold text-white mb-1">
-                  Dj Wolverine Mixes
-                </h3>
-                <p className="font-sans text-slate-400 text-sm leading-relaxed">
-                  Available on Apple Podcasts — handcrafted mixes for every occasion.
-                </p>
-                <a
-                  href="https://podcasts.apple.com/ke/podcast/dj-wolverine-mixes/id1707262780"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-[#2563eb] text-sm font-medium underline underline-offset-2 hover:italic transition-colors"
-                >
+          <div className="vertex-card bg-[#0b0f17] border-2 border-slate-700/60 overflow-hidden max-w-3xl mx-auto relative">
+            <VertexCorners variant="muted" size={20} />
+            <img src="/assets/applepodcastpreview.png" alt="DJ Wolverine Apple Podcasts Preview" className="w-full h-auto object-contain block" />
+            <div className="p-6 sm:p-8 text-center border-t border-slate-800/60 bg-[#0b0f17]">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/[0.06] border border-white/10 rounded-full mb-4">
+                <span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current text-white" dangerouslySetInnerHTML={{ __html: applePodcasts.variants.mono }} />
+                <span className="font-mono text-[10px] tracking-widest text-slate-300 uppercase font-bold">Available on Apple Podcasts</span>
+              </div>
+              <h3 className="font-serif text-xl sm:text-2xl font-bold text-white mb-2">Listen in to Audio Mixes</h3>
+              <p className="font-sans text-slate-400 text-sm leading-relaxed max-w-lg mx-auto mb-6">
+                Tap play and dive into the full catalogue — deep house, Afro-tech, Amapiano and festival edits, curated by DJ Wolverine.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <a href="https://podcasts.apple.com/ke/podcast/dj-wolverine-mixes/id1707262780" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 bg-white text-black font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-xl hover:bg-slate-200 transition-colors cursor-pointer">
+                  <span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: applePodcasts.variants.mono }} />
                   Listen on Apple Podcasts
-                  <svg
-                    className="w-3.5 h-3.5"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path d="M7.41 8.59L12 12.59l4.59-3.98a.75.75 0 0 1 1.06 0l5.25 4.5a.75.75 0 0 1 0 1.06l-5 4.16a.75.75 0 0 1-1.06-.65L16.27 19 12 15.71 7.41 12.31a.75.75 0 0 1-.65-1.06l5.25-4.16a.75.75 0 0 1 0-1.06l-5.25-4.51z" />
-                    <path d="M2.31 4.75A.75.75 0 0 1 3 4.5h10.1l-.63-.16a.75.75 0 0 1-.67-.65H3a.75.75 0 0 1-.75-.75z" />
-                  </svg>
+                  <ArrowUpRight className="w-4 h-4" />
                 </a>
-              </div>
-            </div>
-
-            <div className="vertex-card bg-[#0b0f17] border-2 border-slate-700/60 rounded-2xl p-6 sm:p-8 relative overflow-hidden">
-              <VertexCorners variant="muted" size={20} />
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/90 to-[#0b0f17]/50 pointer-events-none" />
-              <iframe
-                src="httpspodcasts.apple.com/ke/podcast/dj-wolverine-mixes/id1707262780"
-                style={{ border: 0, width: '100%', height: '350px' }}
-                allowFullScreen
-                allow="autoplay"
-              />
-              <div className="absolute bottom-0 left-0 right-0 bg-[#0b0f17]/80 backdrop-blur-sm border-t border-slate-700/50 p-4 sm:p-6">
-                <h3 className="font-serif text-xl font-bold text-white mb-1">
-                  Featured Mix 01
-                </h3>
-                <p className="font-sans text-slate-400 text-sm leading-relaxed">
-                  A journey through deep house and Afro-tech rhythms.
-                </p>
-              </div>
-            </div>
-
-            <div className="vertex-card bg-[#0b0f17] border-2 border-slate-700/60 rounded-2xl p-6 sm:p-8 relative overflow-hidden">
-              <VertexCorners variant="muted" size={20} />
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#0b0f17]/90 to-[#0b0f17]/50 pointer-events-none" />
-              <iframe
-                src="httpspodcasts.apple.com/ke/podcast/dj-wolverine-mixes/id1707262780"
-                style={{ border: 0, width: '100%', height: '350px' }}
-                allowFullScreen
-                allow="autoplay"
-              />
-              <div className="absolute bottom-0 left-0 right-0 bg-[#0b0f17]/80 backdrop-blur-sm border-t border-slate-700/50 p-4 sm:p-6">
-                <h3 className="font-serif text-xl font-bold text-white mb-1">
-                  Featured Mix 02
-                </h3>
-                <p className="font-sans text-slate-400 text-sm leading-relaxed">
-                  Festival mainstage edits and crowd anthems.
-                </p>
+                <button onClick={() => navigate('mixes')} className="inline-flex items-center gap-2 bg-[#0b0f17] border border-slate-700 text-white font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-xl hover:border-white/40 hover:bg-white/[0.04] transition-colors cursor-pointer">
+                  Explore All Mixes
+                </button>
               </div>
             </div>
           </div>
