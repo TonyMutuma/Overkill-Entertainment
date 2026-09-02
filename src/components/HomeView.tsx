@@ -240,30 +240,27 @@ export const HomeView: React.FC<HomeViewProps> = ({
             </p>
           </div>
 
-          <div className="vertex-card bg-[#0b0f17] border-2 border-slate-700/60 overflow-hidden max-w-3xl mx-auto relative">
+          <a href="https://podcasts.apple.com/ke/podcast/dj-wolverine-mixes/id1707262780" target="_blank" rel="noreferrer" className="vertex-card bg-[#0b0f17] border-2 border-slate-700/60 overflow-hidden max-w-3xl mx-auto relative block hover:border-slate-600 transition-colors cursor-pointer group">
             <VertexCorners variant="muted" size={20} />
-            <img src="/assets/applepodcastpreview.png" alt="DJ Wolverine Apple Podcasts Preview" className="w-full h-auto object-contain block" />
+            <img src="/assets/applepodcastpreview.png" alt="DJ Wolverine Apple Podcasts Preview" className="w-full h-auto object-contain block group-hover:scale-[1.01] transition-transform duration-300" />
             <div className="p-6 sm:p-8 text-center border-t border-slate-800/60 bg-[#0b0f17]">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/[0.06] border border-white/10 rounded-full mb-4">
                 <span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current text-white" dangerouslySetInnerHTML={{ __html: applePodcasts.variants.mono }} />
                 <span className="font-mono text-[10px] tracking-widest text-slate-300 uppercase font-bold">Available on Apple Podcasts</span>
               </div>
-              <h3 className="font-serif text-xl sm:text-2xl font-bold text-white mb-2">Listen in to Audio Mixes</h3>
-              <p className="font-sans text-slate-400 text-sm leading-relaxed max-w-lg mx-auto mb-6">
-                Tap play and dive into the full catalogue — deep house, Afro-tech, Amapiano and festival edits, curated by DJ Wolverine.
-              </p>
+              <h3 className="font-serif text-xl sm:text-2xl font-bold text-white mb-6">Listen in to Audio Mixes</h3>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                <a href="https://podcasts.apple.com/ke/podcast/dj-wolverine-mixes/id1707262780" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 bg-white text-black font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-xl hover:bg-slate-200 transition-colors cursor-pointer">
+                <span className="inline-flex items-center gap-2 bg-white text-black font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-xl group-hover:bg-slate-200 transition-colors">
                   <span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: applePodcasts.variants.mono }} />
                   Listen on Apple Podcasts
                   <ArrowUpRight className="w-4 h-4" />
-                </a>
-                <button onClick={() => navigate('mixes')} className="inline-flex items-center gap-2 bg-[#0b0f17] border border-slate-700 text-white font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-xl hover:border-white/40 hover:bg-white/[0.04] transition-colors cursor-pointer">
+                </span>
+                <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); navigate('mixes'); }} className="inline-flex items-center gap-2 bg-[#0b0f17] border border-slate-700 text-white font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-xl hover:border-white/40 hover:bg-white/[0.04] transition-colors cursor-pointer">
                   Explore All Mixes
                 </button>
               </div>
             </div>
-          </div>
+          </a>
         </div>
       </section>
 
