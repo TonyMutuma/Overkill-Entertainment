@@ -191,9 +191,13 @@ interface CMSContextType {
 
   // Instagram Previews
   instagramPreviews: InstagramPreviewItem[];
-  addInstagramPreview: (url: string) => void;
-  updateInstagramPreview: (id: string, url: string) => void;
-  deleteInstagramPreview: (id: string) => void;
+  instagramSaving: boolean;
+  instagramError: string | null;
+  instagramLastSavedAt: string | null;
+  addInstagramPreview: (url: string) => Promise<{ success: boolean; error?: string }>;
+  updateInstagramPreview: (id: string, url: string) => Promise<{ success: boolean; error?: string }>;
+  deleteInstagramPreview: (id: string) => Promise<{ success: boolean; error?: string }>;
+  refreshInstagramPreviews: () => Promise<void>;
 
   // Booking Inquiries
   bookingInquiries: StoredBookingInquiry[];
@@ -318,15 +322,30 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     } catch (e) {}
     return INITIAL_INSTAGRAM_PREVIEWS;
   });
-  useEffect(() => {
-    api.getInstagramPreviews().then((rows: any) => {
-      if (Array.isArray(rows) && rows.length) {
-        setInstagramPreviews(rows.map((r: any) => ({ id: r.id, url: r.url })));
-      } else if (Array.isArray(rows) && rows.length === 0) {
-        const local = localStorage.getItem(STORAGE_KEYS.INSTAGRAM);
-        if (!local) setInstagramPreviews([]);
+  const [instagramSaving, setInstagramSaving] = useState(false);
+  const [instagramError, setInstagramError] = useState<string | null>(null);
+  const [instagramLastSavedAt, setInstagramLastSavedAt] = useState<string | null>(null);
+  const refreshInstagramPreviews = async () => {
+    setInstagramSaving(true);
+    setInstagramError(null);
+    try {
+      const rows: any = await api.getInstagramPreviews();
+      if (Array.isArray(rows)) {
+        if (rows.length) setInstagramPreviews(rows.map((r: any) => ({ id: r.id, url: r.url })));
+        else {
+          const local = localStorage.getItem(STORAGE_KEYS.INSTAGRAM);
+          if (!local) setInstagramPreviews([]);
+        }
+        setInstagramLastSavedAt(new Date().toLocaleTimeString());
       }
-    }).catch(() => {});
+    } catch (e: any) {
+      setInstagramError(e.message || 'Failed to fetch from D1');
+    } finally {
+      setInstagramSaving(false);
+    }
+  };
+  useEffect(() => {
+    refreshInstagramPreviews();
   }, []);
 
   // Calendar overrides
@@ -611,22 +630,63 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   // Instagram previews
-  const addInstagramPreview = (url: string) => {
+  const addInstagramPreview = async (url: string) => {
     const clean = url.trim();
-    if (!clean) return;
-    const newItem: InstagramPreviewItem = { id: `ig-${Date.now()}`, url: clean };
-    setInstagramPreviews((prev) => [...prev, newItem]);
-    api.createInstagramPreview({ url: clean }).then((saved: any) => {
-      if (saved?.id) setInstagramPreviews((prev) => prev.map((p) => p.id === newItem.id ? { id: saved.id, url: saved.url } : p));
-    }).catch(() => {});
+    if (!clean) return { success: false, error: 'Empty URL' };
+    const tempId = `ig-${Date.now()}`;
+    const tempItem: InstagramPreviewItem = { id: tempId, url: clean };
+    setInstagramPreviews((prev) => [...prev, tempItem]);
+    setInstagramSaving(true);
+    setInstagramError(null);
+    try {
+      const saved: any = await api.createInstagramPreview({ url: clean });
+      if (saved?.id) setInstagramPreviews((prev) => prev.map((p) => p.id === tempId ? { id: saved.id, url: saved.url } : p));
+      setInstagramLastSavedAt(new Date().toLocaleTimeString());
+      return { success: true };
+    } catch (e: any) {
+      const msg = e.message || 'Failed to save to D1';
+      setInstagramError(msg);
+      setInstagramPreviews((prev) => prev.filter((p) => p.id !== tempId));
+      return { success: false, error: msg };
+    } finally {
+      setInstagramSaving(false);
+    }
   };
-  const updateInstagramPreview = (id: string, url: string) => {
-    setInstagramPreviews((prev) => prev.map((p) => (p.id === id ? { ...p, url } : p)));
-    api.updateInstagramPreview(id, { url }).catch(() => {});
+  const updateInstagramPreview = async (id: string, url: string) => {
+    const prev = instagramPreviews.find((p) => p.id === id);
+    setInstagramPreviews((cur) => cur.map((p) => (p.id === id ? { ...p, url } : p)));
+    setInstagramSaving(true);
+    setInstagramError(null);
+    try {
+      await api.updateInstagramPreview(id, { url });
+      setInstagramLastSavedAt(new Date().toLocaleTimeString());
+      return { success: true };
+    } catch (e: any) {
+      const msg = e.message || 'Failed to update D1';
+      setInstagramError(msg);
+      if (prev) setInstagramPreviews((cur) => cur.map((p) => (p.id === id ? prev : p)));
+      return { success: false, error: msg };
+    } finally {
+      setInstagramSaving(false);
+    }
   };
-  const deleteInstagramPreview = (id: string) => {
-    setInstagramPreviews((prev) => prev.filter((p) => p.id !== id));
-    api.deleteInstagramPreview(id).catch(() => {});
+  const deleteInstagramPreview = async (id: string) => {
+    const prev = instagramPreviews;
+    setInstagramPreviews((cur) => cur.filter((p) => p.id !== id));
+    setInstagramSaving(true);
+    setInstagramError(null);
+    try {
+      await api.deleteInstagramPreview(id);
+      setInstagramLastSavedAt(new Date().toLocaleTimeString());
+      return { success: true };
+    } catch (e: any) {
+      const msg = e.message || 'Failed to delete from D1';
+      setInstagramError(msg);
+      setInstagramPreviews(prev);
+      return { success: false, error: msg };
+    } finally {
+      setInstagramSaving(false);
+    }
   };
 
   // Inquiries
@@ -756,9 +816,13 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         deleteVenue,
 
         instagramPreviews,
+        instagramSaving,
+        instagramError,
+        instagramLastSavedAt,
         addInstagramPreview,
         updateInstagramPreview,
         deleteInstagramPreview,
+        refreshInstagramPreviews,
 
         bookingInquiries,
         addBookingInquiry,

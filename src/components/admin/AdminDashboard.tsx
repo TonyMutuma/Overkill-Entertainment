@@ -136,9 +136,13 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
     updateVenue,
     deleteVenue,
     instagramPreviews,
+    instagramSaving,
+    instagramError,
+    instagramLastSavedAt,
     addInstagramPreview,
     updateInstagramPreview,
     deleteInstagramPreview,
+    refreshInstagramPreviews,
     bookingInquiries,
     updateInquiryStatus,
     deleteInquiry,
@@ -1891,6 +1895,14 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                     Paste Instagram post links — cards auto-generate on the home page via Instagram embeds.
                   </p>
                 </div>
+                <div className="p-3 rounded-xl bg-[#1c1b1b] border border-white/10 flex flex-wrap items-center gap-3 text-xs">
+                  <span className="flex items-center gap-2 font-mono-jb">
+                    {instagramSaving ? <><RefreshCw className="w-3.5 h-3.5 animate-spin text-amber-400" /> <span className="text-amber-300">Saving to D1…</span></> : instagramError ? <><AlertCircle className="w-3.5 h-3.5 text-rose-400" /> <span className="text-rose-300">{instagramError}</span></> : <><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> <span className="text-emerald-300">Connected to D1</span></>}
+                  </span>
+                  {instagramLastSavedAt && <span className="text-[#bac9cd]/50">Last saved {instagramLastSavedAt}</span>}
+                  <span className="text-[#bac9cd]/30">• {instagramPreviews.length} saved</span>
+                  <button onClick={async () => { await refreshInstagramPreviews(); showToast(instagramError ? `Error: ${instagramError}` : 'Refreshed from D1'); }} className="ml-auto px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-[11px] text-[#bac9cd] flex items-center gap-1"><RefreshCw className="w-3 h-3" /> Refresh</button>
+                </div>
                 <div className="p-5 rounded-2xl bg-[#161616] border border-white/10 space-y-4">
                   <div className="flex flex-col sm:flex-row gap-3">
                     <input
@@ -1898,22 +1910,23 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                       value={igUrl}
                       onChange={(e) => setIgUrl(e.target.value)}
                       placeholder="https://www.instagram.com/p/DbIywH0izjv/"
-                      className="flex-1 bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#e5e2e1] focus:border-[#ef4444] outline-none font-mono-jb"
+                      className="flex-1 bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#e5e2e1] focus:border-[#ef4444] outline-none font-mono-jb disabled:opacity-50"
+                      disabled={instagramSaving}
                     />
                     <button
-                      onClick={() => {
+                      onClick={async () => {
                         if (!igUrl.trim()) return;
                         try {
                           const u = new URL(igUrl.trim());
                           if (!u.hostname.includes('instagram.com')) throw new Error();
                         } catch { showToast('Please enter a valid Instagram URL'); return; }
-                        addInstagramPreview(igUrl.trim());
-                        setIgUrl('');
-                        showToast('Instagram preview added');
+                        const res = await addInstagramPreview(igUrl.trim());
+                        if (res.success) { setIgUrl(''); showToast('Saved to Cloudflare D1 ✓'); } else showToast(`Failed: ${res.error} (saved locally only)`);
                       }}
-                      className="px-5 py-2.5 bg-[#ef4444] text-white font-bold text-xs rounded-xl hover:bg-[#dc2626] transition-colors flex items-center gap-2"
+                      disabled={instagramSaving}
+                      className="px-5 py-2.5 bg-[#ef4444] text-white font-bold text-xs rounded-xl hover:bg-[#dc2626] transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <Plus className="w-4 h-4" /> Add Link
+                      {instagramSaving ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />} {instagramSaving ? 'Saving…' : 'Add Link'}
                     </button>
                   </div>
                   <p className="text-[11px] text-[#bac9cd]/50">Supports /p/, /reel/, /tv/ links. Example: https://www.instagram.com/p/DbIywH0izjv/</p>
@@ -1929,7 +1942,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                               onChange={(e) => setEditingIgUrl(e.target.value)}
                               className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white outline-none"
                             />
-                            <button onClick={() => { updateInstagramPreview(p.id, editingIgUrl); setEditingIgId(null); showToast('Updated'); }} className="px-3 py-1.5 bg-emerald-600 text-white text-xs rounded-lg">Save</button>
+                            <button onClick={async () => { const r = await updateInstagramPreview(p.id, editingIgUrl); setEditingIgId(null); showToast(r.success ? 'Updated on D1 ✓' : `Failed: ${r.error}`); }} className="px-3 py-1.5 bg-emerald-600 text-white text-xs rounded-lg disabled:opacity-50" disabled={instagramSaving}>Save</button>
                             <button onClick={() => setEditingIgId(null)} className="px-3 py-1.5 bg-white/10 text-white text-xs rounded-lg">Cancel</button>
                           </>
                         ) : (
@@ -1939,7 +1952,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                               <a href={p.url} target="_blank" rel="noreferrer" className="text-[11px] text-[#ef4444] hover:underline flex items-center gap-1">Open <ExternalLink className="w-3 h-3" /></a>
                             </div>
                             <button onClick={() => { setEditingIgId(p.id); setEditingIgUrl(p.url); }} className="p-1.5 text-[#bac9cd] hover:text-white"><Edit2 className="w-4 h-4" /></button>
-                            <button onClick={() => { if (confirm('Remove this preview?')) { deleteInstagramPreview(p.id); showToast('Removed'); } }} className="p-1.5 text-[#bac9cd] hover:text-rose-400"><Trash2 className="w-4 h-4" /></button>
+                            <button onClick={async () => { if (confirm('Remove this preview?')) { const r = await deleteInstagramPreview(p.id); showToast(r.success ? 'Removed from D1 ✓' : `Failed: ${r.error}`); } }} className="p-1.5 text-[#bac9cd] hover:text-rose-400" disabled={instagramSaving}><Trash2 className="w-4 h-4" /></button>
                           </>
                         )}
                       </div>
