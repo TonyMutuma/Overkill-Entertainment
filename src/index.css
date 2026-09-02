@@ -173,19 +173,22 @@
    Clean semi-bold sans-serif small-caps for section eyebrows / tags. */
 .micro-cap{
   font-size:11px;
-  font-weight:300;
+  font-weight:400;
   letter-spacing:.08em;
   text-transform:uppercase;
   color:var(--body);
-  font-family:var(--font-sans);
+  font-family:'Krona One', sans-serif;
 }
 .sub-label{
   font-size:12px;
-  font-weight:500;
+  font-weight:400;
   letter-spacing:.06em;
   text-transform:uppercase;
   color:var(--body-soft);
-  font-family:var(--font-sans);
+  font-family:'Krona One', sans-serif;
+}
+.subtitle, [class*="tracking-[0.2em]"].font-mono, p.font-mono[class*="tracking-"]{
+  font-family:'Krona One', sans-serif !important;
 }
 
 /* ── GLASSMORPHISM CARDS (Apple Podcasts style) ── */
