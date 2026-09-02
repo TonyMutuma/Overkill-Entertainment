@@ -11,7 +11,7 @@ pages_build_output_dir = "dist"
 [[d1_databases]]
 binding = "DB"
 database_name = "overkillentertainment"
-database_id = "REPLACE_WITH_ID_FROM wrangler d1 list"
+database_id = "94600039-56c9-4578-b82d-799019d03a33"
 # To get ID: npx wrangler d1 list  (or Cloudflare Dashboard -> D1 -> overkillentertainment -> ID)
 # Paste it above. If you use `npx wrangler pages dev --d1=DB=overkillentertainment --remote` you can even leave it placeholder locally.
 
