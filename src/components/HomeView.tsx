@@ -100,14 +100,14 @@ export const HomeView: React.FC<HomeViewProps> = ({
                           </p>
               {(() => {
                 const renderVenue = (venue, idx) => {
-                  const isAlchemist = venue.name === 'Alchemist Lounge';
+                  const isSquare = venue.name === 'Alchemist Lounge' || venue.name === 'Farenheit Lounge';
                   return (
                   <div key={idx} className="group flex items-center">
                     {venue.logo ? (
                       <img
                         src={venue.logo}
                         alt={venue.name}
-                        className={`w-auto object-contain brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity ${isAlchemist ? 'h-16 sm:h-20' : 'h-12 sm:h-16'}`}
+                        className={`w-auto object-contain brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity ${isSquare ? 'h-16 sm:h-20' : 'h-12 sm:h-16'}`}
                       />
                     ) : (
                       <div className="text-left">
@@ -124,15 +124,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
                   </div>
                 );
                 };
-                const squareLogos = TRUST_VENUES.filter(
-                  (v) => v.name === 'Farenheit Lounge' || v.name === 'Alchemist Lounge'
-                );
-                const wideLogos = TRUST_VENUES.filter(
-                  (v) => v.name !== 'Farenheit Lounge' && v.name !== 'Alchemist Lounge'
-                );
-                const half = Math.ceil(wideLogos.length / 2);
-                const rowOne = wideLogos.slice(0, half);
-                const rowTwo = wideLogos.slice(half);
+                const half = Math.ceil(TRUST_VENUES.length / 2);
+                const rowOne = TRUST_VENUES.slice(0, half);
+                const rowTwo = TRUST_VENUES.slice(half);
                 return (
                   <>
                     <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-6 sm:gap-x-12 sm:gap-y-8 opacity-70 mb-6 sm:mb-8">
@@ -140,17 +134,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
                     </div>
                     <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-6 sm:gap-x-12 sm:gap-y-8 opacity-70">
                       {rowTwo.map(renderVenue)}
-                    </div>
-                    <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-6 sm:gap-x-16 sm:gap-y-8 opacity-70 mt-8 sm:mt-10">
-                      {squareLogos.map((venue) => (
-                        <div key={venue.name} className="group flex items-center">
-                          <img
-                            src={venue.logo}
-                            alt={venue.name}
-                            className="w-auto h-24 sm:h-32 object-contain brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity"
-                          />
-                        </div>
-                      ))}
                     </div>
                   </>
                 );
