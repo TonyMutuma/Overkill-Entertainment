@@ -32,4 +32,8 @@ export const api = {
   submitBooking: (bookingData:any) => req('/bookings', { method:'POST', body: JSON.stringify(bookingData)}),
   getBookings: () => req('/bookings'),
   getCMSData: () => req('/dashboard/cms'),
+  getInstagramPreviews: () => req('/instagram-previews'),
+  createInstagramPreview: (data:any) => req('/instagram-previews', { method:'POST', body: JSON.stringify(data)}),
+  updateInstagramPreview: (id:string, data:any) => req(`/instagram-previews/${id}`, { method:'PUT', body: JSON.stringify(data)}),
+  deleteInstagramPreview: (id:string) => req(`/instagram-previews/${id}`, { method:'DELETE'}),
 };

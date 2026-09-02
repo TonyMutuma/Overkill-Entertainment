@@ -66,6 +66,36 @@ app.get('/api/faqs', async (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+app.get('/api/instagram-previews', async (req, res) => {
+  try {
+    const rows = await executeQuery('SELECT * FROM instagram_previews ORDER BY created_at DESC');
+    res.json(rows || []);
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+app.post('/api/instagram-previews', async (req, res) => {
+  const { url } = req.body;
+  if (!url) return res.status(400).json({ error: 'url required' });
+  const id = `ig-${Date.now()}`;
+  try {
+    await executeQuery('INSERT INTO instagram_previews (id, url) VALUES (?,?)', [id, url]);
+    const rows = await executeQuery('SELECT * FROM instagram_previews WHERE id=?', [id]);
+    res.json(rows?.[0] || { id, url });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+app.put('/api/instagram-previews/:id', async (req, res) => {
+  const { url } = req.body;
+  try {
+    await executeQuery('UPDATE instagram_previews SET url=? WHERE id=?', [url, req.params.id]);
+    res.json({ success: true });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+app.delete('/api/instagram-previews/:id', async (req, res) => {
+  try {
+    await executeQuery('DELETE FROM instagram_previews WHERE id=?', [req.params.id]);
+    res.json({ success: true });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
 app.post('/api/bookings', async (req, res) => {
   const { clientName, email, phone, venueName, venueCity, guestCount, selectedPackage, selectedAddOns, estimatedTotal, eventDate } = req.body;
   try {

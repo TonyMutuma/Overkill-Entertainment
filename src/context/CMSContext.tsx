@@ -21,6 +21,7 @@ import {
   FAQ_ITEMS,
   TRUST_VENUES
 } from '../data/mockData';
+import { api } from '../utils/api';
 
 export const CREW_USERS: AdminUser[] = [
   {
@@ -317,6 +318,16 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     } catch (e) {}
     return INITIAL_INSTAGRAM_PREVIEWS;
   });
+  useEffect(() => {
+    api.getInstagramPreviews().then((rows: any) => {
+      if (Array.isArray(rows) && rows.length) {
+        setInstagramPreviews(rows.map((r: any) => ({ id: r.id, url: r.url })));
+      } else if (Array.isArray(rows) && rows.length === 0) {
+        const local = localStorage.getItem(STORAGE_KEYS.INSTAGRAM);
+        if (!local) setInstagramPreviews([]);
+      }
+    }).catch(() => {});
+  }, []);
 
   // Calendar overrides
   const [calendarOverrides, setCalendarOverrides] = useState<Record<string, { status: 'available' | 'booked' | 'restricted'; notes?: string }>>(() => {
@@ -605,12 +616,17 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (!clean) return;
     const newItem: InstagramPreviewItem = { id: `ig-${Date.now()}`, url: clean };
     setInstagramPreviews((prev) => [...prev, newItem]);
+    api.createInstagramPreview({ url: clean }).then((saved: any) => {
+      if (saved?.id) setInstagramPreviews((prev) => prev.map((p) => p.id === newItem.id ? { id: saved.id, url: saved.url } : p));
+    }).catch(() => {});
   };
   const updateInstagramPreview = (id: string, url: string) => {
     setInstagramPreviews((prev) => prev.map((p) => (p.id === id ? { ...p, url } : p)));
+    api.updateInstagramPreview(id, { url }).catch(() => {});
   };
   const deleteInstagramPreview = (id: string) => {
     setInstagramPreviews((prev) => prev.filter((p) => p.id !== id));
+    api.deleteInstagramPreview(id).catch(() => {});
   };
 
   // Inquiries
