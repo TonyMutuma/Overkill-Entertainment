@@ -102,12 +102,12 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 const renderVenue = (venue, idx) => {
                   const isSquare = venue.name === 'Alchemist Lounge' || venue.name === 'Farenheit Lounge';
                   return (
-                  <div key={idx} className="group flex items-center">
+                  <div key={idx} className="group flex items-center justify-center w-full">
                     {venue.logo ? (
                       <img
                         src={venue.logo}
                         alt={venue.name}
-                        className={`w-auto object-contain brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity ${isSquare ? 'h-16 sm:h-20' : 'h-12 sm:h-16'}`}
+                        className={`w-auto max-w-full object-contain brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity ${isSquare ? 'h-10 sm:h-12' : 'h-8 sm:h-10'}`}
                       />
                     ) : (
                       <div className="text-left">
@@ -129,10 +129,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 const rowTwo = TRUST_VENUES.slice(half);
                 return (
                   <>
-                    <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-6 sm:gap-x-12 sm:gap-y-8 opacity-70 mb-6 sm:mb-8">
+                    <div className="grid grid-cols-4 items-center justify-items-center gap-x-3 sm:gap-x-6 gap-y-6 opacity-70 mb-6 sm:mb-8">
                       {rowOne.map(renderVenue)}
                     </div>
-                    <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-6 sm:gap-x-12 sm:gap-y-8 opacity-70">
+                    <div className="grid grid-cols-4 items-center justify-items-center gap-x-3 sm:gap-x-6 gap-y-6 opacity-70">
                       {rowTwo.map(renderVenue)}
                     </div>
                   </>
