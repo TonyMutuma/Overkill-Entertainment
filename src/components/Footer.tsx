@@ -2,6 +2,13 @@ import React from 'react';
 import { NavTab } from '../types';
 import { useCMS } from '../context/CMSContext';
 import { Lock, Sliders } from 'lucide-react';
+import instagram from 'thesvg/instagram';
+import x from 'thesvg/x-formerly-twitter';
+import youtube from 'thesvg/youtube';
+import spotify from 'thesvg/spotify';
+import tiktok from 'thesvg/tiktok';
+import soundcloud from 'thesvg/soundcloud';
+import applePodcasts from 'thesvg/apple-podcasts';
 
 interface FooterProps {
   setActiveTab?: (tab: NavTab) => void;
@@ -55,8 +62,13 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
         <div className="md:col-span-3 flex flex-col items-start md:items-end gap-4">
           <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-slate-500 font-mono">
-            {siteSettings?.instagramUrl && <a href={siteSettings.instagramUrl} target="_blank" rel="noreferrer" className="hover:text-white transition-colors uppercase tracking-wider font-bold">Instagram</a>}
-            {siteSettings?.twitterUrl && <a href={siteSettings.twitterUrl} target="_blank" rel="noreferrer" className="hover:text-white transition-colors uppercase tracking-wider font-bold">X / Twitter</a>}
+            {siteSettings?.instagramUrl && <a href={siteSettings.instagramUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-white transition-colors uppercase tracking-wider font-bold"><span className="w-3.5 h-3.5 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: instagram.variants.mono }} />Instagram</a>}
+            {siteSettings?.twitterUrl && <a href={siteSettings.twitterUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-white transition-colors uppercase tracking-wider font-bold"><span className="w-3.5 h-3.5 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: x.variants.mono }} />X</a>}
+            <a href={siteSettings?.youtubeUrl || 'https://youtube.com'} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-white transition-colors uppercase tracking-wider font-bold"><span className="w-3.5 h-3.5 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: youtube.variants.mono }} />YouTube</a>
+            <a href="https://open.spotify.com" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-white transition-colors uppercase tracking-wider font-bold"><span className="w-3.5 h-3.5 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: spotify.variants.mono }} />Spotify</a>
+            <a href="https://www.tiktok.com" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-white transition-colors uppercase tracking-wider font-bold"><span className="w-3.5 h-3.5 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: tiktok.variants.mono }} />TikTok</a>
+            <a href="https://soundcloud.com" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-white transition-colors uppercase tracking-wider font-bold"><span className="w-3.5 h-3.5 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: soundcloud.variants.mono }} />SoundCloud</a>
+            <a href="https://podcasts.apple.com" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-white transition-colors uppercase tracking-wider font-bold"><span className="w-3.5 h-3.5 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: applePodcasts.variants.mono }} />Podcasts</a>
             <button onClick={handleContactOrBooking} className="hover:text-white transition-colors cursor-pointer uppercase tracking-wider font-bold">Book Now</button>
           </div>
           <button onClick={handleCrewAccess} className="flex items-center gap-2 px-4 py-2 bg-[#0b0f17] border-2 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 text-xs font-mono uppercase tracking-wider transition-colors cursor-pointer">

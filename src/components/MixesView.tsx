@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { MixTrack, NavTab } from '../types';
 import { Play, Pause, Headphones, Calendar as CalendarIcon, ChevronDown, ChevronUp, Music, ArrowUpRight, Youtube, ExternalLink, Volume2, VolumeX } from 'lucide-react';
+import youtubeBrand from 'thesvg/youtube';
+import applePodcasts from 'thesvg/apple-podcasts';
+import spotifyBrand from 'thesvg/spotify';
 import { getYoutubeEmbedUrl, getYoutubeField, extractYoutubeId } from '../utils/youtube';
 import { CHANNEL_VIDEO_IDS } from '../data/channelVideos';
 import { VertexCorners } from './VertexCorners';
@@ -262,7 +265,7 @@ export const MixesView: React.FC<MixesViewProps> = ({
               </button>
             )}
             <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-blue-400 hover:text-white border-2 border-blue-500/30 hover:border-blue-500 bg-blue-500/10 hover:bg-blue-600 px-4 py-2 transition-colors cursor-pointer">
-              <Youtube className="w-3.5 h-3.5" /> Open on YouTube
+              <span className="w-3.5 h-3.5 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: youtubeBrand.variants.mono }} /> Open on YouTube
             </a>
           </div>
         </div>

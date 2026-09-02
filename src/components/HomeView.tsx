@@ -4,6 +4,15 @@ import { TRUST_VENUES, DJ_ASSETS } from '../data/mockData';
 import { useCMS } from '../context/CMSContext';
 import { X, CheckCircle2, Sliders, Zap, ShieldCheck, ArrowUpRight } from 'lucide-react';
 import { VertexCorners } from './VertexCorners';
+import instagram from 'thesvg/instagram';
+import x from 'thesvg/x-formerly-twitter';
+import youtube from 'thesvg/youtube';
+import spotify from 'thesvg/spotify';
+import tiktok from 'thesvg/tiktok';
+import soundcloud from 'thesvg/soundcloud';
+import applePodcasts from 'thesvg/apple-podcasts';
+import mixcloud from 'thesvg/mixcloud';
+import beatport from 'thesvg/beatport';
 
 interface HomeViewProps {
   setActiveTab?: (tab: NavTab) => void;
@@ -185,12 +194,12 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <div className="flex flex-wrap items-center gap-3">
               {siteSettings?.instagramUrl && (
                 <a href={siteSettings.instagramUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 bg-white text-black font-bold text-xs uppercase tracking-wider px-5 py-3 rounded-xl hover:bg-slate-200 transition-colors cursor-pointer">
-                  Instagram
+                  <span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current text-black" dangerouslySetInnerHTML={{ __html: instagram.variants.mono }} /> Instagram
                 </a>
               )}
               {siteSettings?.twitterUrl && (
                 <a href={siteSettings.twitterUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 bg-[#0b0f17] border border-slate-700 text-white font-bold text-xs uppercase tracking-wider px-5 py-3 rounded-xl hover:border-white/40 transition-colors cursor-pointer">
-                  X / Twitter
+                  <span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: x.variants.mono }} /> X / Twitter
                 </a>
               )}
               <button
@@ -200,6 +209,16 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 Book {siteSettings?.djName?.split(' ').pop() || 'DJ Wolverine'}
                 <ArrowUpRight className="w-4 h-4" />
               </button>
+            </div>
+            <div className="flex flex-wrap items-center gap-3 mt-6 pt-6 border-t border-slate-800/60">
+              <span className="font-mono text-[10px] text-slate-500 uppercase tracking-widest font-bold">Listen on</span>
+              <a href="https://youtube.com/@djwolverine_ke" target="_blank" rel="noreferrer" className="w-8 h-8 bg-white/[0.06] border border-white/10 flex items-center justify-center hover:bg-white hover:[&>span]:text-black text-white transition-colors"><span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: youtube.variants.mono }} /></a>
+              <a href="https://open.spotify.com" target="_blank" rel="noreferrer" className="w-8 h-8 bg-white/[0.06] border border-white/10 flex items-center justify-center hover:bg-white hover:[&>span]:text-black text-white transition-colors"><span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: spotify.variants.mono }} /></a>
+              <a href="https://podcasts.apple.com/ke/podcast/dj-wolverine-mixes/id1707262780" target="_blank" rel="noreferrer" className="w-8 h-8 bg-white/[0.06] border border-white/10 flex items-center justify-center hover:bg-white hover:[&>span]:text-black text-white transition-colors"><span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: applePodcasts.variants.mono }} /></a>
+              <a href="https://soundcloud.com" target="_blank" rel="noreferrer" className="w-8 h-8 bg-white/[0.06] border border-white/10 flex items-center justify-center hover:bg-white hover:[&>span]:text-black text-white transition-colors"><span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: soundcloud.variants.mono }} /></a>
+              <a href="https://mixcloud.com" target="_blank" rel="noreferrer" className="w-8 h-8 bg-white/[0.06] border border-white/10 flex items-center justify-center hover:bg-white hover:[&>span]:text-black text-white transition-colors"><span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: mixcloud.variants.mono }} /></a>
+              <a href="https://beatport.com" target="_blank" rel="noreferrer" className="w-8 h-8 bg-white/[0.06] border border-white/10 flex items-center justify-center hover:bg-white hover:[&>span]:text-black text-white transition-colors"><span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: beatport.variants.mono }} /></a>
+              <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="w-8 h-8 bg-white/[0.06] border border-white/10 flex items-center justify-center hover:bg-white hover:[&>span]:text-black text-white transition-colors"><span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: tiktok.variants.mono }} /></a>
             </div>
           </div>
         </div>
