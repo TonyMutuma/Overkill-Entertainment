@@ -107,7 +107,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                       <img
                         src={venue.logo}
                         alt={venue.name}
-                        className={`w-auto max-w-full object-contain brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity ${isSquare ? 'h-10 sm:h-12' : 'h-8 sm:h-10'}`}
+                        className={`w-auto max-w-full object-contain brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity ${isSquare ? 'h-12 sm:h-14' : 'h-10 sm:h-12'}`}
                       />
                     ) : (
                       <div className="text-left">
@@ -129,10 +129,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 const rowTwo = TRUST_VENUES.slice(half);
                 return (
                   <>
-                    <div className="grid grid-cols-4 items-center justify-items-center gap-x-3 sm:gap-x-6 gap-y-6 opacity-70 mb-6 sm:mb-8">
+                    <div className="grid grid-cols-4 items-center justify-items-center gap-x-2 sm:gap-x-3 gap-y-3 sm:gap-y-4 opacity-70 mb-3 sm:mb-4">
                       {rowOne.map(renderVenue)}
                     </div>
-                    <div className="grid grid-cols-4 items-center justify-items-center gap-x-3 sm:gap-x-6 gap-y-6 opacity-70">
+                    <div className="grid grid-cols-4 items-center justify-items-center gap-x-2 sm:gap-x-3 gap-y-3 sm:gap-y-4 opacity-70">
                       {rowTwo.map(renderVenue)}
                     </div>
                   </>
