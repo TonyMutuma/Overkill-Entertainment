@@ -76,7 +76,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           onClick={() => handleNavClick('home')}
           className="flex items-center gap-2.5 group text-left cursor-pointer"
         >
-          <img src="/assets/overkill-logo.png" alt={siteSettings?.brandName || 'OVERKILL ENTERTAINMENT'} className="h-8 sm:h-9 w-auto object-contain" />
+          <img src="/assets/overkill-logo.png" alt={siteSettings?.brandName || 'OVERKILL ENTERTAINMENT'} className="h-10 sm:h-12 w-auto object-contain" />
           {isPlayingMix && <Disc3 className="w-4 h-4 animate-spin text-blue-500" />}
         </button>
 
