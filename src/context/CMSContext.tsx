@@ -22,6 +22,7 @@ import {
   TRUST_VENUES
 } from '../data/mockData';
 import { api } from '../utils/api';
+import { supabase } from '../lib/supabase';
 
 export const CREW_USERS: AdminUser[] = [
   {
@@ -329,9 +330,10 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setInstagramSaving(true);
     setInstagramError(null);
     try {
-      const rows: any = await api.getInstagramPreviews();
-      if (Array.isArray(rows)) {
-        if (rows.length) setInstagramPreviews(rows.map((r: any) => ({ id: r.id, url: r.url })));
+      const { data, error } = await supabase.from('instagram_previews').select('*').order('created_at', { ascending: false });
+      if (error) throw error;
+      if (Array.isArray(data)) {
+        if (data.length) setInstagramPreviews(data.map((r: any) => ({ id: r.id, url: r.url })));
         else {
           const local = localStorage.getItem(STORAGE_KEYS.INSTAGRAM);
           if (!local) setInstagramPreviews([]);
@@ -339,13 +341,19 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setInstagramLastSavedAt(new Date().toLocaleTimeString());
       }
     } catch (e: any) {
-      setInstagramError(e.message || 'Failed to fetch from D1');
+      setInstagramError(e.message || 'Failed to fetch from Supabase');
+      try {
+        const rows: any = await api.getInstagramPreviews();
+        if (Array.isArray(rows) && rows.length) setInstagramPreviews(rows.map((r: any) => ({ id: r.id, url: r.url })));
+      } catch {}
     } finally {
       setInstagramSaving(false);
     }
   };
   useEffect(() => {
     refreshInstagramPreviews();
+    const channel = supabase.channel('instagram-previews-changes').on('postgres_changes', { event: '*', schema: 'public', table: 'instagram_previews' }, () => refreshInstagramPreviews()).subscribe();
+    return () => { supabase.removeChannel(channel); };
   }, []);
 
   // Calendar overrides
