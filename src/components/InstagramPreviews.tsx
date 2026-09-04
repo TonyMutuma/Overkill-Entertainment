@@ -1,37 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useCMS } from '../context/CMSContext';
 import { VertexCorners } from './VertexCorners';
 
-declare global { interface Window { instgrm?: { Embeds: { process: () => void } } } }
-
-const INSTAGRAM_EMBED_SRC = 'https://www.instagram.com/embed.js';
+const toInstagramEmbedUrl = (url: string) => {
+  try {
+    const parsed = new URL(url);
+    const match = parsed.pathname.match(/^\/(p|reel|tv)\/([^/]+)/i);
+    if (match) return `https://www.instagram.com/${match[1].toLowerCase()}/${match[2]}/embed/`;
+  } catch {}
+  return url;
+};
 
 export const InstagramPreviews: React.FC = () => {
   const { instagramPreviews } = useCMS();
-
-  useEffect(() => {
-    if (!instagramPreviews.length) return;
-
-    const processEmbeds = () => window.instgrm?.Embeds.process();
-    const existing = document.querySelector(`script[src="${INSTAGRAM_EMBED_SRC}"]`) as HTMLScriptElement | null;
-
-    if (existing) {
-      if (window.instgrm) processEmbeds();
-      else existing.addEventListener('load', processEmbeds, { once: true });
-      return;
-    }
-
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = INSTAGRAM_EMBED_SRC;
-    script.onload = processEmbeds;
-    document.body.appendChild(script);
-
-    return () => {
-      script.onload = null;
-    };
-  }, [instagramPreviews]);
-
   if (!instagramPreviews.length) return null;
 
   return (
@@ -46,12 +27,17 @@ export const InstagramPreviews: React.FC = () => {
           {instagramPreviews.map((p) => (
             <div key={p.id} className="vertex-card bg-[#0b0f17] border border-slate-800/60 overflow-hidden p-2 sm:p-3 flex justify-center">
               <VertexCorners variant="muted" size={16} />
-              <blockquote
-                className="instagram-media w-full"
-                data-instgrm-permalink={p.url.includes('?') ? p.url : `${p.url.replace(/\/$/, '')}/?utm_source=ig_embed&utm_campaign=loading`}
-                data-instgrm-version="14"
-                style={{ background: '#FFF', border: 0, borderRadius: 3, margin: 1, maxWidth: 658, minWidth: 0, width: '100%' } as any}
-              />
+              <div className="w-full min-w-0 bg-white rounded-[3px] overflow-hidden" style={{ minHeight: 520 }}>
+                <iframe
+                  title="Instagram post"
+                  src={toInstagramEmbedUrl(p.url)}
+                  className="block w-full border-0"
+                  style={{ height: 540, border: 0 }}
+                  scrolling="no"
+                  allow="encrypted-media; fullscreen; picture-in-picture"
+                  loading="eager"
+                />
+              </div>
             </div>
           ))}
         </div>
