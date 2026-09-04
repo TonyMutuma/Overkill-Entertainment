@@ -6,14 +6,12 @@ import { X, CheckCircle2, Sliders, Zap, ShieldCheck, ArrowUpRight } from 'lucide
 import { VertexCorners } from './VertexCorners';
 import { InstagramPreviews } from './InstagramPreviews';
 import instagram from 'thesvg/instagram';
-import x from 'thesvg/x-formerly-twitter';
+import x from 'thesvg/x';
 import youtube from 'thesvg/youtube';
-import spotify from 'thesvg/spotify';
-import tiktok from 'thesvg/tiktok';
-import soundcloud from 'thesvg/soundcloud';
 import applePodcasts from 'thesvg/apple-podcasts';
 import mixcloud from 'thesvg/mixcloud';
 import beatport from 'thesvg/beatport';
+import hearthis from 'thesvg/hearthisdotat';
 
 interface HomeViewProps {
   setActiveTab?: (tab: NavTab) => void;
@@ -59,9 +57,14 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <div className="absolute inset-0 z-0">
           <img
             src={DJ_ASSETS.heroBg}
-            alt="DJ Wolverine"
-            /* Mobile: position DJ center-right with top placement; Desktop: standard right alignment */
+            alt="DJ Wolverine performing live - Nairobi's elite selector for clubs and festivals"
+            width={1920}
+            height={1080}
+            fetchPriority="high"
+            loading="eager"
+            decoding="sync"
             className="w-full h-full object-cover object-[70%_15%] md:object-[85%_center] opacity-60 md:opacity-80"
+            style={{ contentVisibility: 'auto' } as any}
           />
           {/* Mobile Linear Gradients to guarantee text contrast & keep subject visible */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#070b11] via-[#070b11]/90 via-55% to-transparent md:hidden" />
@@ -161,7 +164,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <VertexCorners variant="blue" size={22} thickness={2.6} />
             <img
               src="/assets/DjWolverine.png"
-              alt="DJ Wolverine"
+              alt="DJ Wolverine portrait - Overkill Entertainment resident selector"
+              width={800}
+              height={1000}
+              loading="lazy"
+              decoding="async"
               className="w-full h-[320px] sm:h-[440px] object-cover object-[50%_20%]"
             />
           </div>
@@ -214,12 +221,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <div className="flex flex-wrap items-center gap-3 mt-6 pt-6 border-t border-slate-800/60">
               <span className="font-mono text-[10px] text-slate-500 uppercase tracking-widest font-bold">Listen on</span>
               <a href="https://youtube.com/@djwolverine_ke" target="_blank" rel="noreferrer" className="w-8 h-8 bg-white/[0.06] border border-white/10 flex items-center justify-center hover:bg-white hover:[&>span]:text-black text-white transition-colors"><span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: youtube.variants.mono }} /></a>
-              <a href="https://open.spotify.com" target="_blank" rel="noreferrer" className="w-8 h-8 bg-white/[0.06] border border-white/10 flex items-center justify-center hover:bg-white hover:[&>span]:text-black text-white transition-colors"><span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: spotify.variants.mono }} /></a>
+              <a href="https://hearthis.at/dj-wolverine/" target="_blank" rel="noreferrer" className="w-8 h-8 bg-white/[0.06] border border-white/10 flex items-center justify-center hover:bg-white hover:[&>span]:text-black text-white transition-colors"><span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: hearthis.variants.mono }} /></a>
               <a href="https://podcasts.apple.com/ke/podcast/dj-wolverine-mixes/id1707262780" target="_blank" rel="noreferrer" className="w-8 h-8 bg-white/[0.06] border border-white/10 flex items-center justify-center hover:bg-white hover:[&>span]:text-black text-white transition-colors"><span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: applePodcasts.variants.mono }} /></a>
-              <a href="https://soundcloud.com" target="_blank" rel="noreferrer" className="w-8 h-8 bg-white/[0.06] border border-white/10 flex items-center justify-center hover:bg-white hover:[&>span]:text-black text-white transition-colors"><span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: soundcloud.variants.mono }} /></a>
-              <a href="https://mixcloud.com" target="_blank" rel="noreferrer" className="w-8 h-8 bg-white/[0.06] border border-white/10 flex items-center justify-center hover:bg-white hover:[&>span]:text-black text-white transition-colors"><span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: mixcloud.variants.mono }} /></a>
+              <a href="https://www.mixcloud.com/djwolverine_ke/" target="_blank" rel="noreferrer" className="w-8 h-8 bg-white/[0.06] border border-white/10 flex items-center justify-center hover:bg-white hover:[&>span]:text-black text-white transition-colors"><span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: mixcloud.variants.mono }} /></a>
               <a href="https://beatport.com" target="_blank" rel="noreferrer" className="w-8 h-8 bg-white/[0.06] border border-white/10 flex items-center justify-center hover:bg-white hover:[&>span]:text-black text-white transition-colors"><span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: beatport.variants.mono }} /></a>
-              <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="w-8 h-8 bg-white/[0.06] border border-white/10 flex items-center justify-center hover:bg-white hover:[&>span]:text-black text-white transition-colors"><span className="w-4 h-4 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: tiktok.variants.mono }} /></a>
             </div>
           </div>
         </div>

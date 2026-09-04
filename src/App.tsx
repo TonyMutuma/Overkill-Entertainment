@@ -133,8 +133,7 @@ export function App() {
         />
       )}
 
-      {/* Primary Route Views */}
-      <main className="flex-grow relative z-10">
+      <main id="main-content" className="flex-grow relative z-10">
         {isCurrentPageDisabled ? (
           <div className="pt-40 pb-32 px-6 max-w-3xl mx-auto text-center">
             <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center mx-auto mb-6">

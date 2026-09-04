@@ -74,7 +74,19 @@ export default {
       }
     }
     // Fallback to assets for all other requests (static site)
-    if (env.ASSETS) return env.ASSETS.fetch(request);
+    if (env.ASSETS) {
+      const res = await env.ASSETS.fetch(request);
+      const headers = new Headers(res.headers);
+      headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; media-src 'self' https:; connect-src 'self' https://*.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
+      headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+      headers.set('X-Frame-Options', 'DENY');
+      headers.set('X-Content-Type-Options', 'nosniff');
+      headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+      headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+      if (url.pathname.match(/\.(js|css|png|jpg|jpeg|webp|woff2?)$/)) headers.set('Cache-Control', 'public, max-age=31536000, immutable');
+      else if (url.pathname === '/' || url.pathname.endsWith('.html')) headers.set('Cache-Control', 'public, max-age=0, must-revalidate');
+      return new Response(res.body, { status: res.status, headers });
+    }
     return new Response('Not found', { status: 404 });
   }
 };
