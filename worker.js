@@ -61,6 +61,10 @@ export default {
             if (r.ok) return new Response(JSON.stringify({ success: true }), { headers: { 'Content-Type': 'application/json' } });
           }
           if (env.DB) {
+            await env.DB.prepare('DELETE FROM instagram_previews WHERE id=eq.${id}`, { method: 'DELETE' });
+            if (r.ok) return new Response(JSON.stringify({ success: true }), { headers: { 'Content-Type': 'application/json' } });
+          }
+          if (env.DB) {
             await env.DB.prepare('DELETE FROM instagram_previews WHERE id=?').bind(id).run();
             return new Response(JSON.stringify({ success: true }), { headers: { 'Content-Type': 'application/json' } });
           }
@@ -77,7 +81,7 @@ export default {
     if (env.ASSETS) {
       const res = await env.ASSETS.fetch(request);
       const headers = new Headers(res.headers);
-      headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; media-src 'self' https:; connect-src 'self' https://*.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
+      headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.instagram.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; media-src 'self' https:; connect-src 'self' https://*.supabase.co https://www.instagram.com https://*.instagram.com; frame-src 'self' https://www.instagram.com https://*.instagram.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
       headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
       headers.set('X-Frame-Options', 'DENY');
       headers.set('X-Content-Type-Options', 'nosniff');
