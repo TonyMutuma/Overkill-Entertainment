@@ -61,10 +61,6 @@ export default {
             if (r.ok) return new Response(JSON.stringify({ success: true }), { headers: { 'Content-Type': 'application/json' } });
           }
           if (env.DB) {
-            await env.DB.prepare('DELETE FROM instagram_previews WHERE id=eq.${id}`, { method: 'DELETE' });
-            if (r.ok) return new Response(JSON.stringify({ success: true }), { headers: { 'Content-Type': 'application/json' } });
-          }
-          if (env.DB) {
             await env.DB.prepare('DELETE FROM instagram_previews WHERE id=?').bind(id).run();
             return new Response(JSON.stringify({ success: true }), { headers: { 'Content-Type': 'application/json' } });
           }
