@@ -4,21 +4,32 @@ import { VertexCorners } from './VertexCorners';
 
 declare global { interface Window { instgrm?: { Embeds: { process: () => void } } } }
 
+const INSTAGRAM_EMBED_SRC = 'https://www.instagram.com/embed.js';
+
 export const InstagramPreviews: React.FC = () => {
   const { instagramPreviews } = useCMS();
+
   useEffect(() => {
-    const existing = document.querySelector('script[src="//www.instagram.com/embed.js"]') as HTMLScriptElement | null;
-    if (!existing) {
-      const s = document.createElement('script');
-      s.async = true;
-      s.src = '//www.instagram.com/embed.js';
-      document.body.appendChild(s);
-      s.onload = () => window.instgrm?.Embeds.process();
-    } else {
-      window.instgrm?.Embeds.process();
+    if (!instagramPreviews.length) return;
+
+    const processEmbeds = () => window.instgrm?.Embeds.process();
+    const existing = document.querySelector(`script[src="${INSTAGRAM_EMBED_SRC}"]`) as HTMLScriptElement | null;
+
+    if (existing) {
+      if (window.instgrm) processEmbeds();
+      else existing.addEventListener('load', processEmbeds, { once: true });
+      return;
     }
-    const t = setTimeout(() => window.instgrm?.Embeds.process(), 800);
-    return () => clearTimeout(t);
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = INSTAGRAM_EMBED_SRC;
+    script.onload = processEmbeds;
+    document.body.appendChild(script);
+
+    return () => {
+      script.onload = null;
+    };
   }, [instagramPreviews]);
 
   if (!instagramPreviews.length) return null;
@@ -39,7 +50,7 @@ export const InstagramPreviews: React.FC = () => {
                 className="instagram-media w-full"
                 data-instgrm-permalink={p.url.includes('?') ? p.url : `${p.url.replace(/\/$/, '')}/?utm_source=ig_embed&utm_campaign=loading`}
                 data-instgrm-version="14"
-                style={{ background: '#FFF', border: 0, borderRadius: 3, margin: 1, maxWidth: 658, minWidth: 326, width: '100%' } as any}
+                style={{ background: '#FFF', border: 0, borderRadius: 3, margin: 1, maxWidth: 658, minWidth: 0, width: '100%' } as any}
               />
             </div>
           ))}
