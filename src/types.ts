@@ -159,4 +159,9 @@ export interface InstagramPreviewItem {
   url: string;
 }
 
+export interface YoutubePreviewItem {
+  id: string;
+  url: string;
+}
+
 

@@ -50,6 +50,7 @@ type AdminTab =
   | 'faqs'
   | 'venues'
   | 'instagram'
+  | 'youtube'
   | 'backup';
 
 const PRESET_IMAGE_LIBRARY: { name: string; url: string; category: string }[] = [
@@ -143,6 +144,14 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
     updateInstagramPreview,
     deleteInstagramPreview,
     refreshInstagramPreviews,
+    youtubePreviews,
+    youtubeSaving,
+    youtubeError,
+    youtubeLastSavedAt,
+    addYoutubePreview,
+    updateYoutubePreview,
+    deleteYoutubePreview,
+    refreshYoutubePreviews,
     bookingInquiries,
     updateInquiryStatus,
     deleteInquiry,
@@ -172,6 +181,9 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
   const [igUrl, setIgUrl] = useState('');
   const [editingIgId, setEditingIgId] = useState<string | null>(null);
   const [editingIgUrl, setEditingIgUrl] = useState('');
+  const [ytUrl, setYtUrl] = useState('');
+  const [editingYtId, setEditingYtId] = useState<string | null>(null);
+  const [editingYtUrl, setEditingYtUrl] = useState('');
 
   const [importJsonText, setImportJsonText] = useState('');
   const [importError, setImportError] = useState<string | null>(null);
@@ -239,6 +251,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
     { id: 'faqs', label: 'FAQ & Tech Riders', icon: HelpCircle, count: faqItems.length },
     { id: 'venues', label: 'Venues', icon: ShieldCheck },
     { id: 'instagram', label: 'Instagram Previews', icon: ImageIcon, count: instagramPreviews.length },
+    { id: 'youtube', label: 'YouTube Previews', icon: ImageIcon, count: youtubePreviews.length },
     { id: 'backup', label: 'Backup, Import & Reset', icon: Settings }
   ];
 
@@ -1953,6 +1966,87 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                             </div>
                             <button onClick={() => { setEditingIgId(p.id); setEditingIgUrl(p.url); }} className="p-1.5 text-[#bac9cd] hover:text-white"><Edit2 className="w-4 h-4" /></button>
                             <button onClick={async () => { if (confirm('Remove this preview?')) { const r = await deleteInstagramPreview(p.id); showToast(r.success ? 'Removed from D1 ✓' : `Failed: ${r.error}`); } }} className="p-1.5 text-[#bac9cd] hover:text-rose-400" disabled={instagramSaving}><Trash2 className="w-4 h-4" /></button>
+                          </>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ========================================================================= */}
+            {/* TAB: YOUTUBE PREVIEWS */}
+            {/* ========================================================================= */}
+            {activeTab === 'youtube' && (
+              <div className="space-y-6">
+                <div>
+                  <h2 className="font-sora text-xl font-bold text-[#e5e2e1] mb-1 flex items-center gap-2">
+                    <ImageIcon className="w-5 h-5 text-[#ef4444]" />
+                    YouTube Previews
+                  </h2>
+                  <p className="font-hanken text-xs text-[#bac9cd]/70">
+                    Paste YouTube links — cards auto-generate on the home page via embedded player.
+                  </p>
+                </div>
+                <div className="p-3 rounded-xl bg-[#1c1b1b] border border-white/10 flex flex-wrap items-center gap-3 text-xs">
+                  <span className="flex items-center gap-2 font-mono-jb">
+                    {youtubeSaving ? <><RefreshCw className="w-3.5 h-3.5 animate-spin text-amber-400" /> <span className="text-amber-300">Saving to D1…</span></> : youtubeError ? <><AlertCircle className="w-3.5 h-3.5 text-rose-400" /> <span className="text-rose-300">{youtubeError}</span></> : <><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> <span className="text-emerald-300">Connected to D1</span></>}
+                  </span>
+                  {youtubeLastSavedAt && <span className="text-[#bac9cd]/50">Last saved {youtubeLastSavedAt}</span>}
+                  <span className="text-[#bac9cd]/30">• {youtubePreviews.length} saved</span>
+                  <button onClick={async () => { await refreshYoutubePreviews(); showToast(youtubeError ? `Error: ${youtubeError}` : 'Refreshed from D1'); }} className="ml-auto px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-[11px] text-[#bac9cd] flex items-center gap-1"><RefreshCw className="w-3 h-3" /> Refresh</button>
+                </div>
+                <div className="p-5 rounded-2xl bg-[#161616] border border-white/10 space-y-4">
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <input
+                      type="url"
+                      value={ytUrl}
+                      onChange={(e) => setYtUrl(e.target.value)}
+                      placeholder="https://www.youtube.com/watch?v=..."
+                      className="flex-1 bg-[#1c1b1b] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#e5e2e1] focus:border-[#ef4444] outline-none font-mono-jb disabled:opacity-50"
+                      disabled={youtubeSaving}
+                    />
+                    <button
+                      onClick={async () => {
+                        if (!ytUrl.trim()) return;
+                        try {
+                          const u = new URL(ytUrl.trim());
+                          if (!u.hostname.includes('youtube.com') && !u.hostname.includes('youtu.be')) throw new Error();
+                        } catch { showToast('Please enter a valid YouTube URL'); return; }
+                        const res = await addYoutubePreview(ytUrl.trim());
+                        if (res.success) { setYtUrl(''); showToast('Saved to Cloudflare D1 ✓'); } else showToast(`Failed: ${res.error}`);
+                      }}
+                      disabled={youtubeSaving}
+                      className="px-5 py-2.5 bg-[#ef4444] text-white font-bold text-xs rounded-xl hover:bg-[#dc2626] transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {youtubeSaving ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />} {youtubeSaving ? 'Saving…' : 'Add Link'}
+                    </button>
+                  </div>
+                  <p className="text-[11px] text-[#bac9cd]/50">Supports youtube.com/watch, youtu.be, youtube.com/shorts. Example: https://www.youtube.com/watch?v=5qap5aO4i9A</p>
+                  <div className="space-y-3">
+                    {youtubePreviews.length === 0 && <p className="text-xs text-[#bac9cd]/60">No previews yet — add your first link above.</p>}
+                    {youtubePreviews.map((p) => (
+                      <div key={p.id} className="p-3 rounded-xl bg-[#1c1b1b] border border-white/10 flex items-center gap-3">
+                        {editingYtId === p.id ? (
+                          <>
+                            <input
+                              type="url"
+                              value={editingYtUrl}
+                              onChange={(e) => setEditingYtUrl(e.target.value)}
+                              className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white outline-none"
+                            />
+                            <button onClick={async () => { const r = await updateYoutubePreview(p.id, editingYtUrl); setEditingYtId(null); showToast(r.success ? 'Updated on D1 ✓' : `Failed: ${r.error}`); }} className="px-3 py-1.5 bg-emerald-600 text-white text-xs rounded-lg disabled:opacity-50" disabled={youtubeSaving}>Save</button>
+                            <button onClick={() => setEditingYtId(null)} className="px-3 py-1.5 bg-white/10 text-white text-xs rounded-lg">Cancel</button>
+                          </>
+                        ) : (
+                          <>
+                            <div className="flex-1 min-w-0">
+                              <div className="font-mono-jb text-xs text-[#e5e2e1] truncate">{p.url}</div>
+                              <a href={p.url} target="_blank" rel="noreferrer" className="text-[11px] text-[#ef4444] hover:underline flex items-center gap-1">Open <ExternalLink className="w-3 h-3" /></a>
+                            </div>
+                            <button onClick={() => { setEditingYtId(p.id); setEditingYtUrl(p.url); }} className="p-1.5 text-[#bac9cd] hover:text-white"><Edit2 className="w-4 h-4" /></button>
+                            <button onClick={async () => { if (confirm('Remove this preview?')) { const r = await deleteYoutubePreview(p.id); showToast(r.success ? 'Removed from D1 ✓' : `Failed: ${r.error}`); } }} className="p-1.5 text-[#bac9cd] hover:text-rose-400" disabled={youtubeSaving}><Trash2 className="w-4 h-4" /></button>
                           </>
                         )}
                       </div>

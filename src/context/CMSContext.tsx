@@ -10,6 +10,7 @@ import {
   FaqItem,
   VenueItem,
   InstagramPreviewItem,
+  YoutubePreviewItem,
   StoredBookingInquiry,
   BookingSubmission
 } from '../types';
@@ -90,6 +91,10 @@ const INITIAL_INSTAGRAM_PREVIEWS: InstagramPreviewItem[] = [
   { id: 'ig-1', url: 'https://www.instagram.com/p/DbIywH0izjv/' }
 ];
 
+const INITIAL_YOUTUBE_PREVIEWS: YoutubePreviewItem[] = [
+  { id: 'yt-1', url: 'https://www.youtube.com/watch?v=5qap5aO4i9A' }
+];
+
 const INITIAL_INQUIRIES: StoredBookingInquiry[] = [
   {
     id: 'inq-101',
@@ -157,9 +162,12 @@ interface CMSContextType {
 
   // Audio Mixes
   mixTracks: MixTrack[];
-  addMixTrack: (track: Omit<MixTrack, 'id'>) => void;
-  updateMixTrack: (id: string, track: Partial<MixTrack>) => void;
-  deleteMixTrack: (id: string) => void;
+  mixSaving: boolean;
+  mixError: string | null;
+  addMixTrack: (track: Omit<MixTrack, 'id'>) => Promise<{ success: boolean; error?: string }>;
+  updateMixTrack: (id: string, track: Partial<MixTrack>) => Promise<{ success: boolean; error?: string }>;
+  deleteMixTrack: (id: string) => Promise<{ success: boolean; error?: string }>;
+  refreshMixTracks: () => Promise<void>;
 
   // Packages & Rates
   servicePackages: ServicePackage[];
@@ -200,11 +208,24 @@ interface CMSContextType {
   deleteInstagramPreview: (id: string) => Promise<{ success: boolean; error?: string }>;
   refreshInstagramPreviews: () => Promise<void>;
 
+  // Youtube Previews
+  youtubePreviews: YoutubePreviewItem[];
+  youtubeSaving: boolean;
+  youtubeError: string | null;
+  youtubeLastSavedAt: string | null;
+  addYoutubePreview: (url: string) => Promise<{ success: boolean; error?: string }>;
+  updateYoutubePreview: (id: string, url: string) => Promise<{ success: boolean; error?: string }>;
+  deleteYoutubePreview: (id: string) => Promise<{ success: boolean; error?: string }>;
+  refreshYoutubePreviews: () => Promise<void>;
+
   // Booking Inquiries
   bookingInquiries: StoredBookingInquiry[];
-  addBookingInquiry: (submission: BookingSubmission) => void;
-  updateInquiryStatus: (id: string, status: StoredBookingInquiry['status'], notes?: string) => void;
-  deleteInquiry: (id: string) => void;
+  bookingSaving: boolean;
+  bookingError: string | null;
+  addBookingInquiry: (submission: BookingSubmission) => Promise<{ success: boolean; error?: string }>;
+  updateInquiryStatus: (id: string, status: StoredBookingInquiry['status'], notes?: string) => Promise<{ success: boolean; error?: string }>;
+  deleteInquiry: (id: string) => Promise<{ success: boolean; error?: string }>;
+  refreshBookings: () => Promise<void>;
 
   // Reset & Backup
   resetAllToDefaults: () => void;
@@ -225,6 +246,7 @@ const STORAGE_KEYS = {
   FAQS: 'overkill_faqs_v2',
   VENUES: 'overkill_venues_v2',
   INSTAGRAM: 'overkill_instagram_v2',
+  YOUTUBE: 'overkill_youtube_v2',
   CALENDAR: 'overkill_calendar_overrides_v2',
   INQUIRIES: 'overkill_inquiries_v2',
 };
@@ -278,6 +300,51 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     } catch (e) {}
     return MIX_TRACKS;
   });
+  const [mixSaving, setMixSaving] = useState(false);
+  const [mixError, setMixError] = useState<string | null>(null);
+  const mapMixRow = (r: any): MixTrack => ({
+    id: r.id,
+    title: r.title,
+    category: r.category,
+    categoryLabel: (r.category_label ?? r.categoryLabel ?? r.category) as string,
+    duration: r.duration || '',
+    recordedAt: (r.recorded_at ?? r.recordedAt) || '',
+    description: r.description || '',
+    date: r.date || '',
+    plays: r.plays || '',
+    bpm: Number(r.bpm) || 0,
+    imageUrl: (r.image_url ?? r.imageUrl) || '',
+    audioKey: (r.audio_key ?? r.audioKey) || '',
+    tags: typeof r.tags === 'string' ? JSON.parse(r.tags) : (r.tags ?? []),
+    tracklistSnippet: typeof r.tracklist_snippet === 'string' ? JSON.parse(r.tracklist_snippet) : ((r.tracklistSnippet ?? r.tracklist_snippet) ?? []),
+    youtubeUrl: r.youtube_url ?? r.youtubeUrl,
+    youtubeId: r.youtube_id ?? r.youtubeId,
+  });
+  const refreshMixTracks = async () => {
+    setMixSaving(true);
+    setMixError(null);
+    try {
+      const { data, error } = await supabase.from('mix_tracks').select('*').order('created_at', { ascending: false });
+      if (!error && Array.isArray(data) && data.length) {
+        setMixTracks(data.map(mapMixRow));
+        setMixSaving(false);
+        return;
+      }
+      if (error && !error.message.includes('Could not find the table')) throw error;
+    } catch (e: any) {
+      setMixError(e.message || 'Failed to fetch mixes');
+    }
+    try {
+      const rows: any = await api.getMixTracks();
+      if (Array.isArray(rows) && rows.length) setMixTracks(rows.map(mapMixRow));
+    } catch {}
+    finally { setMixSaving(false); }
+  };
+  useEffect(() => {
+    refreshMixTracks();
+    const channel = supabase.channel('mix-tracks-changes').on('postgres_changes', { event: '*', schema: 'public', table: 'mix_tracks' }, () => refreshMixTracks()).subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, []);
 
   // Packages
   const [servicePackages, setServicePackages] = useState<ServicePackage[]>(() => {
@@ -356,6 +423,47 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return () => { supabase.removeChannel(channel); };
   }, []);
 
+  // Youtube previews
+  const [youtubePreviews, setYoutubePreviews] = useState<YoutubePreviewItem[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.YOUTUBE);
+      if (saved) return JSON.parse(saved);
+    } catch (e) {}
+    return INITIAL_YOUTUBE_PREVIEWS;
+  });
+  const [youtubeSaving, setYoutubeSaving] = useState(false);
+  const [youtubeError, setYoutubeError] = useState<string | null>(null);
+  const [youtubeLastSavedAt, setYoutubeLastSavedAt] = useState<string | null>(null);
+  const refreshYoutubePreviews = async () => {
+    setYoutubeSaving(true);
+    setYoutubeError(null);
+    try {
+      const { data, error } = await supabase.from('youtube_previews').select('*').order('created_at', { ascending: false });
+      if (error) throw error;
+      if (Array.isArray(data)) {
+        if (data.length) setYoutubePreviews(data.map((r: any) => ({ id: r.id, url: r.url })));
+        else {
+          const local = localStorage.getItem(STORAGE_KEYS.YOUTUBE);
+          if (!local) setYoutubePreviews([]);
+        }
+        setYoutubeLastSavedAt(new Date().toLocaleTimeString());
+      }
+    } catch (e: any) {
+      setYoutubeError(e.message || 'Failed to fetch from Supabase');
+      try {
+        const rows: any = await api.getYoutubePreviews();
+        if (Array.isArray(rows) && rows.length) setYoutubePreviews(rows.map((r: any) => ({ id: r.id, url: r.url })));
+      } catch {}
+    } finally {
+      setYoutubeSaving(false);
+    }
+  };
+  useEffect(() => {
+    refreshYoutubePreviews();
+    const channel = supabase.channel('youtube-previews-changes').on('postgres_changes', { event: '*', schema: 'public', table: 'youtube_previews' }, () => refreshYoutubePreviews()).subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, []);
+
   // Calendar overrides
   const [calendarOverrides, setCalendarOverrides] = useState<Record<string, { status: 'available' | 'booked' | 'restricted'; notes?: string }>>(() => {
     try {
@@ -424,6 +532,10 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.INSTAGRAM, JSON.stringify(instagramPreviews));
   }, [instagramPreviews]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.YOUTUBE, JSON.stringify(youtubePreviews));
+  }, [youtubePreviews]);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.CALENDAR, JSON.stringify(calendarOverrides));
@@ -522,23 +634,72 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setImages(DJ_ASSETS);
   };
 
-  // Mixes
-  const addMixTrack = (trackData: Omit<MixTrack, 'id'>) => {
-    const newTrack: MixTrack = {
-      ...trackData,
-      id: `mix-${Date.now()}`
-    };
+  // Mixes - persisted to D1/Supabase via /api/mix-tracks
+  const toDbPayload = (t: Partial<MixTrack> & { id?: string }) => ({
+    id: t.id,
+    title: t.title,
+    category: t.category,
+    category_label: (t as any).categoryLabel ?? (t as any).category_label,
+    duration: t.duration,
+    recorded_at: (t as any).recordedAt ?? (t as any).recorded_at,
+    description: t.description,
+    date: t.date,
+    plays: t.plays,
+    bpm: t.bpm,
+    image_url: (t as any).imageUrl ?? (t as any).image_url,
+    audio_key: (t as any).audioKey ?? (t as any).audio_key,
+    tags: t.tags ? JSON.stringify(t.tags) : undefined,
+    tracklist_snippet: (t as any).tracklistSnippet ? JSON.stringify((t as any).tracklistSnippet) : ((t as any).tracklist_snippet ? JSON.stringify((t as any).tracklist_snippet) : undefined),
+    youtube_url: (t as any).youtubeUrl ?? (t as any).youtube_url,
+    youtube_id: (t as any).youtubeId ?? (t as any).youtube_id,
+  });
+  const addMixTrack = async (trackData: Omit<MixTrack, 'id'>) => {
+    const tempId = `mix-${Date.now()}`;
+    const newTrack: MixTrack = { ...trackData, id: tempId } as MixTrack;
     setMixTracks((prev) => [newTrack, ...prev]);
+    setMixSaving(true);
+    setMixError(null);
+    try {
+      const payload = toDbPayload({ ...trackData, id: tempId });
+      const saved: any = await api.createMixTrack(payload);
+      if (saved?.id) setMixTracks((prev) => prev.map((m) => m.id === tempId ? mapMixRow(saved) : m));
+      return { success: true };
+    } catch (e: any) {
+      const msg = e.message || 'Failed to save mix to D1';
+      setMixError(msg);
+      setMixTracks((prev) => prev.filter((m) => m.id !== tempId));
+      return { success: false, error: msg };
+    } finally { setMixSaving(false); }
   };
-
-  const updateMixTrack = (id: string, updated: Partial<MixTrack>) => {
-    setMixTracks((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, ...updated } : t))
-    );
+  const updateMixTrack = async (id: string, updated: Partial<MixTrack>) => {
+    const prev = mixTracks.find((m) => m.id === id);
+    setMixTracks((cur) => cur.map((m) => (m.id === id ? { ...m, ...updated } : m)));
+    setMixSaving(true);
+    setMixError(null);
+    try {
+      await api.updateMixTrack(id, toDbPayload(updated));
+      return { success: true };
+    } catch (e: any) {
+      const msg = e.message || 'Failed to update mix';
+      setMixError(msg);
+      if (prev) setMixTracks((cur) => cur.map((m) => (m.id === id ? prev : m)));
+      return { success: false, error: msg };
+    } finally { setMixSaving(false); }
   };
-
-  const deleteMixTrack = (id: string) => {
-    setMixTracks((prev) => prev.filter((t) => t.id !== id));
+  const deleteMixTrack = async (id: string) => {
+    const prev = mixTracks;
+    setMixTracks((cur) => cur.filter((m) => m.id !== id));
+    setMixSaving(true);
+    setMixError(null);
+    try {
+      await api.deleteMixTrack(id);
+      return { success: true };
+    } catch (e: any) {
+      const msg = e.message || 'Failed to delete mix';
+      setMixError(msg);
+      setMixTracks(prev);
+      return { success: false, error: msg };
+    } finally { setMixSaving(false); }
   };
 
   // Packages
@@ -697,25 +858,156 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
-  // Inquiries
-  const addBookingInquiry = (submission: BookingSubmission) => {
+  // Youtube previews
+  const addYoutubePreview = async (url: string) => {
+    const clean = url.trim();
+    if (!clean) return { success: false, error: 'Empty URL' };
+    const tempId = `yt-${Date.now()}`;
+    const tempItem: YoutubePreviewItem = { id: tempId, url: clean };
+    setYoutubePreviews((prev) => [...prev, tempItem]);
+    setYoutubeSaving(true);
+    setYoutubeError(null);
+    try {
+      const saved: any = await api.createYoutubePreview({ url: clean });
+      if (saved?.id) setYoutubePreviews((prev) => prev.map((p) => p.id === tempId ? { id: saved.id, url: saved.url } : p));
+      setYoutubeLastSavedAt(new Date().toLocaleTimeString());
+      return { success: true };
+    } catch (e: any) {
+      const msg = e.message || 'Failed to save to D1';
+      setYoutubeError(msg);
+      setYoutubePreviews((prev) => prev.filter((p) => p.id !== tempId));
+      return { success: false, error: msg };
+    } finally {
+      setYoutubeSaving(false);
+    }
+  };
+  const updateYoutubePreview = async (id: string, url: string) => {
+    const prev = youtubePreviews.find((p) => p.id === id);
+    setYoutubePreviews((cur) => cur.map((p) => (p.id === id ? { ...p, url } : p)));
+    setYoutubeSaving(true);
+    setYoutubeError(null);
+    try {
+      await api.updateYoutubePreview(id, { url });
+      setYoutubeLastSavedAt(new Date().toLocaleTimeString());
+      return { success: true };
+    } catch (e: any) {
+      const msg = e.message || 'Failed to update D1';
+      setYoutubeError(msg);
+      if (prev) setYoutubePreviews((cur) => cur.map((p) => (p.id === id ? prev : p)));
+      return { success: false, error: msg };
+    } finally {
+      setYoutubeSaving(false);
+    }
+  };
+  const deleteYoutubePreview = async (id: string) => {
+    const prev = youtubePreviews;
+    setYoutubePreviews((cur) => cur.filter((p) => p.id !== id));
+    setYoutubeSaving(true);
+    setYoutubeError(null);
+    try {
+      await api.deleteYoutubePreview(id);
+      setYoutubeLastSavedAt(new Date().toLocaleTimeString());
+      return { success: true };
+    } catch (e: any) {
+      const msg = e.message || 'Failed to delete from D1';
+      setYoutubeError(msg);
+      setYoutubePreviews(prev);
+      return { success: false, error: msg };
+    } finally {
+      setYoutubeSaving(false);
+    }
+  };
+
+  // Inquiries - persisted to D1/Supabase via /api/bookings
+  const [bookingSaving, setBookingSaving] = useState(false);
+  const [bookingError, setBookingError] = useState<string | null>(null);
+  const refreshBookings = async () => {
+    setBookingSaving(true);
+    setBookingError(null);
+    try {
+      const { data, error } = await supabase.from('booking_inquiries').select('*').order('submitted_at', { ascending: false });
+      if (!error && Array.isArray(data) && data.length) {
+        setBookingInquiries(data.map((r: any) => ({
+          id: r.id,
+          clientName: r.client_name ?? r.clientName,
+          email: r.email,
+          phone: r.phone || '',
+          eventType: (r.event_type ?? r.eventType) || '',
+          eventDate: (r.event_date ?? r.eventDate) || '',
+          venueName: (r.venue_name ?? r.venueName) || '',
+          venueCity: (r.venue_city ?? r.venueCity) || '',
+          guestCount: r.guest_count ?? r.guestCount ?? 0,
+          selectedPackage: (r.selected_package ?? r.selectedPackage) || '',
+          selectedAddOns: typeof r.selected_add_ons === 'string' ? JSON.parse(r.selected_add_ons) : ((r.selected_add_ons ?? []) as any),
+          specialRequests: (r.special_requests ?? r.specialRequests) || '',
+          estimatedTotal: r.estimated_total ?? r.estimatedTotal ?? 0,
+          submittedAt: r.submitted_at ?? r.submittedAt,
+          status: r.status || 'new',
+          notes: r.notes || ''
+        })));
+        return;
+      }
+      if (error) throw error;
+    } catch (e: any) {
+      setBookingError(e.message || 'Failed to fetch bookings');
+    }
+    try {
+      const rows: any = await api.getBookingInquiries();
+      if (Array.isArray(rows) && rows.length) setBookingInquiries(rows);
+    } catch {}
+    finally { setBookingSaving(false); }
+  };
+  useEffect(() => { refreshBookings(); }, []);
+  const addBookingInquiry = async (submission: BookingSubmission) => {
+    const tempId = `inq-${Date.now()}`;
     const newInquiry: StoredBookingInquiry = {
       ...submission,
-      id: `inq-${Date.now()}`,
+      id: tempId,
       submittedAt: new Date().toISOString().replace('T', ' ').slice(0, 19),
       status: 'new'
     };
     setBookingInquiries((prev) => [newInquiry, ...prev]);
+    setBookingSaving(true);
+    setBookingError(null);
+    try {
+      const saved: any = await api.submitBooking(newInquiry);
+      if (saved?.id) setBookingInquiries((prev) => prev.map((p) => p.id === tempId ? { ...p, id: saved.id, submittedAt: saved.submittedAt || p.submittedAt } : p));
+      return { success: true };
+    } catch (e: any) {
+      const msg = e.message || 'Failed to save booking to D1';
+      setBookingError(msg);
+      return { success: false, error: msg };
+    } finally { setBookingSaving(false); }
   };
-
-  const updateInquiryStatus = (id: string, status: StoredBookingInquiry['status'], notes?: string) => {
-    setBookingInquiries((prev) =>
-      prev.map((inq) => (inq.id === id ? { ...inq, status, ...(notes !== undefined ? { notes } : {}) } : inq))
-    );
+  const updateInquiryStatus = async (id: string, status: StoredBookingInquiry['status'], notes?: string) => {
+    const prev = bookingInquiries.find((p) => p.id === id);
+    setBookingInquiries((cur) => cur.map((p) => (p.id === id ? { ...p, status, ...(notes !== undefined ? { notes } : {}) } : p)));
+    setBookingSaving(true);
+    setBookingError(null);
+    try {
+      await api.updateBookingInquiry(id, { status, ...(notes !== undefined ? { notes } : {}) });
+      return { success: true };
+    } catch (e: any) {
+      const msg = e.message || 'Failed to update booking';
+      setBookingError(msg);
+      if (prev) setBookingInquiries((cur) => cur.map((p) => (p.id === id ? prev : p)));
+      return { success: false, error: msg };
+    } finally { setBookingSaving(false); }
   };
-
-  const deleteInquiry = (id: string) => {
-    setBookingInquiries((prev) => prev.filter((inq) => inq.id !== id));
+  const deleteInquiry = async (id: string) => {
+    const prev = bookingInquiries;
+    setBookingInquiries((cur) => cur.filter((p) => p.id !== id));
+    setBookingSaving(true);
+    setBookingError(null);
+    try {
+      await api.deleteBookingInquiry(id);
+      return { success: true };
+    } catch (e: any) {
+      const msg = e.message || 'Failed to delete booking';
+      setBookingError(msg);
+      setBookingInquiries(prev);
+      return { success: false, error: msg };
+    } finally { setBookingSaving(false); }
   };
 
   // Reset & Backup
@@ -729,6 +1021,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setFaqItems(FAQ_ITEMS);
     setTrustVenues(INITIAL_VENUES);
     setInstagramPreviews(INITIAL_INSTAGRAM_PREVIEWS);
+    setYoutubePreviews(INITIAL_YOUTUBE_PREVIEWS);
     setCalendarOverrides({});
   };
 
@@ -743,6 +1036,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       faqItems,
       trustVenues,
       instagramPreviews,
+      youtubePreviews,
       calendarOverrides,
       bookingInquiries,
       exportedAt: new Date().toISOString()
@@ -762,6 +1056,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (data.faqItems) setFaqItems(data.faqItems);
       if (data.trustVenues) setTrustVenues(data.trustVenues);
       if (data.instagramPreviews) setInstagramPreviews(data.instagramPreviews);
+      if (data.youtubePreviews) setYoutubePreviews(data.youtubePreviews);
       if (data.calendarOverrides) setCalendarOverrides(data.calendarOverrides);
       if (data.bookingInquiries) setBookingInquiries(data.bookingInquiries);
       return { success: true };
@@ -795,9 +1090,12 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         resetImages,
 
         mixTracks,
+        mixSaving,
+        mixError,
         addMixTrack,
         updateMixTrack,
         deleteMixTrack,
+        refreshMixTracks,
 
         servicePackages,
         addPackage,
@@ -832,10 +1130,22 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         deleteInstagramPreview,
         refreshInstagramPreviews,
 
+        youtubePreviews,
+        youtubeSaving,
+        youtubeError,
+        youtubeLastSavedAt,
+        addYoutubePreview,
+        updateYoutubePreview,
+        deleteYoutubePreview,
+        refreshYoutubePreviews,
+
         bookingInquiries,
+        bookingSaving,
+        bookingError,
         addBookingInquiry,
         updateInquiryStatus,
         deleteInquiry,
+        refreshBookings,
 
         resetAllToDefaults,
         exportDataJSON,

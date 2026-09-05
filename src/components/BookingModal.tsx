@@ -139,8 +139,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       estimatedTotal: totalCost,
     };
     try {
-      await api.submitBooking(payload).catch(() => {});
-      addBookingInquiry(payload as any);
+      await addBookingInquiry(payload as any);
       setIsSubmitted(true);
     } finally {
       setIsSubmitting(false);

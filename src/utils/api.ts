@@ -36,4 +36,11 @@ export const api = {
   createInstagramPreview: (data:any) => req('/instagram-previews', { method:'POST', body: JSON.stringify(data)}),
   updateInstagramPreview: (id:string, data:any) => req(`/instagram-previews/${id}`, { method:'PUT', body: JSON.stringify(data)}),
   deleteInstagramPreview: (id:string) => req(`/instagram-previews/${id}`, { method:'DELETE'}),
+  getYoutubePreviews: () => req('/youtube-previews'),
+  createYoutubePreview: (data:any) => req('/youtube-previews', { method:'POST', body: JSON.stringify(data)}),
+  updateYoutubePreview: (id:string, data:any) => req(`/youtube-previews/${id}`, { method:'PUT', body: JSON.stringify(data)}),
+  deleteYoutubePreview: (id:string) => req(`/youtube-previews/${id}`, { method:'DELETE'}),
+  getBookingInquiries: () => req('/bookings'),
+  updateBookingInquiry: (id:string, data:any) => req(`/bookings/${id}`, { method:'PUT', body: JSON.stringify(data)}),
+  deleteBookingInquiry: (id:string) => req(`/bookings/${id}`, { method:'DELETE'}),
 };
