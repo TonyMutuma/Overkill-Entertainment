@@ -216,6 +216,9 @@ interface CMSContextType {
   addYoutubePreview: (url: string) => Promise<{ success: boolean; error?: string }>;
   updateYoutubePreview: (id: string, url: string) => Promise<{ success: boolean; error?: string }>;
   deleteYoutubePreview: (id: string) => Promise<{ success: boolean; error?: string }>;
+  updateYoutubeSize: (id: string, size: YoutubePreviewItem['size']) => Promise<{ success: boolean; error?: string }>;
+  reorderYoutubePreviews: (orderedIds: string[]) => Promise<{ success: boolean; error?: string }>;
+  moveYoutubePreview: (id: string, direction: 'up' | 'down') => Promise<{ success: boolean; error?: string }>;
   refreshYoutubePreviews: () => Promise<void>;
 
   // Booking Inquiries
@@ -438,10 +441,10 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setYoutubeSaving(true);
     setYoutubeError(null);
     try {
-      const { data, error } = await supabase.from('youtube_previews').select('*').order('created_at', { ascending: false });
+      const { data, error } = await supabase.from('youtube_previews').select('*').order('position', { ascending: true }).order('created_at', { ascending: false });
       if (error) throw error;
       if (Array.isArray(data)) {
-        if (data.length) setYoutubePreviews(data.map((r: any) => ({ id: r.id, url: r.url })));
+        if (data.length) setYoutubePreviews(data.map((r: any) => ({ id: r.id, url: r.url, position: r.position ?? 0, size: (r.size as any) || 'normal' })));
         else {
           const local = localStorage.getItem(STORAGE_KEYS.YOUTUBE);
           if (!local) setYoutubePreviews([]);
@@ -452,7 +455,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setYoutubeError(e.message || 'Failed to fetch from Supabase');
       try {
         const rows: any = await api.getYoutubePreviews();
-        if (Array.isArray(rows) && rows.length) setYoutubePreviews(rows.map((r: any) => ({ id: r.id, url: r.url })));
+        if (Array.isArray(rows) && rows.length) setYoutubePreviews(rows.map((r: any) => ({ id: r.id, url: r.url, position: r.position ?? 0, size: (r.size as any) || 'normal' })).sort((a: any, b: any) => (a.position ?? 0) - (b.position ?? 0)));
       } catch {}
     } finally {
       setYoutubeSaving(false);
@@ -863,13 +866,14 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const clean = url.trim();
     if (!clean) return { success: false, error: 'Empty URL' };
     const tempId = `yt-${Date.now()}`;
-    const tempItem: YoutubePreviewItem = { id: tempId, url: clean };
+    const maxPos = Math.max(0, ...youtubePreviews.map((p) => p.position ?? 0));
+    const tempItem: YoutubePreviewItem = { id: tempId, url: clean, position: maxPos + 1, size: 'normal' };
     setYoutubePreviews((prev) => [...prev, tempItem]);
     setYoutubeSaving(true);
     setYoutubeError(null);
     try {
-      const saved: any = await api.createYoutubePreview({ url: clean });
-      if (saved?.id) setYoutubePreviews((prev) => prev.map((p) => p.id === tempId ? { id: saved.id, url: saved.url } : p));
+      const saved: any = await api.createYoutubePreview({ url: clean, position: maxPos + 1, size: 'normal' });
+      if (saved?.id) setYoutubePreviews((prev) => prev.map((p) => p.id === tempId ? { id: saved.id, url: saved.url, position: saved.position ?? maxPos + 1, size: (saved.size as any) || 'normal' } : p));
       setYoutubeLastSavedAt(new Date().toLocaleTimeString());
       return { success: true };
     } catch (e: any) {
@@ -916,6 +920,54 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     } finally {
       setYoutubeSaving(false);
     }
+  };
+  const updateYoutubeSize = async (id: string, size: YoutubePreviewItem['size']) => {
+    const prev = youtubePreviews.find((p) => p.id === id);
+    setYoutubePreviews((cur) => cur.map((p) => (p.id === id ? { ...p, size } : p)));
+    setYoutubeSaving(true);
+    setYoutubeError(null);
+    try {
+      await api.updateYoutubePreview(id, { size });
+      setYoutubeLastSavedAt(new Date().toLocaleTimeString());
+      return { success: true };
+    } catch (e: any) {
+      const msg = e.message || 'Failed to update size';
+      setYoutubeError(msg);
+      if (prev) setYoutubePreviews((cur) => cur.map((p) => (p.id === id ? prev : p)));
+      return { success: false, error: msg };
+    } finally {
+      setYoutubeSaving(false);
+    }
+  };
+  const reorderYoutubePreviews = async (orderedIds: string[]) => {
+    const prev = [...youtubePreviews];
+    const idToItem = new Map(prev.map((p) => [p.id, p]));
+    const reordered = orderedIds.map((id, idx) => ({ ...(idToItem.get(id) as YoutubePreviewItem), position: idx })).filter((x) => x.id);
+    setYoutubePreviews(reordered);
+    setYoutubeSaving(true);
+    setYoutubeError(null);
+    try {
+      await Promise.all(reordered.map((item) => api.updateYoutubePreview(item.id, { position: item.position })));
+      setYoutubeLastSavedAt(new Date().toLocaleTimeString());
+      return { success: true };
+    } catch (e: any) {
+      const msg = e.message || 'Failed to reorder';
+      setYoutubeError(msg);
+      setYoutubePreviews(prev);
+      return { success: false, error: msg };
+    } finally {
+      setYoutubeSaving(false);
+    }
+  };
+  const moveYoutubePreview = async (id: string, direction: 'up' | 'down') => {
+    const idx = youtubePreviews.findIndex((p) => p.id === id);
+    if (idx === -1) return { success: false, error: 'Not found' };
+    const targetIdx = direction === 'up' ? idx - 1 : idx + 1;
+    if (targetIdx < 0 || targetIdx >= youtubePreviews.length) return { success: false, error: 'Out of bounds' };
+    const newOrder = [...youtubePreviews];
+    const [moved] = newOrder.splice(idx, 1);
+    newOrder.splice(targetIdx, 0, moved);
+    return reorderYoutubePreviews(newOrder.map((p) => p.id));
   };
 
   // Inquiries - persisted to Supabase via /api/bookings
@@ -1137,6 +1189,9 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         addYoutubePreview,
         updateYoutubePreview,
         deleteYoutubePreview,
+        updateYoutubeSize,
+        reorderYoutubePreviews,
+        moveYoutubePreview,
         refreshYoutubePreviews,
 
         bookingInquiries,

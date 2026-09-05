@@ -71,7 +71,7 @@ const NowPlayingPlayer: React.FC<{ videoId: string }> = ({ videoId }) => (
 
 export const MixesView: React.FC<{ setActiveTab?: (tab: NavTab) => void; onPlayMix?: any; currentPlayingTrack?: any; currentPlayingId?: string | null; isPlaying?: boolean }> = ({ setActiveTab }) => {
   const { youtubePreviews } = useCMS();
-  const youtubeIds = youtubePreviews.map((p) => extractYoutubeId(p.url)).filter(Boolean) as string[];
+  const youtubeItems = youtubePreviews.map((p) => ({ id: p.id, url: p.url, videoId: extractYoutubeId(p.url) as string, size: (p.size as any) || 'normal', position: p.position ?? 0 })).filter((x) => !!x.videoId).sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
   const [pinnedVideoId, setPinnedVideoId] = useState<string | null>(null);
   const [pendingSwitchId, setPendingSwitchId] = useState<string | null>(null);
   const requestPinVideo = (videoId: string) => { if (pinnedVideoId && pinnedVideoId !== videoId) setPendingSwitchId(videoId); else setPinnedVideoId(videoId); };
@@ -90,7 +90,6 @@ export const MixesView: React.FC<{ setActiveTab?: (tab: NavTab) => void; onPlayM
         <div className="relative max-w-[1280px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 pt-28 sm:pt-32 pb-12 sm:pb-16">
           <span className="inline-block font-mono text-[10px] sm:text-xs tracking-[0.2em] text-blue-500 uppercase font-bold mb-3">Sonic Portfolio</span>
           <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-extrabold leading-[1.05] tracking-tight max-w-3xl">Want to Hear DJ Wolverine Before You Book? <span className="text-blue-500">Start Here.</span></h1>
-          <p className="font-sans text-sm sm:text-base md:text-lg text-slate-300 max-w-xl mt-4 leading-relaxed">All mixes are YouTube videos managed in Supabase via CMS — no mock data.</p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8 w-full sm:w-auto"><button onClick={() => navigate('home')} className="bg-white text-black font-bold text-xs sm:text-sm px-6 sm:px-8 py-3.5 rounded-xl hover:bg-slate-200 transition-colors cursor-pointer uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_8px_24px_rgba(255,255,255,0.10)]">Back to Home <ArrowUpRight className="w-4 h-4" /></button></div>
         </div>
       </section>
@@ -102,12 +101,19 @@ export const MixesView: React.FC<{ setActiveTab?: (tab: NavTab) => void; onPlayM
             <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-blue-400 hover:text-white border-2 border-blue-500/30 hover:border-blue-500 bg-blue-500/10 hover:bg-blue-600 px-4 py-2 cursor-pointer"><span className="w-3.5 h-3.5 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: youtubeBrand.variants.mono }} /> Open on YouTube</a>
           </div>
         </div>
-        <div className="flex items-center gap-2 mb-3"><span className="font-mono text-xs text-slate-500">Showing {youtubeIds.length} YouTube mixes from Supabase</span></div>
+        <div className="flex items-center gap-2 mb-3"><span className="font-mono text-xs text-slate-500">Showing {youtubeItems.length} YouTube mixes from Supabase — arrange &amp; size in CMS → YouTube Previews</span></div>
         {pinnedVideoId && <div className="mb-6 sm:mb-8"><NowPlayingPlayer videoId={pinnedVideoId} /></div>}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {youtubeIds.map((videoId) => <ChannelVideoCard key={videoId} videoId={videoId} pinnedVideoId={pinnedVideoId} onRequestPin={requestPinVideo} onStop={() => setPinnedVideoId(null)} />)}
+          {youtubeItems.map((item) => {
+            const sizeClass = item.size === 'large' ? 'sm:col-span-2' : item.size === 'featured' ? 'sm:col-span-2 lg:col-span-2' : '';
+            return (
+              <div key={item.id} className={sizeClass}>
+                <ChannelVideoCard videoId={item.videoId} pinnedVideoId={pinnedVideoId} onRequestPin={requestPinVideo} onStop={() => setPinnedVideoId(null)} />
+              </div>
+            );
+          })}
         </div>
-        {youtubeIds.length === 0 && (
+        {youtubeItems.length === 0 && (
           <div className="text-center py-16 border-2 border-slate-800 bg-[#0b0f17] mt-8">
             <Youtube className="w-10 h-10 text-slate-600 mx-auto mb-3" />
             <p className="font-serif text-lg font-bold text-white">No YouTube mixes yet</p>

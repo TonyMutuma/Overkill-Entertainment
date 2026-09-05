@@ -35,7 +35,11 @@ import {
   MapPin,
   Flame,
   CheckCircle2,
-  RefreshCw
+  RefreshCw,
+  ChevronUp,
+  ChevronDown,
+  Maximize2,
+  GripVertical
 } from 'lucide-react';
 import { MixTrack, ServicePackage, AddOnItem, FaqItem, VenueItem, InstagramPreviewItem, StoredBookingInquiry } from '../../types';
 
@@ -151,6 +155,8 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
     addYoutubePreview,
     updateYoutubePreview,
     deleteYoutubePreview,
+    updateYoutubeSize,
+    moveYoutubePreview,
     refreshYoutubePreviews,
     bookingInquiries,
     updateInquiryStatus,
@@ -2026,16 +2032,17 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                   <p className="text-[11px] text-[#bac9cd]/50">Supports youtube.com/watch, youtu.be, youtube.com/shorts. Example: https://www.youtube.com/watch?v=5qap5aO4i9A</p>
                   <div className="space-y-3">
                     {youtubePreviews.length === 0 && <p className="text-xs text-[#bac9cd]/60">No previews yet — add your first link above.</p>}
-                    {youtubePreviews.map((p) => (
-                      <div key={p.id} className="p-3 rounded-xl bg-[#1c1b1b] border border-white/10 flex items-center gap-3">
+                    <p className="text-[11px] text-[#bac9cd]/50">Drag order with ↑↓ — size controls card span on Mixes page (Normal=1 col, Large=2 cols, Featured=featured).</p>
+                    {youtubePreviews.map((p, idx) => (
+                      <div key={p.id} className="p-3 rounded-xl bg-[#1c1b1b] border border-white/10 flex items-center gap-2">
+                        <div className="flex flex-col items-center gap-1 shrink-0">
+                          <button onClick={async () => { const r = await moveYoutubePreview(p.id, 'up'); showToast(r.success ? 'Moved up ✓' : r.error || 'Top already'); }} disabled={idx === 0 || youtubeSaving} className="p-1 bg-white/5 hover:bg-white/10 rounded disabled:opacity-30 disabled:cursor-not-allowed"><ChevronUp className="w-3 h-3 text-[#bac9cd]" /></button>
+                          <span className="font-mono text-[10px] text-[#bac9cd]/60 flex items-center gap-1"><GripVertical className="w-3 h-3" />{idx + 1}</span>
+                          <button onClick={async () => { const r = await moveYoutubePreview(p.id, 'down'); showToast(r.success ? 'Moved down ✓' : r.error || 'Bottom already'); }} disabled={idx === youtubePreviews.length - 1 || youtubeSaving} className="p-1 bg-white/5 hover:bg-white/10 rounded disabled:opacity-30 disabled:cursor-not-allowed"><ChevronDown className="w-3 h-3 text-[#bac9cd]" /></button>
+                        </div>
                         {editingYtId === p.id ? (
                           <>
-                            <input
-                              type="url"
-                              value={editingYtUrl}
-                              onChange={(e) => setEditingYtUrl(e.target.value)}
-                              className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white outline-none"
-                            />
+                            <input type="url" value={editingYtUrl} onChange={(e) => setEditingYtUrl(e.target.value)} className="flex-1 min-w-0 bg-[#121212] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white outline-none" />
                             <button onClick={async () => { const r = await updateYoutubePreview(p.id, editingYtUrl); setEditingYtId(null); showToast(r.success ? 'Updated on Supabase ✓' : `Failed: ${r.error}`); }} className="px-3 py-1.5 bg-emerald-600 text-white text-xs rounded-lg disabled:opacity-50" disabled={youtubeSaving}>Save</button>
                             <button onClick={() => setEditingYtId(null)} className="px-3 py-1.5 bg-white/10 text-white text-xs rounded-lg">Cancel</button>
                           </>
@@ -2043,8 +2050,16 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           <>
                             <div className="flex-1 min-w-0">
                               <div className="font-mono-jb text-xs text-[#e5e2e1] truncate">{p.url}</div>
-                              <a href={p.url} target="_blank" rel="noreferrer" className="text-[11px] text-[#ef4444] hover:underline flex items-center gap-1">Open <ExternalLink className="w-3 h-3" /></a>
+                              <div className="flex items-center gap-2 mt-1">
+                                <a href={p.url} target="_blank" rel="noreferrer" className="text-[11px] text-[#ef4444] hover:underline flex items-center gap-1">Open <ExternalLink className="w-3 h-3" /></a>
+                                <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[#bac9cd] flex items-center gap-1"><Maximize2 className="w-3 h-3" />{(p.size as any) || 'normal'}</span>
+                              </div>
                             </div>
+                            <select value={(p.size as any) || 'normal'} onChange={async (e) => { const r = await updateYoutubeSize(p.id, e.target.value as any); showToast(r.success ? `Size ${(e.target.value)} ✓` : `Failed: ${r.error}`); }} disabled={youtubeSaving} className="bg-[#121212] border border-white/10 rounded-lg px-2 py-1.5 text-[11px] text-white outline-none">
+                              <option value="normal">Normal</option>
+                              <option value="large">Large (2 cols)</option>
+                              <option value="featured">Featured (2×)</option>
+                            </select>
                             <button onClick={() => { setEditingYtId(p.id); setEditingYtUrl(p.url); }} className="p-1.5 text-[#bac9cd] hover:text-white"><Edit2 className="w-4 h-4" /></button>
                             <button onClick={async () => { if (confirm('Remove this preview?')) { const r = await deleteYoutubePreview(p.id); showToast(r.success ? 'Removed from Supabase ✓' : `Failed: ${r.error}`); } }} className="p-1.5 text-[#bac9cd] hover:text-rose-400" disabled={youtubeSaving}><Trash2 className="w-4 h-4" /></button>
                           </>

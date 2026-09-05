@@ -162,6 +162,8 @@ export interface InstagramPreviewItem {
 export interface YoutubePreviewItem {
   id: string;
   url: string;
+  position?: number;
+  size?: 'normal' | 'large' | 'featured';
 }
 
 

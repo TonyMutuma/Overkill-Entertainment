@@ -8,19 +8,22 @@ async function supaFetch(env, path, init) {
 }
 export async function onRequestGet({ env }) {
   try {
-    const r = await supaFetch(env, 'youtube_previews?order=created_at.desc', {});
+    const r = await supaFetch(env, 'youtube_previews?order=position.asc&order=created_at.desc', {});
     if (!r.ok) throw new Error(r.data?.message || JSON.stringify(r.data));
     return new Response(JSON.stringify(r.data || []), { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } });
   } catch (e) { return new Response(JSON.stringify({ error: e.message }), { status: 500 }); }
 }
 export async function onRequestPost({ request, env }) {
   try {
-    const { url } = await request.json();
+    const body = await request.json();
+    const url = body.url;
     if (!url) return new Response(JSON.stringify({ error: 'url required' }), { status: 400 });
     const id = `yt-${Date.now()}`;
-    const r = await supaFetch(env, 'youtube_previews', { method: 'POST', body: JSON.stringify({ id, url }) });
+    const position = body.position ?? 0;
+    const size = body.size || 'normal';
+    const r = await supaFetch(env, 'youtube_previews', { method: 'POST', body: JSON.stringify({ id, url, position, size }) });
     if (!r.ok) throw new Error(r.data?.message || JSON.stringify(r.data));
-    return new Response(JSON.stringify(r.data?.[0] || { id, url }), { headers: { 'Content-Type': 'application/json' } });
+    return new Response(JSON.stringify(r.data?.[0] || { id, url, position, size }), { headers: { 'Content-Type': 'application/json' } });
   } catch (e) { return new Response(JSON.stringify({ error: e.message }), { status: 500 }); }
 }
 export async function onRequestOptions() {

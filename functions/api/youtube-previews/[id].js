@@ -8,8 +8,12 @@ async function supaFetch(env, path, init) {
 }
 export async function onRequestPut({ request, env, params }) {
   try {
-    const { url } = await request.json();
-    const r = await supaFetch(env, `youtube_previews?id=eq.${params.id}`, { method: 'PATCH', body: JSON.stringify({ url }) });
+    const body = await request.json();
+    const fields = {};
+    if (body.url !== undefined) fields.url = body.url;
+    if (body.position !== undefined) fields.position = body.position;
+    if (body.size !== undefined) fields.size = body.size;
+    const r = await supaFetch(env, `youtube_previews?id=eq.${params.id}`, { method: 'PATCH', body: JSON.stringify(fields) });
     if (!r.ok) throw new Error(r.data?.message || JSON.stringify(r.data));
     return new Response(JSON.stringify({ success: true }), { headers: { 'Content-Type': 'application/json' } });
   } catch (e) { return new Response(JSON.stringify({ error: e.message }), { status: 500 }); }
