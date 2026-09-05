@@ -8,12 +8,6 @@ async function supaFetch(env, path, init) {
 }
 export async function onRequestGet({ env }) {
   try {
-    if (env.DB) {
-      try {
-        const { results } = await env.DB.prepare('SELECT * FROM mix_tracks ORDER BY created_at DESC').all();
-        if (results) return new Response(JSON.stringify(results || []), { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } });
-      } catch {}
-    }
     const r = await supaFetch(env, 'mix_tracks?order=created_at.desc', {});
     if (!r.ok) throw new Error(r.data?.message || JSON.stringify(r.data));
     return new Response(JSON.stringify(r.data || []), { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } });
@@ -42,13 +36,6 @@ export async function onRequestPost({ request, env }) {
       youtube_id: b.youtube_id || b.youtubeId,
     };
     if (!row.title) return new Response(JSON.stringify({ error: 'title required' }), { status: 400 });
-    if (env.DB) {
-      try {
-        await env.DB.prepare('INSERT INTO mix_tracks (id, title, category, category_label, duration, recorded_at, description, date, plays, bpm, image_url, audio_key, tags, tracklist_snippet, youtube_url, youtube_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').bind(row.id, row.title, row.category, row.category_label, row.duration, row.recorded_at, row.description, row.date, row.plays, row.bpm, row.image_url, row.audio_key, row.tags, row.tracklist_snippet, row.youtube_url, row.youtube_id).run();
-        const { results } = await env.DB.prepare('SELECT * FROM mix_tracks WHERE id=?').bind(id).all();
-        return new Response(JSON.stringify(results?.[0] || { id }), { headers: { 'Content-Type': 'application/json' } });
-      } catch {}
-    }
     const r = await supaFetch(env, 'mix_tracks', { method: 'POST', body: JSON.stringify(row) });
     if (!r.ok) throw new Error(r.data?.message || JSON.stringify(r.data));
     return new Response(JSON.stringify(r.data?.[0] || { id }), { headers: { 'Content-Type': 'application/json' } });

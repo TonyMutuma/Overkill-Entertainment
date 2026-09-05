@@ -1,8 +1,7 @@
 import { MixTrack } from '../types';
 
-// In production (Cloudflare Pages) fetch hits Functions at /api/* -> D1 binding
-// In local dev, Vite proxies /api to Express server.cjs (localhost:4000) which now ALSO talks to remote D1
-// So both envs read/write the SAME remote table.
+// In production (Cloudflare Pages) fetch hits Functions at /api/* -> Supabase
+// In local dev, Vite proxies /api to Express server.cjs (localhost:4000) -> Supabase
 
 const API_BASE = import.meta.env.VITE_API_BASE || '/api';
 

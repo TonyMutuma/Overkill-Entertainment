@@ -634,7 +634,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setImages(DJ_ASSETS);
   };
 
-  // Mixes - persisted to D1/Supabase via /api/mix-tracks
+  // Mixes - persisted to Supabase via /api/mix-tracks
   const toDbPayload = (t: Partial<MixTrack> & { id?: string }) => ({
     id: t.id,
     title: t.title,
@@ -665,7 +665,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (saved?.id) setMixTracks((prev) => prev.map((m) => m.id === tempId ? mapMixRow(saved) : m));
       return { success: true };
     } catch (e: any) {
-      const msg = e.message || 'Failed to save mix to D1';
+      const msg = e.message || 'Failed to save mix to Supabase';
       setMixError(msg);
       setMixTracks((prev) => prev.filter((m) => m.id !== tempId));
       return { success: false, error: msg };
@@ -813,7 +813,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setInstagramLastSavedAt(new Date().toLocaleTimeString());
       return { success: true };
     } catch (e: any) {
-      const msg = e.message || 'Failed to save to D1';
+      const msg = e.message || 'Failed to save to Supabase';
       setInstagramError(msg);
       setInstagramPreviews((prev) => prev.filter((p) => p.id !== tempId));
       return { success: false, error: msg };
@@ -831,7 +831,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setInstagramLastSavedAt(new Date().toLocaleTimeString());
       return { success: true };
     } catch (e: any) {
-      const msg = e.message || 'Failed to update D1';
+      const msg = e.message || 'Failed to update Supabase';
       setInstagramError(msg);
       if (prev) setInstagramPreviews((cur) => cur.map((p) => (p.id === id ? prev : p)));
       return { success: false, error: msg };
@@ -849,7 +849,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setInstagramLastSavedAt(new Date().toLocaleTimeString());
       return { success: true };
     } catch (e: any) {
-      const msg = e.message || 'Failed to delete from D1';
+      const msg = e.message || 'Failed to delete from Supabase';
       setInstagramError(msg);
       setInstagramPreviews(prev);
       return { success: false, error: msg };
@@ -873,7 +873,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setYoutubeLastSavedAt(new Date().toLocaleTimeString());
       return { success: true };
     } catch (e: any) {
-      const msg = e.message || 'Failed to save to D1';
+      const msg = e.message || 'Failed to save to Supabase';
       setYoutubeError(msg);
       setYoutubePreviews((prev) => prev.filter((p) => p.id !== tempId));
       return { success: false, error: msg };
@@ -891,7 +891,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setYoutubeLastSavedAt(new Date().toLocaleTimeString());
       return { success: true };
     } catch (e: any) {
-      const msg = e.message || 'Failed to update D1';
+      const msg = e.message || 'Failed to update Supabase';
       setYoutubeError(msg);
       if (prev) setYoutubePreviews((cur) => cur.map((p) => (p.id === id ? prev : p)));
       return { success: false, error: msg };
@@ -909,7 +909,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setYoutubeLastSavedAt(new Date().toLocaleTimeString());
       return { success: true };
     } catch (e: any) {
-      const msg = e.message || 'Failed to delete from D1';
+      const msg = e.message || 'Failed to delete from Supabase';
       setYoutubeError(msg);
       setYoutubePreviews(prev);
       return { success: false, error: msg };
@@ -918,7 +918,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
-  // Inquiries - persisted to D1/Supabase via /api/bookings
+  // Inquiries - persisted to Supabase via /api/bookings
   const [bookingSaving, setBookingSaving] = useState(false);
   const [bookingError, setBookingError] = useState<string | null>(null);
   const refreshBookings = async () => {
@@ -974,7 +974,7 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (saved?.id) setBookingInquiries((prev) => prev.map((p) => p.id === tempId ? { ...p, id: saved.id, submittedAt: saved.submittedAt || p.submittedAt } : p));
       return { success: true };
     } catch (e: any) {
-      const msg = e.message || 'Failed to save booking to D1';
+      const msg = e.message || 'Failed to save booking to Supabase';
       setBookingError(msg);
       return { success: false, error: msg };
     } finally { setBookingSaving(false); }
