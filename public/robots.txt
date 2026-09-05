@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://overkill-entertainment.scalingenterprises.workers.dev/sitemap.xml
+Sitemap: https://overkill-entertainment.outlinedtech.workers.dev/sitemap.xml

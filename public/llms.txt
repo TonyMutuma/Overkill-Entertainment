@@ -2,6 +2,6 @@
 
 Overkill Entertainment is Nairobi's elite event selector led by resident DJ Wolverine. Services: club nights, festivals, weddings, corporate events. Listen on HearThis (https://hearthis.at/dj-wolverine/) and Mixcloud (https://www.mixcloud.com/djwolverine_ke/). Apple Podcasts: DJ Wolverine Mixes. Book via website booking.
 
-- Home: https://overkill-entertainment.scalingenterprises.workers.dev/
-- Mixes: https://overkill-entertainment.scalingenterprises.workers.dev/#mixes
-- FAQ: https://overkill-entertainment.scalingenterprises.workers.dev/#faq
+- Home: https://overkill-entertainment.outlinedtech.workers.dev/
+- Mixes: https://overkill-entertainment.outlinedtech.workers.dev/#mixes
+- FAQ: https://overkill-entertainment.outlinedtech.workers.dev/#faq
