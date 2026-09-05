@@ -13,8 +13,8 @@ const ChannelVideoCard: React.FC<ChannelVideoCardProps> = ({ videoId, size, hasF
   const isPinned = pinnedVideoId === videoId;
   const blockedByOtherPin = pinnedVideoId !== null && !isPinned;
   const isFeatured = size === 'featured';
-  const shouldAutoplay = isFeatured;
-  const enlarged = isFeatured || (active && !blockedByOtherPin && !isPinned && !hasFeatured);
+  const shouldAutoplay = isFeatured && !blockedByOtherPin;
+  const enlarged = (isFeatured && !blockedByOtherPin) || (active && !blockedByOtherPin && !isPinned && !hasFeatured);
   const showIframe = shouldAutoplay || (active && !blockedByOtherPin && !isPinned && !hasFeatured);
   const handleEnter = () => {
     if (hasFeatured) return;
@@ -123,7 +123,7 @@ export const MixesView: React.FC<{ setActiveTab?: (tab: NavTab) => void; onPlayM
         </div>
         <div className="flex items-center gap-2 mb-3"><span className="font-mono text-xs text-slate-500">Showing {youtubeItems.length} YouTube mixes from Supabase — arrange &amp; size in CMS → YouTube Previews</span></div>
         {pinnedVideoId && <div className="mb-6 sm:mb-8"><NowPlayingPlayer videoId={pinnedVideoId} /></div>}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 grid-flow-row-dense auto-rows-fr">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 grid-flow-row-dense auto-rows-min items-start">
           {youtubeItems.map((item) => {
             const sizeClass = item.size === 'large' ? 'sm:col-span-2' : item.size === 'featured' ? 'sm:col-span-2 lg:col-span-2' : '';
             return (
