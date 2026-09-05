@@ -39,9 +39,11 @@ import {
   ChevronUp,
   ChevronDown,
   Maximize2,
-  GripVertical
+  GripVertical,
+  Play
 } from 'lucide-react';
 import { MixTrack, ServicePackage, AddOnItem, FaqItem, VenueItem, InstagramPreviewItem, StoredBookingInquiry } from '../../types';
+import { extractYoutubeId } from '../../utils/youtube';
 
 type AdminTab =
   | 'overview'
@@ -2048,6 +2050,9 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                           </>
                         ) : (
                           <>
+                            <a href={p.url} target="_blank" rel="noreferrer" className="w-20 h-12 shrink-0 rounded-lg overflow-hidden bg-black border border-white/10 relative group">
+                              {(() => { const vid = extractYoutubeId(p.url); return vid ? (<><img src={`https://i.ytimg.com/vi/${vid}/hqdefault.jpg`} alt="" className="w-full h-full object-cover" /><span className="absolute inset-0 bg-black/25 flex items-center justify-center group-hover:bg-black/10 transition-colors"><Play className="w-4 h-4 text-white fill-white" /></span></>) : (<span className="w-full h-full flex items-center justify-center text-[9px] text-white/30">no preview</span>); })()}
+                            </a>
                             <div className="flex-1 min-w-0">
                               <div className="font-mono-jb text-xs text-[#e5e2e1] truncate">{p.url}</div>
                               <div className="flex items-center gap-2 mt-1">
