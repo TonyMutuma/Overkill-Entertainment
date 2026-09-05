@@ -1,41 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavTab } from '../types';
-import { Play, ArrowUpRight, Youtube, ExternalLink, Volume2, VolumeX } from 'lucide-react';
+import { Play, ArrowUpRight, Youtube } from 'lucide-react';
 import youtubeBrand from 'thesvg/youtube';
-import { getYoutubeEmbedUrl, extractYoutubeId } from '../utils/youtube';
 import { VertexCorners } from './VertexCorners';
 import { useCMS } from '../context/CMSContext';
+import { extractYoutubeId } from '../utils/youtube';
 
-interface ChannelVideoCardProps { videoId: string; pinnedVideoId: string | null; onRequestPin: (videoId: string) => void; onStop: () => void; }
-const ChannelVideoCard: React.FC<ChannelVideoCardProps> = ({ videoId, pinnedVideoId, onRequestPin, onStop }) => {
+interface ChannelVideoCardProps { videoId: string; size: string; hasFeatured: boolean; pinnedVideoId: string | null; onRequestPin: (videoId: string) => void; onStop: () => void; }
+const ChannelVideoCard: React.FC<ChannelVideoCardProps> = ({ videoId, size, hasFeatured, pinnedVideoId, onRequestPin, onStop }) => {
   const [active, setActive] = useState(false);
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
   const isPinned = pinnedVideoId === videoId;
   const blockedByOtherPin = pinnedVideoId !== null && !isPinned;
-  const enlarged = active && !blockedByOtherPin && !isPinned;
-  const showIframe = active && !blockedByOtherPin && !isPinned;
+  const isFeatured = size === 'featured';
+  const shouldAutoplay = isFeatured;
+  const enlarged = isFeatured || (active && !blockedByOtherPin && !isPinned && !hasFeatured);
+  const showIframe = shouldAutoplay || (active && !blockedByOtherPin && !isPinned && !hasFeatured);
   const handleEnter = () => {
+    if (hasFeatured) return;
     setActive(true);
     if (blockedByOtherPin) return;
     setTimeout(() => { const iframe = iframeRef.current; if (iframe?.contentWindow) iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), 'https://www.youtube.com'); }, 250);
   };
   const handleLeave = () => {
+    if (hasFeatured || isFeatured) return;
     if (isPinned) return;
     const iframe = iframeRef.current;
-    if (iframe?.contentWindow && showIframe) iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), 'https://www.youtube.com');
+    if (iframe?.contentWindow && showIframe && !shouldAutoplay) iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), 'https://www.youtube.com');
     setActive(false);
   };
   return (
-    <article onMouseEnter={handleEnter} onMouseLeave={handleLeave} className={`vertex-card vertex-card--hover bg-[#0b0f17] border flex flex-col overflow-hidden transition-all duration-500 ease-in-out group ${enlarged ? 'sm:col-span-2 lg:col-span-2 border-blue-500 shadow-[0_12px_40px_rgba(37,99,235,.28)] z-20 scale-[1.01]' : 'border-slate-800 hover:border-slate-700'}`}>
-      <VertexCorners variant={enlarged ? 'blue' : 'white'} size={18} thickness={2.2} />
-      <div className={`relative overflow-hidden bg-[#04060a] ${enlarged ? 'aspect-[16/10] sm:aspect-video' : 'aspect-video'}`}>
-        {showIframe ? (
+    <article onMouseEnter={handleEnter} onMouseLeave={handleLeave} className={`vertex-card vertex-card--hover bg-[#0b0f17] border flex flex-col overflow-hidden transition-all duration-500 ease-in-out group ${enlarged || isFeatured ? 'sm:col-span-2 lg:col-span-2 border-blue-500 shadow-[0_12px_40px_rgba(37,99,235,.28)] z-10' : 'border-slate-800 hover:border-slate-700'}`}>
+      <VertexCorners variant={enlarged || isFeatured ? 'blue' : 'white'} size={18} thickness={2.2} />
+      <div className={`relative overflow-hidden bg-[#04060a] ${enlarged || isFeatured ? 'aspect-[16/10] sm:aspect-video' : 'aspect-video'}`}>
+        {showIframe || shouldAutoplay ? (
           <>
             <iframe ref={(el) => { iframeRef.current = el; }} src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1&autoplay=1&mute=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`} title="DJ Wolverine live mix" className="w-full h-full" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy" referrerPolicy="strict-origin-when-cross-origin" />
             <div className="absolute bottom-2 left-2 right-12 flex items-center gap-2">
-              {!isPinned ? <button onClick={(e) => { e.stopPropagation(); onRequestPin(videoId); }} className="flex items-center gap-1.5 px-2.5 py-1.5 bg-blue-600 text-white font-mono text-[10px] font-bold uppercase tracking-wider hover:bg-blue-700 cursor-pointer"><Play className="w-3.5 h-3.5" /> Continue Playing — front &amp; center</button> : <span className="px-2 py-1 bg-white text-black font-mono text-[9px] font-bold uppercase">Pinned — keeps playing</span>}
+              {!isPinned && !isFeatured ? <button onClick={(e) => { e.stopPropagation(); onRequestPin(videoId); }} className="flex items-center gap-1.5 px-2.5 py-1.5 bg-blue-600 text-white font-mono text-[10px] font-bold uppercase tracking-wider hover:bg-blue-700 cursor-pointer"><Play className="w-3.5 h-3.5" /> Continue Playing</button> : isFeatured ? <span className="px-2 py-1 bg-amber-500 text-black font-mono text-[9px] font-bold uppercase">Featured • Autoplay</span> : <span className="px-2 py-1 bg-white text-black font-mono text-[9px] font-bold uppercase">Pinned — keeps playing</span>}
             </div>
-            {isPinned && <button onClick={(e) => { e.stopPropagation(); onStop(); }} className="absolute top-2 right-2 w-7 h-7 bg-black/70 text-white flex items-center justify-center hover:bg-black cursor-pointer text-xs">✕</button>}
+            {(isPinned || isFeatured) && !isFeatured && <button onClick={(e) => { e.stopPropagation(); onStop(); }} className="absolute top-2 right-2 w-7 h-7 bg-black/70 text-white flex items-center justify-center hover:bg-black cursor-pointer text-xs">✕</button>}
           </>
         ) : isPinned ? (
           <div className="relative w-full h-full">
@@ -48,7 +52,7 @@ const ChannelVideoCard: React.FC<ChannelVideoCardProps> = ({ videoId, pinnedVide
             <img src={`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`} alt="DJ Wolverine live mix" loading="lazy" className="w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0b0f17] via-transparent to-black/10" />
             <div className="absolute inset-0 flex items-center justify-center"><button type="button" onClick={(e) => { e.stopPropagation(); onRequestPin(videoId); }} className="w-14 h-14 flex items-center justify-center rounded-full bg-blue-600/90 text-white group-hover:scale-110 group-hover:bg-blue-500 transition-all duration-300 shadow-[0_0_25px_rgba(37,99,235,.5)] cursor-pointer"><Play className="w-6 h-6 fill-current ml-0.5" /></button></div>
-            <button onClick={(e) => { e.stopPropagation(); onRequestPin(videoId); }} className="absolute bottom-2 left-2 flex items-center gap-1.5 px-2.5 py-1.5 bg-blue-600 text-white font-mono text-[10px] font-bold uppercase tracking-wider hover:bg-blue-700 cursor-pointer"><Play className="w-3.5 h-3.5" /> Continue Playing — front &amp; center</button>
+            <button onClick={(e) => { e.stopPropagation(); onRequestPin(videoId); }} className="absolute bottom-2 left-2 flex items-center gap-1.5 px-2.5 py-1.5 bg-blue-600 text-white font-mono text-[10px] font-bold uppercase tracking-wider hover:bg-blue-700 cursor-pointer"><Play className="w-3.5 h-3.5" /> Continue Playing</button>
           </div>
         ) : (
           <button type="button" onClick={(e) => { e.stopPropagation(); onRequestPin(videoId); }} className="relative w-full h-full block cursor-pointer text-left">
@@ -63,7 +67,7 @@ const ChannelVideoCard: React.FC<ChannelVideoCardProps> = ({ videoId, pinnedVide
   );
 };
 const NowPlayingPlayer: React.FC<{ videoId: string }> = ({ videoId }) => (
-  <div className="relative w-full aspect-video sm:aspect-[2.1/1] bg-black border-2 border-blue-500 overflow-hidden vertex-card shadow-[0_0_60px_rgba(37,99,235,.30)]">
+  <div id="pinned-player" className="relative w-full aspect-video sm:aspect-[2.1/1] bg-black border-2 border-blue-500 overflow-hidden vertex-card shadow-[0_0_60px_rgba(37,99,235,.30)] scroll-mt-24">
     <VertexCorners variant="blue" size={20} thickness={2.4} />
     <iframe src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1&autoplay=1&mute=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`} title="DJ Wolverine live mix" className="w-full h-full" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" />
   </div>
@@ -72,13 +76,29 @@ const NowPlayingPlayer: React.FC<{ videoId: string }> = ({ videoId }) => (
 export const MixesView: React.FC<{ setActiveTab?: (tab: NavTab) => void; onPlayMix?: any; currentPlayingTrack?: any; currentPlayingId?: string | null; isPlaying?: boolean }> = ({ setActiveTab }) => {
   const { youtubePreviews } = useCMS();
   const youtubeItems = youtubePreviews.map((p) => ({ id: p.id, url: p.url, videoId: extractYoutubeId(p.url) as string, size: (p.size as any) || 'normal', position: p.position ?? 0 })).filter((x) => !!x.videoId).sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
+  const hasFeatured = youtubeItems.some((x) => x.size === 'featured');
   const [pinnedVideoId, setPinnedVideoId] = useState<string | null>(null);
   const [pendingSwitchId, setPendingSwitchId] = useState<string | null>(null);
-  const requestPinVideo = (videoId: string) => { if (pinnedVideoId && pinnedVideoId !== videoId) setPendingSwitchId(videoId); else setPinnedVideoId(videoId); };
-  const confirmSwitchVideo = () => { if (pendingSwitchId) setPinnedVideoId(pendingSwitchId); setPendingSwitchId(null); };
+  const requestPinVideo = (videoId: string) => {
+    if (pinnedVideoId && pinnedVideoId !== videoId) setPendingSwitchId(videoId);
+    else {
+      setPinnedVideoId(videoId);
+      setTimeout(() => document.getElementById('pinned-player')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+    }
+  };
+  const confirmSwitchVideo = () => {
+    if (pendingSwitchId) {
+      setPinnedVideoId(pendingSwitchId);
+      setTimeout(() => document.getElementById('pinned-player')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+    }
+    setPendingSwitchId(null);
+  };
   const cancelSwitchVideo = () => setPendingSwitchId(null);
   const navigate = (tab: NavTab) => { if (setActiveTab) setActiveTab(tab); window.scrollTo({ top: 0, behavior: 'smooth' }); };
   const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/@djwolverine_ke';
+  useEffect(() => {
+    if (pinnedVideoId) setTimeout(() => document.getElementById('pinned-player')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 150);
+  }, [pinnedVideoId]);
   return (
     <div className="w-full bg-[#070b11] text-white">
       <section className="relative overflow-hidden border-b border-slate-900">
@@ -103,12 +123,12 @@ export const MixesView: React.FC<{ setActiveTab?: (tab: NavTab) => void; onPlayM
         </div>
         <div className="flex items-center gap-2 mb-3"><span className="font-mono text-xs text-slate-500">Showing {youtubeItems.length} YouTube mixes from Supabase — arrange &amp; size in CMS → YouTube Previews</span></div>
         {pinnedVideoId && <div className="mb-6 sm:mb-8"><NowPlayingPlayer videoId={pinnedVideoId} /></div>}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 grid-flow-row-dense auto-rows-fr">
           {youtubeItems.map((item) => {
             const sizeClass = item.size === 'large' ? 'sm:col-span-2' : item.size === 'featured' ? 'sm:col-span-2 lg:col-span-2' : '';
             return (
               <div key={item.id} className={sizeClass}>
-                <ChannelVideoCard videoId={item.videoId} pinnedVideoId={pinnedVideoId} onRequestPin={requestPinVideo} onStop={() => setPinnedVideoId(null)} />
+                <ChannelVideoCard videoId={item.videoId} size={item.size} hasFeatured={hasFeatured} pinnedVideoId={pinnedVideoId} onRequestPin={requestPinVideo} onStop={() => setPinnedVideoId(null)} />
               </div>
             );
           })}
