@@ -40,7 +40,9 @@ import {
   ChevronDown,
   Maximize2,
   GripVertical,
-  Play
+  Play,
+  Copy,
+  ClipboardCheck
 } from 'lucide-react';
 import { MixTrack, ServicePackage, AddOnItem, FaqItem, VenueItem, InstagramPreviewItem, StoredBookingInquiry } from '../../types';
 import { extractYoutubeId } from '../../utils/youtube';
@@ -1918,7 +1920,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                 </div>
                 <div className="p-3 rounded-xl bg-[#1c1b1b] border border-white/10 flex flex-wrap items-center gap-3 text-xs">
                   <span className="flex items-center gap-2 font-mono-jb">
-                    {instagramSaving ? <><RefreshCw className="w-3.5 h-3.5 animate-spin text-amber-400" /> <span className="text-amber-300">Saving to Supabase…</span></> : instagramError ? <><AlertCircle className="w-3.5 h-3.5 text-rose-400" /> <span className="text-rose-300">{instagramError}</span></> : <><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> <span className="text-emerald-300">Connected to Supabase</span></>}
+                    {instagramSaving ? <><RefreshCw className="w-3.5 h-3.5 animate-spin text-amber-400" /> <span className="text-amber-300">Saving to Supabase…</span></> : instagramError ? <><AlertCircle className="w-3.5 h-3.5 text-rose-400" /> <span className="text-rose-300 max-w-[260px] truncate" title={instagramError}>{instagramError}</span><button onClick={() => { navigator.clipboard.writeText(instagramError); showToast('Error copied ✓'); }} className="p-1 rounded bg-white/5 hover:bg-white/10 border border-white/10" title="Copy error"><Copy className="w-3 h-3 text-rose-300" /></button></> : <><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> <span className="text-emerald-300">Connected to Supabase</span></>}
                   </span>
                   {instagramLastSavedAt && <span className="text-[#bac9cd]/50">Last saved {instagramLastSavedAt}</span>}
                   <span className="text-[#bac9cd]/30">• {instagramPreviews.length} saved</span>
@@ -1999,7 +2001,7 @@ export const AdminDashboard: React.FC<{ isOpen: boolean; onClose: () => void }> 
                 </div>
                 <div className="p-3 rounded-xl bg-[#1c1b1b] border border-white/10 flex flex-wrap items-center gap-3 text-xs">
                   <span className="flex items-center gap-2 font-mono-jb">
-                    {youtubeSaving ? <><RefreshCw className="w-3.5 h-3.5 animate-spin text-amber-400" /> <span className="text-amber-300">Saving to Supabase…</span></> : youtubeError ? <><AlertCircle className="w-3.5 h-3.5 text-rose-400" /> <span className="text-rose-300">{youtubeError}</span></> : <><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> <span className="text-emerald-300">Connected to Supabase</span></>}
+                    {youtubeSaving ? <><RefreshCw className="w-3.5 h-3.5 animate-spin text-amber-400" /> <span className="text-amber-300">Saving to Supabase…</span></> : youtubeError ? <><AlertCircle className="w-3.5 h-3.5 text-rose-400" /> <span className="text-rose-300 max-w-[260px] truncate" title={youtubeError}>{youtubeError}</span><button onClick={() => { navigator.clipboard.writeText(youtubeError); showToast('Error copied ✓'); }} className="p-1 rounded bg-white/5 hover:bg-white/10 border border-white/10" title="Copy error"><Copy className="w-3 h-3 text-rose-300" /></button></> : <><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> <span className="text-emerald-300">Connected to Supabase</span></>}
                   </span>
                   {youtubeLastSavedAt && <span className="text-[#bac9cd]/50">Last saved {youtubeLastSavedAt}</span>}
                   <span className="text-[#bac9cd]/30">• {youtubePreviews.length} saved</span>
