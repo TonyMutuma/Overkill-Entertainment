@@ -29,9 +29,7 @@ const ChannelVideoCard: React.FC<ChannelVideoCardProps> = ({ videoId, pinnedVide
     setTimeout(() => {
       const iframe = iframeRef.current;
       if (iframe?.contentWindow) {
-        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*');
-        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*');
-        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*');
+        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), 'https://www.youtube.com');
       }
     }, 250);
   };
@@ -39,7 +37,7 @@ const ChannelVideoCard: React.FC<ChannelVideoCardProps> = ({ videoId, pinnedVide
     if (isPinned) return;
     const iframe = iframeRef.current;
     if (iframe?.contentWindow && showIframe) {
-      iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), '*');
+      iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), 'https://www.youtube.com');
     }
     setActive(false);
   };
@@ -56,12 +54,14 @@ const ChannelVideoCard: React.FC<ChannelVideoCardProps> = ({ videoId, pinnedVide
           <>
             <iframe
               ref={(el) => { iframeRef.current = el; }}
-        src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1&autoplay=1&enablejsapi=1`}
+              src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1&autoplay=1&mute=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`}
               title="DJ Wolverine live mix"
               className="w-full h-full"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
+              loading="lazy"
+              referrerPolicy="strict-origin-when-cross-origin"
             />
             <div className="absolute bottom-2 left-2 right-12 flex items-center gap-2">
               {!isPinned ? (
@@ -119,34 +119,18 @@ interface NowPlayingPlayerProps {
 }
 const NowPlayingPlayer: React.FC<NowPlayingPlayerProps> = ({ videoId }) => {
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
-  useEffect(() => {
-    const onMsg = (e: MessageEvent) => {
-      if (e.origin !== 'https://www.youtube.com' && e.origin !== 'https://www.youtube-nocookie.com') return;
-      let data: any;
-      try { data = JSON.parse(e.data as string); } catch { return; }
-      if (data?.event === 'onReady' || (data?.event === 'infoDelivery' && data?.info && typeof data.info.playerState === 'number')) {
-        const iframe = iframeRef.current;
-        if (iframe?.contentWindow) {
-          iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*');
-          iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*');
-          iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*');
-        }
-      }
-    };
-    window.addEventListener('message', onMsg);
-    return () => window.removeEventListener('message', onMsg);
-  }, [videoId]);
   return (
     <div className="relative w-full aspect-video sm:aspect-[2.1/1] bg-black border-2 border-blue-500 overflow-hidden vertex-card shadow-[0_0_60px_rgba(37,99,235,.30)]">
       <VertexCorners variant="blue" size={20} thickness={2.4} />
       <iframe
         ref={(el) => { iframeRef.current = el; }}
-        src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1&autoplay=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`}
+        src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1&autoplay=1&mute=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`}
         title="DJ Wolverine live mix"
         className="w-full h-full"
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
+        referrerPolicy="strict-origin-when-cross-origin"
       />
     </div>
   );
@@ -208,9 +192,9 @@ export const MixesView: React.FC<MixesViewProps> = ({
   const handleUnmute = (id: string) => {
     const iframe = iframeRefs.current[id];
     if (iframe?.contentWindow) {
-      iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*');
-      iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*');
-      iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*');
+      iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute', args: [] }), 'https://www.youtube.com');
+      iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), 'https://www.youtube.com');
+      iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), 'https://www.youtube.com');
     }
     setUnmutedIds(prev => ({ ...prev, [id]: true }));
     setPinnedYoutubeId(id);
@@ -220,7 +204,7 @@ export const MixesView: React.FC<MixesViewProps> = ({
   const handleMute = (id: string) => {
     const iframe = iframeRefs.current[id];
     if (iframe?.contentWindow) {
-      iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'mute', args: [] }), '*');
+      iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'mute', args: [] }), 'https://www.youtube.com');
     }
     setUnmutedIds(prev => ({ ...prev, [id]: false }));
   };
@@ -327,7 +311,7 @@ export const MixesView: React.FC<MixesViewProps> = ({
             const youtubeField = getYoutubeField(mix);
             const youtubeId = youtubeField ? extractYoutubeId(youtubeField) : null;
             const baseEmbedUrl = youtubeField ? getYoutubeEmbedUrl(youtubeField) : null;
-            const embedUrl = baseEmbedUrl ? `${baseEmbedUrl}${baseEmbedUrl.includes('?') ? '&' : '?'}autoplay=1&mute=1&enablejsapi=1` : null;
+            const embedUrl = baseEmbedUrl ? `${baseEmbedUrl}${baseEmbedUrl.includes('?') ? '&' : '?'}autoplay=1&mute=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}` : null;
             const isYoutubeActive = activeYoutubeId === mix.id && !!embedUrl;
             const isPinned = pinnedYoutubeId === mix.id;
             const isUnmuted = !!unmutedIds[mix.id];
@@ -337,7 +321,7 @@ export const MixesView: React.FC<MixesViewProps> = ({
                 <div className={`relative overflow-hidden bg-[#04060a] ${isEnlarged ? 'aspect-[16/10] sm:aspect-video' : 'aspect-video'}`} onClick={() => { if (isYoutubeActive) setPinnedYoutubeId(mix.id); }}>
                   {isYoutubeActive && embedUrl ? (
                     <>
-                      <iframe ref={el => { iframeRefs.current[mix.id] = el; }} src={embedUrl} title={mix.title} className="w-full h-full" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy" />
+                      <iframe ref={el => { iframeRefs.current[mix.id] = el; }} src={embedUrl} title={mix.title} className="w-full h-full" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy" referrerPolicy="strict-origin-when-cross-origin" />
                       <div className="absolute bottom-2 left-2 right-12 flex items-center gap-2">
                         {!isUnmuted ? (
                           <button onClick={(e) => { e.stopPropagation(); handleUnmute(mix.id); }} className="flex items-center gap-1.5 px-2.5 py-1.5 bg-blue-600 text-white font-mono text-[10px] font-bold uppercase tracking-wider hover:bg-blue-700 transition-colors cursor-pointer">
