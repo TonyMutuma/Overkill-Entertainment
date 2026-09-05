@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { MixTrack, NavTab } from '../types';
 import { Play, Pause, Headphones, Calendar as CalendarIcon, ChevronDown, ChevronUp, Music, ArrowUpRight, Youtube, ExternalLink, Volume2, VolumeX } from 'lucide-react';
 import youtubeBrand from 'thesvg/youtube';
-import applePodcasts from 'thesvg/apple-podcasts';
-import spotifyBrand from 'thesvg/spotify';
 import { getYoutubeEmbedUrl, getYoutubeField, extractYoutubeId } from '../utils/youtube';
-import { CHANNEL_VIDEO_IDS } from '../data/channelVideos';
 import { VertexCorners } from './VertexCorners';
-import { api } from '../utils/api';
+import { useCMS } from '../context/CMSContext';
 
 interface ChannelVideoCardProps {
   videoId: string;
@@ -152,10 +149,8 @@ export const MixesView: React.FC<MixesViewProps> = ({
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [expandedTracklistId, setExpandedTracklistId] = useState<string | null>(null);
-  const [mixTracks, setMixTracks] = useState<MixTrack[]>([]);
-  useEffect(() => {
-    api.getMixTracks().then((tracks) => setMixTracks(tracks));
-  }, []);
+  const { mixTracks: cmsMixTracks } = useCMS();
+  const cmsYoutubeMixes = cmsMixTracks.filter((m) => !!getYoutubeField(m as any));
   const [activeYoutubeId, setActiveYoutubeId] = useState<string | null>(null);
   const [pinnedYoutubeId, setPinnedYoutubeId] = useState<string | null>(null);
   const [unmutedIds, setUnmutedIds] = useState<Record<string, boolean>>({});
@@ -187,7 +182,7 @@ export const MixesView: React.FC<MixesViewProps> = ({
     { id: 'private', label: 'Private Party' }
   ];
 
-  const filteredMixes = selectedCategory === 'all' ? mixTracks : mixTracks.filter((m) => m.category === selectedCategory);
+  const filteredMixes = (selectedCategory === 'all' ? cmsYoutubeMixes : cmsYoutubeMixes.filter((m) => m.category === selectedCategory));
   const toggleTracklist = (id: string) => setExpandedTracklistId(expandedTracklistId === id ? null : id);
   const handleUnmute = (id: string) => {
     const iframe = iframeRefs.current[id];
@@ -237,51 +232,6 @@ export const MixesView: React.FC<MixesViewProps> = ({
             </button>
           </div>
         </div>
-      </section>
-
-      <section className="max-w-[1280px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 py-8 sm:py-12 border-b border-slate-900">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-5 sm:mb-6">
-          <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-white flex items-center gap-3"><span className="w-8 h-[3px] bg-blue-500 block" /> Listen in as much as you like</h2>
-          <div className="flex items-center gap-2">
-            {pinnedVideoId && (
-              <button onClick={() => setPinnedVideoId(null)} className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-white bg-black/70 border-2 border-white/20 hover:bg-black px-4 py-2 transition-colors cursor-pointer">
-                ✕ Stop
-              </button>
-            )}
-            <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-blue-400 hover:text-white border-2 border-blue-500/30 hover:border-blue-500 bg-blue-500/10 hover:bg-blue-600 px-4 py-2 transition-colors cursor-pointer">
-              <span className="w-3.5 h-3.5 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-current" dangerouslySetInnerHTML={{ __html: youtubeBrand.variants.mono }} /> Open on YouTube
-            </a>
-          </div>
-        </div>
-        {pinnedVideoId && (
-          <div className="mb-6 sm:mb-8">
-            <NowPlayingPlayer videoId={pinnedVideoId} />
-          </div>
-        )}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {CHANNEL_VIDEO_IDS.map((videoId) => (
-            <ChannelVideoCard key={videoId} videoId={videoId} pinnedVideoId={pinnedVideoId} onRequestPin={requestPinVideo} onStop={() => setPinnedVideoId(null)} />
-          ))}
-        </div>
-        {pendingSwitchId && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4" onClick={cancelSwitchVideo}>
-            <div className="relative w-full max-w-md bg-[#0b0f17] border-2 border-blue-500/40 vertex-card p-6 sm:p-8" onClick={(e) => e.stopPropagation()}>
-              <VertexCorners variant="blue" size={18} thickness={2.2} />
-              <h3 className="font-serif text-lg sm:text-xl font-bold text-white leading-tight">Another mix is already playing</h3>
-              <p className="font-sans text-sm text-slate-400 mt-3 leading-relaxed">
-                Only one set can play sound at a time. Switch to this mix, or cancel to keep the current one playing.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 mt-6">
-                <button onClick={confirmSwitchVideo} className="flex-1 bg-blue-600 text-white font-bold text-xs sm:text-sm px-6 py-3.5 rounded-xl hover:bg-blue-700 transition-colors cursor-pointer uppercase tracking-wider flex items-center justify-center gap-2">
-                  <Play className="w-4 h-4" /> Switch to this mix
-                </button>
-                <button onClick={cancelSwitchVideo} className="flex-1 border-2 border-white/15 text-white font-bold text-xs sm:text-sm px-6 py-3.5 rounded-xl hover:bg-white hover:text-black transition-colors cursor-pointer uppercase tracking-wider">
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </section>
 
       <section className="max-w-[1280px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 py-6 sm:py-8 border-b border-slate-900">
@@ -400,8 +350,8 @@ export const MixesView: React.FC<MixesViewProps> = ({
         {filteredMixes.length === 0 && (
           <div className="text-center py-16 border-2 border-slate-800 bg-[#0b0f17] mt-8">
             <Youtube className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-            <p className="font-serif text-lg font-bold text-white">No mixes in this category yet</p>
-            <p className="font-sans text-sm text-slate-500">YouTube links are in code — edit src/data/mockData.ts → MIX_TRACKS</p>
+            <p className="font-serif text-lg font-bold text-white">No YouTube mixes yet</p>
+            <p className="font-sans text-sm text-slate-500">Add a mix with a YouTube link via Admin → Mixes Vault Manager</p>
           </div>
         )}
       </section>
