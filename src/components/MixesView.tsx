@@ -77,6 +77,7 @@ export const MixesView: React.FC<{ setActiveTab?: (tab: NavTab) => void; onPlayM
   const { youtubePreviews } = useCMS();
   const youtubeItems = youtubePreviews.map((p) => ({ id: p.id, url: p.url, videoId: extractYoutubeId(p.url) as string, size: (p.size as any) || 'normal', position: p.position ?? 0 })).filter((x) => !!x.videoId).sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
   const hasFeatured = youtubeItems.some((x) => x.size === 'featured');
+  const firstFeatured = youtubeItems.find((x) => x.size === 'featured') || youtubeItems[0];
   const [pinnedVideoId, setPinnedVideoId] = useState<string | null>(null);
   const [pendingSwitchId, setPendingSwitchId] = useState<string | null>(null);
   const requestPinVideo = (videoId: string) => {
@@ -108,9 +109,20 @@ export const MixesView: React.FC<{ setActiveTab?: (tab: NavTab) => void; onPlayM
           <div className="absolute inset-0 bg-gradient-to-t from-[#070b11]/40 via-transparent to-transparent" />
         </div>
         <div className="relative max-w-[1280px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 pt-28 sm:pt-32 pb-12 sm:pb-16">
-          <span className="inline-block font-mono text-[10px] sm:text-xs tracking-[0.2em] text-blue-500 uppercase font-bold mb-3">Sonic Portfolio</span>
-          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-extrabold leading-[1.05] tracking-tight max-w-3xl">Want to Hear DJ Wolverine Before You Book? <span className="text-blue-500">Start Here.</span></h1>
-          <div className="flex flex-col sm:flex-row gap-3 mt-8 w-full sm:w-auto"><button onClick={() => navigate('home')} className="bg-white text-black font-bold text-xs sm:text-sm px-6 sm:px-8 py-3.5 rounded-xl hover:bg-slate-200 transition-colors cursor-pointer uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_8px_24px_rgba(255,255,255,0.10)]">Back to Home <ArrowUpRight className="w-4 h-4" /></button></div>
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
+            <div>
+              <span className="inline-block font-mono text-[10px] sm:text-xs tracking-[0.2em] text-blue-500 uppercase font-bold mb-3">Sonic Portfolio</span>
+              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-extrabold leading-[1.05] tracking-tight max-w-3xl">Want to Hear DJ Wolverine Before You Book? <span className="text-blue-500">Start Here.</span></h1>
+              <div className="flex flex-col sm:flex-row gap-3 mt-8 w-full sm:w-auto"><button onClick={() => navigate('home')} className="bg-white text-black font-bold text-xs sm:text-sm px-6 sm:px-8 py-3.5 rounded-xl hover:bg-slate-200 transition-colors cursor-pointer uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_8px_24px_rgba(255,255,255,0.10)]">Back to Home <ArrowUpRight className="w-4 h-4" /></button></div>
+            </div>
+            {firstFeatured && (
+              <div className="relative aspect-video bg-black rounded-2xl overflow-hidden border-2 border-blue-500/40 shadow-[0_20px_60px_rgba(37,99,235,0.3)] vertex-card">
+                <VertexCorners variant="blue" size={18} thickness={2.2} />
+                <iframe src={`https://www.youtube.com/embed/${firstFeatured.videoId}?rel=0&modestbranding=1&playsinline=1&mute=1&autoplay=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`} title="Featured mix" className="w-full h-full" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy" referrerPolicy="strict-origin-when-cross-origin" />
+                <span className="absolute top-3 left-3 px-2.5 py-1 bg-amber-500 text-black font-mono text-[10px] font-bold uppercase tracking-wider rounded-full">Featured</span>
+              </div>
+            )}
+          </div>
         </div>
       </section>
       <section className="max-w-[1280px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 py-8 sm:py-12 border-b border-slate-900">
