@@ -78,6 +78,7 @@ export const MixesView: React.FC<{ setActiveTab?: (tab: NavTab) => void; onPlayM
   const youtubeItems = youtubePreviews.map((p) => ({ id: p.id, url: p.url, videoId: extractYoutubeId(p.url) as string, size: (p.size as any) || 'normal', position: p.position ?? 0 })).filter((x) => !!x.videoId).sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
   const hasFeatured = youtubeItems.some((x) => x.size === 'featured');
   const firstFeatured = youtubeItems.find((x) => x.size === 'featured') || youtubeItems[0];
+  const gridItems = firstFeatured ? youtubeItems.filter((x) => x.id !== firstFeatured.id) : youtubeItems;
   const [pinnedVideoId, setPinnedVideoId] = useState<string | null>(null);
   const [pendingSwitchId, setPendingSwitchId] = useState<string | null>(null);
   const requestPinVideo = (videoId: string) => {
@@ -136,7 +137,7 @@ export const MixesView: React.FC<{ setActiveTab?: (tab: NavTab) => void; onPlayM
         <div className="flex items-center gap-2 mb-3"><span className="font-mono text-xs text-slate-500">Listen in as much as you like</span></div>
         {pinnedVideoId && <div className="mb-6 sm:mb-8"><NowPlayingPlayer videoId={pinnedVideoId} /></div>}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 grid-flow-row-dense auto-rows-min items-start">
-          {youtubeItems.map((item) => {
+          {gridItems.map((item) => {
             const sizeClass = item.size === 'large' ? 'sm:col-span-2' : item.size === 'featured' ? 'sm:col-span-2 lg:col-span-2' : '';
             return (
               <div key={item.id} className={sizeClass}>
@@ -145,7 +146,7 @@ export const MixesView: React.FC<{ setActiveTab?: (tab: NavTab) => void; onPlayM
             );
           })}
         </div>
-        {youtubeItems.length === 0 && (
+        {gridItems.length === 0 && (
           <div className="text-center py-16 border-2 border-slate-800 bg-[#0b0f17] mt-8">
             <Youtube className="w-10 h-10 text-slate-600 mx-auto mb-3" />
             <p className="font-serif text-lg font-bold text-white">No YouTube mixes yet</p>
